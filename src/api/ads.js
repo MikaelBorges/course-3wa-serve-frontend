@@ -7,7 +7,7 @@ import {config} from '../config'
 
 //on charge toutes les annonces
 export function loadAds(){
-    return axios.get('https://mikaelborges-serve.herokuapp.com/')
+    return axios.get('https://mikaelborges-serve.herokuapp.com')
     .then((res)=>{
         return res.data
     })

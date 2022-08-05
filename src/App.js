@@ -8,7 +8,7 @@ function App() {
   useEffect(()=>{
       loadAds()
       .then((res)=>{
-          console.log('res', res) 
+          //console.log('res', res) 
           setAds(res)
       })
       .catch(err=>console.log(err))
