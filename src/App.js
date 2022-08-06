@@ -15,18 +15,19 @@ function App() {
   },[])
 
   return (
-    <section className="App">
-      <header className="App-header">
-      {ads.length > 0 && <ul>
-                {ads.map((ad)=>{
-                    return (
-                        <li key={ad._id}>
-                            {ad.name}
-                        </li>
-                    )
-                })}
-            </ul>}
-      </header>
+    <section className="annonces">
+      <h2>Toutes les annonces</h2>
+          {ads.length > 0 && <ul>
+              {ads.map((ad)=>{
+                  return (
+                      <article key={ad._id}>
+                          <h3>{ad.name}</h3>
+                          <p>{ad.description}</p>
+                          <p>{ad.price}</p>
+                      </article>
+                  )
+              })}
+          </ul>}
     </section>
   );
 }
