@@ -2,7 +2,15 @@ h2 {
   margin-bottom: 1rem;
 }
 
-.annonces article {
+nav {
+  margin-bottom: 1rem;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.annonces li {
   border-radius: 2rem;
   padding: 1rem;
   margin-bottom: 1rem;
