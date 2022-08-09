@@ -1,0 +1,21 @@
+.indexBeams {
+  background-image: url("https://tailwindcss.com/_next/static/media/hero@75.4dea7abe609fc522c039fba7662ceea2.jpg");
+  // background-size: 150rem;
+  background-size: cover;
+
+  &.dark {
+    background-image: url("https://tailwindcss.com/_next/static/media/hero-dark@90.a7a063e8f9d179fbd72b0b735c5797b7.jpg");
+  }
+
+  .grid {
+    -webkit-mask-image: linear-gradient(transparent, black);
+
+    &.bgGridSlate400 {
+      background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(148 163 184 / 0.05)'><path d='M0 .5H31.5V32'/></svg>");
+    }
+
+    &.bgGridSlate900 {
+      background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(15 23 42 / 0.04)'><path d='M0 .5H31.5V32'/></svg>");
+    }
+  }
+}
