@@ -5,10 +5,11 @@ import { Route, Routes } from 'react-router-dom';
 import HomePage from './HomePage';
 import { useState, useEffect } from 'react';
 import { lightIcon, darkIcon, systemIcon } from './icons/Icons';
-// import LoginPage from './LoginPage';
+import LoginPage from './LoginPage';
+// import LogoutPage from './LogoutPage';
 
 function App() {
-
+  const [dataUser, setDataUser] = useState()
   const [darkMode, setDarkMode] = useState(false);
   const [theme, setTheme] = useState('light');
 
@@ -80,6 +81,8 @@ function App() {
         }
       }
     }
+
+    //console.log('dataUser', dataUser)
   }, []);
 
   function toggleTheme(themeSelected) {
@@ -113,15 +116,29 @@ function App() {
     }
   }
 
+  function updateUser(data) {
+    //console.log('DATA', data)
+    setDataUser(data)
+    //console.log('DATA USER', dataUser)
+  }
+
   return (
-    <Layout theme={theme} darkMode={darkMode} toggleTheme={toggleTheme}>
+    <Layout
+      theme={theme}
+      darkMode={darkMode}
+      toggleTheme={toggleTheme}
+      dataUser={dataUser}
+      updateUser={updateUser}
+    >
       <Routes>
         <Route
-          path='/'
           exact
-          element={<HomePage darkMode={darkMode} />}
-        >
-        </Route>
+          path='/'
+          element={<HomePage updateUser={updateUser} darkMode={darkMode} />} />
+        <Route
+          exact
+          path='/user/login'
+          element={<LoginPage darkMode={darkMode} />} />
       </Routes>
     </Layout>
   );

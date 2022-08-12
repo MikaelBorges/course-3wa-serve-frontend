@@ -5,13 +5,14 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { Ul, Li } from './components/Ul';
 import { Lien } from './components/Lien';
-import { projectsIcon } from './icons/Icons';
-import { Notification } from './components/Notification';
+//import { Notification } from './components/Notification';
 import { Link } from 'react-router-dom';
-import { lightIcon, darkIcon, systemIcon } from './icons/Icons';
+import { lightIcon, darkIcon, systemIcon, userIcon, keyIcon, disconnectIcon } from './icons/Icons';
 
 // import { logo } from './images/logos/Logos';
 import logo from './images/logos/1566920703749.webp';
+
+import { useNavigate } from "react-router-dom";
 
 /* const footerLists = [
   {
@@ -43,6 +44,7 @@ import logo from './images/logos/1566920703749.webp';
 ]; */
 
 function Layout(props) {
+  const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
 
   function classNames(...classes) {
@@ -67,6 +69,15 @@ function Layout(props) {
   function handleMenu() {
     setMenu(!menu);
   }
+
+  function handleLogout() {
+    //console.log('handleLogout')
+    // props.dataUser === undefined ? '/user/login' : '/logout'
+    // navigate("/", { state: { user: undefined } });
+    props.updateUser(undefined)
+  }
+
+  //console.log('props.dataUser', props.dataUser)
 
   return (
     <div className={`min-h-screen ${menu ? 'dark:bg-black bg-gray-100 py-40 px-5' : ''}`}>
@@ -198,7 +209,66 @@ function Layout(props) {
                 )}
               </Menu>
               <Link
-                to='/projects'
+                to='/user/register'
+                className={`
+                  ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                  dark:border
+                  hover:dark:border-pink-600
+                  dark:bg-black
+                  bg-white
+                  px-4
+                  py-3
+                  text-2xl
+                  rounded-full
+                  shadow-xl
+                  hover:bg-gray-100
+                `}
+              >
+                {userIcon}
+              </Link>
+
+              {props.dataUser === undefined ?
+              <Link
+                to='user/login'
+                className={`
+                  ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                  dark:border
+                  hover:dark:border-pink-600
+                  dark:bg-black
+                  bg-white
+                  px-4
+                  py-3
+                  text-2xl
+                  rounded-full
+                  shadow-xl
+                  hover:bg-gray-100
+                `}
+              >
+                {keyIcon} 
+              </Link>
+              :
+              <button
+                className={`
+                  ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                  dark:border
+                  hover:dark:border-pink-600
+                  dark:bg-black
+                  bg-white
+                  px-4
+                  py-3
+                  text-2xl
+                  rounded-full
+                  shadow-xl
+                  hover:bg-gray-100
+                `}
+                onClick={handleLogout}
+              >
+                {disconnectIcon}
+              </button>
+              }
+
+                {/* <Link
+                to='/user/login'
                 className={`
                   ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
                   dark:border
@@ -228,9 +298,8 @@ function Layout(props) {
                     after:min-w-10
                   `}
                 >
-                  {projectsIcon}
                 </Notification>
-              </Link>
+              </Link> */}
               {/* <Lien
                 url={'/projects'}
                 target='_self'
@@ -267,7 +336,7 @@ function Layout(props) {
                   {projectsIcon}
                 </Notification>
               </Lien> */}
-              <button
+              {/* <button
                 className={`
                   ${menu ? `
                     dark:border
@@ -292,7 +361,7 @@ function Layout(props) {
                 onClick={handleMenu}
               >
                 menu
-              </button>
+              </button> */}
             </div>
           </div>
 
@@ -348,7 +417,7 @@ function Layout(props) {
         </div>
       </header> */}
 
-      <main className="min-h-screen">
+      <main className="min-h-screen dark:bg-slate-800">
         {props.children}
       </main>
 

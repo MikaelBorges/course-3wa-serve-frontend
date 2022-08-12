@@ -7,7 +7,8 @@ import {config} from '../config'
 
 //on charge toutes les annonces
 export function loadAds(){
-    return axios.get('http://192.168.1.20:3306')
+    return axios.get('http://localhost:3306')
+    // return axios.get('http://172.20.10.10:3306')
     // return axios.get('https://mikaelborges-serve.herokuapp.com')
     .then((res)=>{
         return res.data
