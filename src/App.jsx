@@ -6,7 +6,8 @@ import HomePage from './HomePage';
 import { useState, useEffect } from 'react';
 import { lightIcon, darkIcon, systemIcon } from './icons/Icons';
 import LoginPage from './LoginPage';
-// import LogoutPage from './LogoutPage';
+import LogoutPage from './LogoutPage';
+import { checkIfDataUserIsAccessible } from './api/user'
 
 function App() {
   const [dataUser, setDataUser] = useState()
@@ -67,6 +68,8 @@ function App() {
       }
     }
 
+    //console.log('i fire once on app');
+
     const mql = window.matchMedia('(prefers-color-scheme: dark)');
     mql.onchange = (e) => {
       if (!localStorage.theme) {
@@ -82,7 +85,10 @@ function App() {
       }
     }
 
-    //console.log('dataUser', dataUser)
+    const userDataRetrieved = checkIfDataUserIsAccessible()
+    if (userDataRetrieved) {
+      setDataUser(userDataRetrieved)
+    }
   }, []);
 
   function toggleTheme(themeSelected) {
@@ -117,9 +123,8 @@ function App() {
   }
 
   function updateUser(data) {
-    //console.log('DATA', data)
     setDataUser(data)
-    //console.log('DATA USER', dataUser)
+    console.log('DATA USER', dataUser)
   }
 
   return (
@@ -134,11 +139,18 @@ function App() {
         <Route
           exact
           path='/'
-          element={<HomePage updateUser={updateUser} darkMode={darkMode} />} />
+          element={<HomePage updateUser={updateUser} darkMode={darkMode} />}
+        />
         <Route
           exact
           path='/user/login'
-          element={<LoginPage darkMode={darkMode} />} />
+          element={<LoginPage darkMode={darkMode} updateUser={updateUser} />}
+        />
+        {/* <Route
+          exact
+          path='/user/logout'
+          element={<LogoutPage darkMode={darkMode} />}
+        /> */}
       </Routes>
     </Layout>
   );

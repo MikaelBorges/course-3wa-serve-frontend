@@ -75,7 +75,6 @@ const bigTiles = [
 
 function HomePage(props) {
   const { state } = useLocation();
-  //console.log('state', state)
   const [userState, setUserState] = useState()
   const [ads, setAds] = useState([])
   /* const [isLogged, setIsLogged] = useState(false)
@@ -85,21 +84,24 @@ function HomePage(props) {
   // setUser(state.user);
 
   useEffect(() => {
+    
+    //console.log('first')
     loadAds()
     .then((res)=>{
-        //console.log('res', res) 
+        console.log('RES (HOMEPAGE) :')
+        console.log(res) 
         setAds(res)
     })
     .catch(err=>console.log(err))
 
     //console.log('STATE', state)
 
-    if(state === null) {
+    /* if(state === null) {
         props.updateUser(undefined)
     }
     else {
         props.updateUser(state.user)
-    }
+    } */
   }, []);
 
   return (
@@ -124,8 +126,8 @@ function HomePage(props) {
               return (
                 <li key={ad._id} className='dark:bg-slate-700 dark:text-white bg-slate-200 rounded-3xl p-4 last:mb-0 mb-8'>
                   <h3 className='text-2xl'>{ad.name}</h3>
-                  <p>{ad.description}</p>
-                  <p className='font-bold dark:text-yellow-100'>{ad.price} / heure</p>
+                  <p className='text-2xl'>{ad.description}</p>
+                  <p className='text-2xl dark:text-yellow-100'>{ad.price} / heure</p>
                 </li>
               )
             })}

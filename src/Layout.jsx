@@ -13,6 +13,7 @@ import { lightIcon, darkIcon, systemIcon, userIcon, keyIcon, disconnectIcon } fr
 import logo from './images/logos/1566920703749.webp';
 
 import { useNavigate } from "react-router-dom";
+import { logoutUser } from './api/user'
 
 /* const footerLists = [
   {
@@ -46,6 +47,7 @@ import { useNavigate } from "react-router-dom";
 function Layout(props) {
   const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
+  const [error, setError] = useState(null);
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -70,14 +72,47 @@ function Layout(props) {
     setMenu(!menu);
   }
 
+  //console.log('LAYOUT')
+
   function handleLogout() {
-    //console.log('handleLogout')
+    // console.log('handleLogout')
     // props.dataUser === undefined ? '/user/login' : '/logout'
     // navigate("/", { state: { user: undefined } });
-    props.updateUser(undefined)
+    // props.updateUser(undefined)
+    let data = {
+      id: props.dataUser.id
+    };
+    logoutUser(data)
+    .then((res) => {
+        console.log('RES (LAYOUT) :')
+        console.log(res)
+        if (res.status === 200) {
+            // console.log('res.status === 200')
+            // window.localStorage.setItem("saas-token", res.token);
+            // let user = res.data.user
+            // console.log('user LoginPage', user)
+            // user.token = res.token
+            // dispatch(setUser(user))
+            // setRedirect(true);
+            // navigate("/", { state: { user: user } });
+
+            props.updateUser(undefined)
+        }
+        else {
+            console.log('res.msg')
+            console.log(res.msg)
+            setError(res.msg);
+        }
+    })
+    .catch((err) => {
+        console.log('erreur: rentre dans le catch du Layout')
+        console.log(err)
+        //setError(err);
+    });
   }
 
-  //console.log('props.dataUser', props.dataUser)
+  console.log('props.dataUser :')
+  console.log(props.dataUser)
 
   return (
     <div className={`min-h-screen ${menu ? 'dark:bg-black bg-gray-100 py-40 px-5' : ''}`}>
@@ -247,24 +282,44 @@ function Layout(props) {
                 {keyIcon} 
               </Link>
               :
-              <button
-                className={`
-                  ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                  dark:border
-                  hover:dark:border-pink-600
-                  dark:bg-black
-                  bg-white
-                  px-4
-                  py-3
-                  text-2xl
-                  rounded-full
-                  shadow-xl
-                  hover:bg-gray-100
-                `}
-                onClick={handleLogout}
-              >
-                {disconnectIcon}
-              </button>
+              <>
+                {/* <Link
+                  to='user/logout'
+                  className={`
+                    ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                    dark:border
+                    hover:dark:border-pink-600
+                    dark:bg-black
+                    bg-white
+                    px-4
+                    py-3
+                    text-2xl
+                    rounded-full
+                    shadow-xl
+                    hover:bg-gray-100
+                  `}
+                >
+                  {disconnectIcon} 
+                </Link> */}
+                <button
+                  className={`
+                    ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                    dark:border
+                    hover:dark:border-pink-600
+                    dark:bg-black
+                    bg-white
+                    px-4
+                    py-3
+                    text-2xl
+                    rounded-full
+                    shadow-xl
+                    hover:bg-gray-100
+                  `}
+                  onClick={handleLogout}
+                >
+                  {disconnectIcon}
+                </button>
+              </>
               }
 
                 {/* <Link

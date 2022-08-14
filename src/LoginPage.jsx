@@ -76,47 +76,81 @@ const bigTiles = [
 ]; */
 
 function LoginPage(props) {
-    const [email, setEmail] = useState("");
+    //const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [disabled, setDisabled] = useState(true);
     const [redirect, setRedirect] = useState(false);
     const [error, setError] = useState(null);
-    let navigate = useNavigate();
+    const navigate = useNavigate();
+
+    //console.log('LOGIN PAGE')
+
+    /* useEffect(() => {
+      if (email !== "" && password !== "") {
+        setDisabled(false);
+      }
+      else {
+        setDisabled(true);
+      }
+    }, [email, password]); */
 
     useEffect(() => {
-        if (email !== "" && password !== "") {
-          setDisabled(false);
-        } else {
-          setDisabled(true);
-        }
-    }, [email, password]);
+      console.log(window.localStorage.getItem('user'))
+      if (window.localStorage.getItem('user')) {
+        navigate("/")
+      }
+    }, []);
     
-    const onSubmitForm = () => {
+    const onSubmitForm = (e) => {
+        console.log('EMAIL ENTRé')
+        console.log(e.target.email.value)
+        console.log('MDP ENTRé')
+        console.log(e.target.password.value)
+
         let data = {
-          email: email,
-          password: password,
+          email: e.target.email.value,
+          password: e.target.password.value,
         };
 
         loginUser(data)
         .then((res) => {
-            //console.log('res2', res)
+            // console.log('res2', res)
             if (res.status === 200) {
-                //console.log('res.status === 200')
+                // console.log('res.status === 200')
                 // window.localStorage.setItem("saas-token", res.token);
-                let user = res.data.user
-                //console.log('user LoginPage', user)
+                // localStorage.
+                // let user = res.data.user
+                // console.log('user LoginPage', user)
                 // user.token = res.token
                 // dispatch(setUser(user))
-                setRedirect(true);
-                navigate("/", { state: { user: user } });
+                // setRedirect(true);
+
+                console.log('RES (LOGIN PAGE) :')
+                console.log(res.data)
+                console.log('RES.DATA.USER')
+                console.log(res.data.user)
+
+                // localStorage.user = JSON.parse(res.data.user)
+                // window.localStorage.setItem('user', userFormatted);
+                // localStorage.user = JSON.stringify(res.data.user);
+                // const userFMT = JSON.stringify(res.data.user)
+                // console.log('USER FORMATTED')
+                //console.log(userFMT)
+                
+                window.localStorage.setItem('user', JSON.stringify(res.data.user))
+
+                props.updateUser(res.data.user)
+                navigate("/");
             }
             else {
-                console.log('res.msg', res.msg)
+                console.log('res.msg')
+                console.log(res.msg)
                 setError(res.msg);
             }
         })
         .catch((err) => {
-            console.log('err', err)
+            console.log('err')
+            console.log(err)
             setError(err);
         });
     }
@@ -132,11 +166,11 @@ function LoginPage(props) {
             method="post"
             onSubmit={(e)=>{
                 e.preventDefault()
-                onSubmitForm()
+                onSubmitForm(e)
             }}
         >
-            <input type="text" name="email" placeholder="your email" className='border dark:bg-slate-800 text-white' />
-            <input type="text" name="password" placeholder="your password" className='border dark:bg-slate-800 text-white' />
+            <input type="text" name="email" placeholder="your email" className='border dark:bg-slate-800 dark:text-white' />
+            <input type="text" name="password" placeholder="your password" className='border dark:bg-slate-800 dark:text-white' />
             <button type="submit" name="Se connecter" className='block border bg-slate-200 dark:bg-slate-800 dark:text-yellow-100'>Envoyer</button>
         </form>
     </section>

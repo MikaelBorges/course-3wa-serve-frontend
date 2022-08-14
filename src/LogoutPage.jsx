@@ -1,23 +1,26 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
 // import { useDispatch } from "react-redux";
 // import { setLogout } from "../../slices/userSlice";
+import { logoutUser } from './api/user'
 
-const Logout = () => {
-  //const dispatch = useDispatch();
-  const navigate = useNavigate();
+const Logout = (props) => {
+  // const dispatch = useDispatch();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
+  // logoutUser(props.dataUser)
+
+  /* useEffect(() => {
     // window.localStorage.removeItem("saas-token");
     // dispatch(setLogout());
-    navigate('/', { state: { user: undefined } });
-  }, []);
+    navigate('/user/login', { state: { user: undefined } });
+  }, []); */
 
-  /* return (
+  return (
     <div>
       <h1>Deconnexion en cours...</h1>
     </div>
-  ); */
+  );
 };
 
 export default Logout;
