@@ -6,41 +6,14 @@ import HomePage from './HomePage';
 import { useState, useEffect } from 'react';
 import { lightIcon, darkIcon, systemIcon } from './icons/Icons';
 import LoginPage from './LoginPage';
-import LogoutPage from './LogoutPage';
 import { checkIfDataUserIsAccessible } from './api/user'
+import RegisterPage from './RegisterPage'
+import ProfilPage from './ProfilPage';
 
 function App() {
   const [dataUser, setDataUser] = useState()
   const [darkMode, setDarkMode] = useState(false);
   const [theme, setTheme] = useState('light');
-
-  /* function checkIfApplyTheme(hours) {
-    if (hours > 7 && hours < 23) {
-      document.body.classList.remove('dark');
-      setDarkMode(false);
-      console.warn('lightmode');
-    }
-    else {
-      document.body.classList.add('dark');
-      setDarkMode(true);
-      console.warn('darkmode');
-    }
-  }
-
-  function checkIfHourChanged() {
-    const newHour = new Date().getHours();
-    console.log('newHour', newHour);
-    console.log('hours', hours);
-    if (hours !== newHour) {
-      hours = newHour;
-      checkIfApplyTheme(hours);
-    }
-  }
-
-  useEffect(() => {
-    checkIfApplyTheme(hours);
-    setInterval(checkIfHourChanged, 1000);
-  }, []); */
 
   useEffect(() => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -67,8 +40,6 @@ function App() {
         setDarkMode(false);
       }
     }
-
-    //console.log('i fire once on app');
 
     const mql = window.matchMedia('(prefers-color-scheme: dark)');
     mql.onchange = (e) => {
@@ -124,7 +95,12 @@ function App() {
 
   function updateUser(data) {
     setDataUser(data)
-    console.log('DATA USER', dataUser)
+    /* console.log('DATA', data)
+    console.log('DATA USER (APP PAGE)', dataUser) */
+  }
+
+  function displayUser() {
+    console.log('dataUser', dataUser)
   }
 
   return (
@@ -134,23 +110,29 @@ function App() {
       toggleTheme={toggleTheme}
       dataUser={dataUser}
       updateUser={updateUser}
+      displayUser={displayUser}
     >
       <Routes>
         <Route
           exact
           path='/'
-          element={<HomePage updateUser={updateUser} darkMode={darkMode} />}
+          element={<HomePage darkMode={darkMode} updateUser={updateUser} />}
         />
         <Route
           exact
           path='/user/login'
           element={<LoginPage darkMode={darkMode} updateUser={updateUser} />}
         />
-        {/* <Route
+        <Route
           exact
-          path='/user/logout'
-          element={<LogoutPage darkMode={darkMode} />}
-        /> */}
+          path='/user/register'
+          element={<RegisterPage darkMode={darkMode} />}
+        />
+        <Route
+          exact
+          path='/user/profil'
+          element={<ProfilPage darkMode={darkMode} dataUser={dataUser} />}
+        />
       </Routes>
     </Layout>
   );

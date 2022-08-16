@@ -1,6 +1,6 @@
 import styles from './Layout.module.scss';
 // import FooterList from './FooterList';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { Ul, Li } from './components/Ul';
@@ -14,6 +14,9 @@ import logo from './images/logos/1566920703749.webp';
 
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from './api/user'
+
+import { config } from './config'
+import { changeConfig } from './config'
 
 /* const footerLists = [
   {
@@ -45,9 +48,37 @@ import { logoutUser } from './api/user'
 ]; */
 
 function Layout(props) {
-  const navigate = useNavigate();
-  const [menu, setMenu] = useState(false);
-  const [error, setError] = useState(null);
+
+  function handleDbLocationIsOnline() {
+    /* if(goOnline) {
+      changeConfig('https://mikaelborges-serve.herokuapp.com')
+      setDbLocationIsOnline(goOnline)
+    }
+    else {
+      changeConfig('http://localhost:3306')
+      setDbLocationIsOnline(!goOnline)
+    }
+
+    setDbLocationIsOnline(goOnline)
+    console.log('NEW CONFIG :')
+    console.log(config.api_url) */
+
+    props.displayUser()
+  }
+
+  function initState () {
+    if (config.api_url === 'http://localhost:3306') {
+      return false
+    }
+    else {
+      return true
+    }
+}
+
+  const navigate = useNavigate(),
+        [menu, setMenu] = useState(false),
+        [error, setError] = useState(null),
+        [dbLocationIsOnline, setDbLocationIsOnline] = useState(false)
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -68,33 +99,28 @@ function Layout(props) {
       console.error("Problème dans props.theme et du coup dans le state theme de l'app");
   }
 
-  function handleMenu() {
-    setMenu(!menu);
-  }
-
-  //console.log('LAYOUT')
-
   function handleLogout() {
-    // console.log('handleLogout')
-    // props.dataUser === undefined ? '/user/login' : '/logout'
-    // navigate("/", { state: { user: undefined } });
-    // props.updateUser(undefined)
+    window.localStorage.removeItem('user');
+    /* console.log('handleLogout')
+    props.dataUser === undefined ? '/user/login' : '/logout'
+    navigate("/", { state: { user: undefined } });
+    props.updateUser(undefined) */
     let data = {
       id: props.dataUser.id
     };
     logoutUser(data)
     .then((res) => {
-        console.log('RES (LAYOUT) :')
-        console.log(res)
+        /* console.log('RES (LAYOUT) :')
+        console.log(res) */
         if (res.status === 200) {
-            // console.log('res.status === 200')
-            // window.localStorage.setItem("saas-token", res.token);
-            // let user = res.data.user
-            // console.log('user LoginPage', user)
-            // user.token = res.token
-            // dispatch(setUser(user))
-            // setRedirect(true);
-            // navigate("/", { state: { user: user } });
+            /* console.log('res.status === 200')
+            window.localStorage.setItem("saas-token", res.token);
+            let user = res.data.user
+            console.log('user LoginPage', user)
+            user.token = res.token
+            dispatch(setUser(user))
+            setRedirect(true);
+            navigate("/", { state: { user: user } }); */
 
             props.updateUser(undefined)
         }
@@ -111,15 +137,12 @@ function Layout(props) {
     });
   }
 
-  console.log('props.dataUser :')
-  console.log(props.dataUser)
-
   return (
     <div className={`min-h-screen ${menu ? 'dark:bg-black bg-gray-100 py-40 px-5' : ''}`}>
-      <header>
-        <nav className={`${menu ? 'dark:bg-black bg-gray-100' : ''} fixed left-0 right-0 top-0 z-10 p-6 space-y-6`}>
+      <header className='fixed px-6 pt-6 w-full'>
+        <nav className={`${menu ? 'dark:bg-black bg-gray-100' : ''} left-0 right-0 top-0 z-10`}>
           <div className='flex justify-between items-center'>
-            <a title='accueil' href="/" id='home' className="w-12 mr-4">
+            <a title='accueil' href="/projects/serve" id='home' className="w-12 mr-4">
               {/* <span className='dark:text-white'>logo</span> */}
               <img src={logo} alt="logo" />
             </a>
@@ -244,7 +267,7 @@ function Layout(props) {
                 )}
               </Menu>
               <Link
-                to='/user/register'
+                to={props.dataUser === undefined ? '/user/register' : '/user/profil'}
                 className={`
                   ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
                   dark:border
@@ -282,44 +305,24 @@ function Layout(props) {
                 {keyIcon} 
               </Link>
               :
-              <>
-                {/* <Link
-                  to='user/logout'
-                  className={`
-                    ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                    dark:border
-                    hover:dark:border-pink-600
-                    dark:bg-black
-                    bg-white
-                    px-4
-                    py-3
-                    text-2xl
-                    rounded-full
-                    shadow-xl
-                    hover:bg-gray-100
-                  `}
-                >
-                  {disconnectIcon} 
-                </Link> */}
-                <button
-                  className={`
-                    ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                    dark:border
-                    hover:dark:border-pink-600
-                    dark:bg-black
-                    bg-white
-                    px-4
-                    py-3
-                    text-2xl
-                    rounded-full
-                    shadow-xl
-                    hover:bg-gray-100
-                  `}
-                  onClick={handleLogout}
-                >
-                  {disconnectIcon}
-                </button>
-              </>
+              <button
+                className={`
+                  ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                  dark:border
+                  hover:dark:border-pink-600
+                  dark:bg-black
+                  bg-white
+                  px-4
+                  py-3
+                  text-2xl
+                  rounded-full
+                  shadow-xl
+                  hover:bg-gray-100
+                `}
+                onClick={handleLogout}
+              >
+                {disconnectIcon}
+              </button>
               }
 
                 {/* <Link
@@ -456,6 +459,37 @@ function Layout(props) {
             </Ul>
           )}
         </nav>
+        {/* {config.api_url === 'http://localhost:3306' && (
+          <div className='text-center my-3'>
+            <span className={`
+            rounded-full
+            py-1
+            px-3
+            bg-slate-200
+            dark:bg-slate-700
+            dark:text-yellow-100`}>
+              mode hors ligne
+            </span>
+          </div>
+        )} */}
+        {config.api_url === 'http://localhost:3306' && (
+          <div className='text-center py-3'>
+            <button
+              className={`
+                bg-white
+                px-4
+                rounded-full
+                shadow-xl
+
+                dark:text-yellow-100
+                dark:bg-black
+              `}
+              onClick={handleDbLocationIsOnline}
+            >
+              {dbLocationIsOnline ? 'online' : 'local'}
+            </button>
+          </div>
+        )}
       </header>
       {/* <header className="bg-slate-200 dark:bg-slate-800 h-screen flex flex-col justify-end px-8 pb-8"> */}
 

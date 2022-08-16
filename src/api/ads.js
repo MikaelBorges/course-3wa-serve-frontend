@@ -1,15 +1,9 @@
 import axios from 'axios'
-import {config} from '../config'
-
-//http://fsjs14.ide.3wa.io:9500/getOneAdd/+id
-//config.api_url + "/getOneAdd/" +id
-//`${config.api_url}/getOneAdd/${id}`
+import { config } from '../config'
 
 //on charge toutes les annonces
 export function loadAds(){
-    return axios.get('http://localhost:3306')
-    // return axios.get('http://172.20.10.10:3306')
-    // return axios.get('https://mikaelborges-serve.herokuapp.com')
+    return axios.get(config.api_url)
     .then((res)=>{
         return res.data
     })
@@ -19,7 +13,7 @@ export function loadAds(){
 }
 
 //on charge une seule annonce
-export function loadOneAds(id){
+/* export function loadOneAds(id){
     return axios.get(config.api_url+"/api/v1/ads/"+id)
     .then((res)=>{
         return res.data
@@ -60,4 +54,4 @@ export function deleteOneAds(id){
     .catch((err)=>{
         return err
     })
-}
+} */

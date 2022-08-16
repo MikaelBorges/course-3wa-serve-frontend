@@ -1,38 +1,43 @@
 import axios from 'axios'
-import {config} from '../config'
-
-//http://fsjs14.ide.3wa.io:9500/getOneAdd/+id
-//config.api_url + "/getOneAdd/" +id
-//`${config.api_url}/getOneAdd/${id}`
+import { config } from '../config'
 
 export function checkIfDataUserIsAccessible() {
-  const ls = window.localStorage.getItem('user')
-  console.log('LOCAL STORAGE :')
-  console.log(ls)
-  return ls
+  return window.localStorage.getItem('user')
+}
+
+export function registerUser(datas) {
+  return axios.post(`${config.api_url}/user/register`, datas)
+  .then(res => {
+    console.log('res (user.js)', res)
+    return res
+  })
+  .catch(err => {
+    console.log('err', err)
+    return err
+  })
 }
 
 //on charge toutes les annonces
 export function loginUser(datas) {
-  return axios.post('http://localhost:3306/user/login', datas)
+  return axios.post(`${config.api_url}/user/login`, datas)
   .then((res)=>{
     return res
   })
   .catch((err)=>{
-    console.log('err')
+    console.log('err: rentré dans le catch user.js')
     console.log(err)
     return err
   })
 }
 
 export function logoutUser(datas) {
-  console.log('DATAS LOGOUT')
+  /* console.log('DATAS LOGOUT')
   console.log(datas)
-  console.log('preparation appel de la route')
-  return axios.post('http://localhost:3306/user/logout', datas)
+  console.log('preparation appel de la route') */
+  return axios.post(`${config.api_url}/user/logout`, datas)
   .then((res)=>{
-    console.log('RES LOGOUT')
-    console.log(res)
+    /* console.log('RES LOGOUT')
+    console.log(res) */
     return res
   })
   .catch((err)=>{

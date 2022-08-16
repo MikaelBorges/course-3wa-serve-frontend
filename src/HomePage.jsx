@@ -84,19 +84,17 @@ function HomePage(props) {
   // setUser(state.user);
 
   useEffect(() => {
-    
-    //console.log('first')
     loadAds()
     .then((res)=>{
-        console.log('RES (HOMEPAGE) :')
-        console.log(res) 
+        /* console.log('RES (HOMEPAGE) :')
+        console.log(res)  */
         setAds(res)
     })
     .catch(err=>console.log(err))
 
-    //console.log('STATE', state)
+    /* console.log('STATE', state)
 
-    /* if(state === null) {
+    if(state === null) {
         props.updateUser(undefined)
     }
     else {

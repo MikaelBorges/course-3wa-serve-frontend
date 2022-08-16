@@ -4,7 +4,7 @@ import BigCards from './BigCards'; */
 import styles from './Page.module.scss';
 import { Lien } from './components/Lien';
 import { useState, useEffect } from 'react';
-import { loginUser } from './api/user'
+import { registerUser } from './api/user'
 import { Navigate } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 
@@ -74,118 +74,119 @@ const bigTiles = [
   },
 ]; */
 
-function LoginPage(props) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [disabled, setDisabled] = useState(true);
-    const [redirect, setRedirect] = useState(false);
-    const [error, setError] = useState(null);
-    const navigate = useNavigate();
+function RegisterPage(props) {
+  const [email, setEmail] = useState(''),
+        [password, setPassword] = useState(''),
+        [firstname, setFirstname] = useState(''),
+        [lastname, setLastname] = useState(''),
+        [disabled, setDisabled] = useState(true),
+        [redirect, setRedirect] = useState(false),
+        [error, setError] = useState(null),
+        [info, setInfo] = useState(null),
+        navigate = useNavigate()
 
-    useEffect(() => {
-      if (email !== '' && password !== '') {
-        setDisabled(false);
+  useEffect(() => {
+      if (email !== '' && password !== '' && firstname !== '' && lastname !== '') {
+          setDisabled(false);
       }
       else {
-        setDisabled(true);
+          setDisabled(true);
       }
-    }, [email, password]);
-
-    useEffect(() => {
-      // console.log("window.localStorage.getItem('user')", window.localStorage.getItem('user'))
-      if (window.localStorage.getItem('user') !== null) {
-        navigate("/")
-      }
-    }, []);
+  }, [email, password]);
     
-    const onSubmitForm = (e) => {
-        /* console.log('EMAIL ENTRé')
-        console.log(e.target.email.value)
-        console.log('MDP ENTRé')
-        console.log(e.target.password.value) */
-
-        let data = {
+  const onSubmitForm = (e) => {
+      let data = {
           email: e.target.email.value,
           password: e.target.password.value,
-        };
+          firstname: e.target.firstname.value,
+          lastname: e.target.lastname.value,
+      };
 
-        loginUser(data)
-        .then((res) => {
-            /* console.log('res', res)
-            console.log('res.status', res.status) */
-            if (res.status === 200) {
-                /* console.log('RES (LOGIN PAGE) :')
-                console.log(res)
-                console.log('RES.DATA (LOGIN PAGE) :')
-                console.log(res.data)
-                console.log('RES.DATA.SESSION.USER (LOGIN PAGE)')
-                console.log(res.data.session.user) */
-
-                window.localStorage.setItem('user', JSON.stringify(res.data.session.user))
-                props.updateUser(res.data.session.user)
-                navigate('/')
-            }
-            else {
-                console.log('RES (LOGIN PAGE) :')
-                console.log(res)
-                console.log('RES.RESPONSE.DATA.MESSAGE (LOGIN PAGE) :')
-                console.log(res.response.data.message)
-                setError(res.response.data.message);
-            }
-        })
-        .catch((err) => {
-            console.log('err: rentré dans le catch LoginPage.jsx')
-            console.log(err)
-            setError(err);
-        });
-    }
-
-    /* if(redirect) {
-        return <Navigate to="/" replace={true} />
-    } */
+      registerUser(data)
+      .then((res) => {
+          console.log('res Register page', res)
+          if (res.status === 200) {
+              console.log('res', res)
+              setInfo(res.data.message)
+          }
+          else {
+              console.log('RES (LOGIN PAGE) :')
+              console.log(res)
+              console.log('RES.RESPONSE.DATA.MESSAGE (LOGIN PAGE) :')
+              console.log(res.response.data.message)
+              setError(res.response.data.message);
+          }
+      })
+      .catch((err) => {
+          console.log('err: rentré dans le catch RegisterPage.jsx')
+          console.log(err)
+          setError(err)
+      });
+  }
 
   return (
-    <section className='pt-32 pb-8 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>
-        <form
-            action="/user/login"
-            method="post"
-            onSubmit={(e)=>{
-                e.preventDefault()
-                onSubmitForm(e)
-            }}
-        >
-            <input
-              onChange={(e) => {
-                setEmail(e.currentTarget.value);
+      <section className='pt-32 pb-8 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>
+          <form
+              action="/user/register"
+              method="post"
+              onSubmit={(e)=>{
+                  e.preventDefault()
+                  onSubmitForm(e)
               }}
-              type="text"
-              name="email"
-              placeholder="votre email"
-              className='border dark:bg-slate-800 dark:text-white'
-            />
-            <input
-              onChange={(e) => {
-                setPassword(e.currentTarget.value);
-              }}
-              type="text"
-              name="password"
-              placeholder="votre mot de passe"
-              className='border dark:bg-slate-800 dark:text-white'
-            />
-            <button
-              disabled={disabled}
-              type="submit"
-              name="Se connecter"
-              className='block border bg-slate-200 dark:bg-slate-800 dark:text-yellow-100'
-            >
-              Envoyer
-            </button>
-        </form>
-        {error && (
-        <p className='text-red-500'>{error}</p>
-        )}
-    </section>
+          >
+              <input
+                onChange={(e) => {
+                  setFirstname(e.currentTarget.value);
+                }}
+                type="text"
+                name="firstname"
+                placeholder="votre prénom"
+                className='border dark:bg-slate-800 dark:text-white'
+              />
+              <input
+                onChange={(e) => {
+                  setLastname(e.currentTarget.value);
+                }}
+                type="text"
+                name="lastname"
+                placeholder="votre nom"
+                className='border dark:bg-slate-800 dark:text-white'
+              />
+              <input
+                onChange={(e) => {
+                  setEmail(e.currentTarget.value);
+                }}
+                type="text"
+                name="email"
+                placeholder="votre email"
+                className='border dark:bg-slate-800 dark:text-white'
+              />
+              <input
+                onChange={(e) => {
+                  setPassword(e.currentTarget.value);
+                }}
+                type="text"
+                name="password"
+                placeholder="votre mot de passe"
+                className='border dark:bg-slate-800 dark:text-white'
+              />
+              <button
+                disabled={disabled}
+                type="submit"
+                name="Se connecter"
+                className='block border bg-slate-200 dark:bg-slate-800 dark:text-yellow-100'
+              >
+                Créer mon compte
+              </button>
+          </form>
+          {info && (
+            <p className='text-green-500'>{info}</p>
+          )}
+          {error && (
+            <p className='text-red-500'>{error}</p>
+          )}
+      </section>
   );
 }
 
-export default LoginPage;
+export default RegisterPage;
