@@ -1,16 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-// import './index.css';
-import './index.scss';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import ReactDOM from 'react-dom/client'
+import './index.scss'
+import App from './App'
+import reportWebVitals from './reportWebVitals'
 import {BrowserRouter} from 'react-router-dom'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 {/* <React.StrictMode></React.StrictMode> */}
 root.render(
-    /* <BrowserRouter basename="/projects/serve"> */
     <BrowserRouter basename="/projects/serve">
       <App />
     </BrowserRouter>
