@@ -5,40 +5,15 @@ import { Route, Routes } from 'react-router-dom';
 import HomePage from './HomePage';
 import { useState, useEffect } from 'react';
 import { lightIcon, darkIcon, systemIcon } from './icons/Icons';
-// import LoginPage from './LoginPage';
+import LoginPage from './LoginPage';
+import { checkIfDataUserIsAccessible } from './api/user'
+import RegisterPage from './RegisterPage'
+import ProfilPage from './ProfilPage';
 
 function App() {
-
+  const [dataUser, setDataUser] = useState()
   const [darkMode, setDarkMode] = useState(false);
   const [theme, setTheme] = useState('light');
-
-  /* function checkIfApplyTheme(hours) {
-    if (hours > 7 && hours < 23) {
-      document.body.classList.remove('dark');
-      setDarkMode(false);
-      console.warn('lightmode');
-    }
-    else {
-      document.body.classList.add('dark');
-      setDarkMode(true);
-      console.warn('darkmode');
-    }
-  }
-
-  function checkIfHourChanged() {
-    const newHour = new Date().getHours();
-    console.log('newHour', newHour);
-    console.log('hours', hours);
-    if (hours !== newHour) {
-      hours = newHour;
-      checkIfApplyTheme(hours);
-    }
-  }
-
-  useEffect(() => {
-    checkIfApplyTheme(hours);
-    setInterval(checkIfHourChanged, 1000);
-  }, []); */
 
   useEffect(() => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -80,6 +55,11 @@ function App() {
         }
       }
     }
+
+    const userDataRetrieved = checkIfDataUserIsAccessible()
+    if (userDataRetrieved) {
+      setDataUser(userDataRetrieved)
+    }
   }, []);
 
   function toggleTheme(themeSelected) {
@@ -113,15 +93,46 @@ function App() {
     }
   }
 
+  function updateUser(data) {
+    setDataUser(data)
+    /* console.log('DATA', data)
+    console.log('DATA USER (APP PAGE)', dataUser) */
+  }
+
+  function displayUser() {
+    console.log('dataUser', dataUser)
+  }
+
   return (
-    <Layout theme={theme} darkMode={darkMode} toggleTheme={toggleTheme}>
+    <Layout
+      theme={theme}
+      darkMode={darkMode}
+      toggleTheme={toggleTheme}
+      dataUser={dataUser}
+      updateUser={updateUser}
+      displayUser={displayUser}
+    >
       <Routes>
         <Route
-          path='/'
           exact
-          element={<HomePage darkMode={darkMode} />}
-        >
-        </Route>
+          path='/'
+          element={<HomePage darkMode={darkMode} updateUser={updateUser} />}
+        />
+        <Route
+          exact
+          path='/user/login'
+          element={<LoginPage darkMode={darkMode} updateUser={updateUser} />}
+        />
+        <Route
+          exact
+          path='/user/register'
+          element={<RegisterPage darkMode={darkMode} />}
+        />
+        <Route
+          exact
+          path='/user/profil'
+          element={<ProfilPage darkMode={darkMode} dataUser={dataUser} />}
+        />
       </Routes>
     </Layout>
   );
