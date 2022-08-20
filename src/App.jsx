@@ -66,7 +66,7 @@ function App() {
       setDataUser(JSON.parse(userDataRetrieved))
       setUrlUserId(`/user/${JSON.parse(userDataRetrieved)._id}`)
       setUserId(JSON.parse(userDataRetrieved)._id)
-      console.log('userId', JSON.parse(userDataRetrieved)._id)
+      //console.log('userId', JSON.parse(userDataRetrieved)._id)
     }
   }, []);
 

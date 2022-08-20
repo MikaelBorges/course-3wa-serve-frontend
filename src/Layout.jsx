@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Ul, Li } from './components/Ul'
 import { Lien } from './components/Lien'
 import { Link, useNavigate } from 'react-router-dom'
-import { lightIcon, darkIcon, systemIcon, userIcon, keyIcon, disconnectIcon } from './icons/Icons'
+import { lightIcon, darkIcon, systemIcon, userIcon, keyIcon, disconnectIcon, plusIcon } from './icons/Icons'
 import logo from './images/logos/gitlab_tile_logo_icon_170092.png'
 import { logoutUser } from './api/user'
 import { config } from './config'
@@ -139,7 +139,6 @@ function Layout(props) {
         <nav className='p-4 fixed bottom-0 w-full'>
           <div className='space-x-4 flex justify-center'>
 
-            
             {props.dataUser === undefined ?
               <Link
                 to='user/login'
@@ -179,6 +178,7 @@ function Layout(props) {
                 {disconnectIcon}
               </button>
             }
+
             <Link
               to={props.dataUser === undefined ? '/user/register' : `/user/${props.dataUser._id}`}
               className={`
@@ -197,6 +197,27 @@ function Layout(props) {
             >
               {userIcon}
             </Link>
+
+
+
+            {props.dataUser && (
+              <Link
+                to={`user/${props.dataUser._id}/new`}
+                className={`
+                  dark:bg-black
+                  bg-white
+                  px-4
+                  py-3
+                  text-2xl
+                  rounded-full
+                  shadow-xl
+                `}
+              >
+                {plusIcon} 
+              </Link>
+            )}
+
+
 
           </div>
 
