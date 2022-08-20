@@ -9,7 +9,6 @@ import { logoutUser } from './api/user'
 import { config } from './config'
 
 function Layout(props) {
-
   const navigate = useNavigate(),
         [menu, setMenu] = useState(false),
         [error, setError] = useState(null),
@@ -39,7 +38,7 @@ function Layout(props) {
     else {
       return true
     }
-}
+  }
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -67,7 +66,7 @@ function Layout(props) {
     navigate("/", { state: { user: undefined } });
     props.updateUser(undefined) */
     let data = {
-      id: props.dataUser.id
+      _id: props.dataUser._id
     };
     logoutUser(data)
     .then((res) => {
@@ -102,11 +101,20 @@ function Layout(props) {
     });
   }
 
+  //if (props.dataUser) console.log('in layout',props.dataUser._id)
+
   return (
     <div className={`min-h-screen ${menu ? 'dark:bg-black bg-gray-100 py-40 px-5' : ''}`}>
-      <header className='fixed p-6 w-full h-28'>
-        {/* {config.api_url === 'http://localhost:3306' && (
-          <div className='text-center py-3'>
+      <header className='fixed p-6 w-full h-28 flex justify-between'>
+
+        <Link
+          to='/'
+        >
+          <img src={logo} alt="logo" className={styleOf.logo} />
+        </Link>
+
+        {config.api_url === 'http://localhost:3306' && (
+          <div className=''>
             <button
               className={`
                 bg-white
@@ -122,10 +130,7 @@ function Layout(props) {
               {dbLocationIsOnline ? 'online' : 'local'}
             </button>
           </div>
-        )} */}
-        <a title='accueil' href="/projects/serve" id='home'>
-          <img src={logo} alt="logo" className={styleOf.logo} />
-        </a>
+        )}
       </header>
 
 
@@ -175,7 +180,7 @@ function Layout(props) {
               </button>
             }
             <Link
-              to={props.dataUser === undefined ? '/user/register' : '/user/profil'}
+              to={props.dataUser === undefined ? '/user/register' : `/user/${props.dataUser._id}`}
               className={`
                 ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
                 dark:border
