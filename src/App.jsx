@@ -1,19 +1,22 @@
-// import './App.css';
-import Layout from './Layout';
-import "./fonts/gilroy.css";
-import { Route, Routes } from 'react-router-dom';
-import HomePage from './HomePage';
-import { useState, useEffect } from 'react';
-import { lightIcon, darkIcon, systemIcon } from './icons/Icons';
-import LoginPage from './LoginPage';
+// import './App.css'
+import Layout from './Layout'
+import "./fonts/gilroy.css"
+import { Route, Routes } from 'react-router-dom'
+import HomePage from './HomePage'
+import { useState, useEffect } from 'react'
+import { lightIcon, darkIcon, systemIcon } from './icons/Icons'
+import LoginPage from './LoginPage'
+import NewAdPage from './NewAdPage'
 import { checkIfDataUserIsAccessible } from './api/user'
 import RegisterPage from './RegisterPage'
-import ProfilPage from './ProfilPage';
+import ProfilPage from './ProfilPage'
 
 function App() {
-  const [dataUser, setDataUser] = useState()
-  const [darkMode, setDarkMode] = useState(false);
-  const [theme, setTheme] = useState('light');
+  const [userId, setUserId] = useState(''),
+        [dataUser, setDataUser] = useState(),
+        [theme, setTheme] = useState('light'),
+        [urlUserId, setUrlUserId] = useState(''),
+        [darkMode, setDarkMode] = useState(false)
 
   useEffect(() => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -57,10 +60,17 @@ function App() {
     }
 
     const userDataRetrieved = checkIfDataUserIsAccessible()
+    //console.log('userDataRetrieved', userDataRetrieved)
+
     if (userDataRetrieved) {
-      setDataUser(userDataRetrieved)
+      setDataUser(JSON.parse(userDataRetrieved))
+      setUrlUserId(`/user/${JSON.parse(userDataRetrieved)._id}`)
+      setUserId(JSON.parse(userDataRetrieved)._id)
+      console.log('userId', JSON.parse(userDataRetrieved)._id)
     }
   }, []);
+
+  //console.log('in app', urlUserId)
 
   function toggleTheme(themeSelected) {
     switch (themeSelected) {
@@ -95,8 +105,10 @@ function App() {
 
   function updateUser(data) {
     setDataUser(data)
-    /* console.log('DATA', data)
-    console.log('DATA USER (APP PAGE)', dataUser) */
+    //console.log('DATA', data)
+    if (data) {
+      setUrlUserId(`/user/${data._id}`)
+    }
   }
 
   function displayUser() {
@@ -130,8 +142,13 @@ function App() {
         />
         <Route
           exact
-          path='/user/profil'
+          path={urlUserId}
           element={<ProfilPage darkMode={darkMode} dataUser={dataUser} />}
+        />
+        <Route
+          exact
+          path={`/user/${userId}/new`}
+          element={<NewAdPage darkMode={darkMode} dataUser={dataUser} />}
         />
       </Routes>
     </Layout>

@@ -5,10 +5,13 @@ export function checkIfDataUserIsAccessible() {
   return window.localStorage.getItem('user')
 }
 
+
+
+
 export function registerUser(datas) {
   return axios.post(`${config.api_url}/user/register`, datas)
   .then(res => {
-    console.log('res (user.js)', res)
+    //console.log('res (user.js)', res)
     return res
   })
   .catch(err => {
