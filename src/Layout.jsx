@@ -137,11 +137,7 @@ function Layout(props) {
 
       <main className="min-h-screen dark:bg-slate-800">
         {props.children}
-        <nav className='p-4 fixed bottom-0 w-full space-x-4 flex justify-end'>
-          
-
-
-
+        <nav className='p-4 fixed bottom-0 w-full space-x-3 flex justify-end'>
 
             {isMenuOpen && (
               <>
@@ -223,7 +219,6 @@ function Layout(props) {
               </>
             )}
 
-
             <button
               className={`
                 py-4
@@ -233,7 +228,6 @@ function Layout(props) {
                 text-black
                 border
                 border-transparent
-
                 dark:bg-black
                 dark:text-white
                 dark:border-white
@@ -243,10 +237,6 @@ function Layout(props) {
             >
               menu
             </button>
-
-
-
-          
 
           {menu && (
             <Ul className='dark:text-white text-black'>
