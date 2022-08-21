@@ -12,6 +12,7 @@ function Layout(props) {
   const navigate = useNavigate(),
         [menu, setMenu] = useState(false),
         [error, setError] = useState(null),
+        [isMenuOpen, setIsMenuOpen] = useState(false),
         [dbLocationIsOnline, setDbLocationIsOnline] = useState(false)
 
   function handleDbLocationIsOnline() {
@@ -136,90 +137,116 @@ function Layout(props) {
 
       <main className="min-h-screen dark:bg-slate-800">
         {props.children}
-        <nav className='p-4 fixed bottom-0 w-full'>
-          <div className='space-x-4 flex justify-center'>
-
-            {props.dataUser === undefined ?
-              <Link
-                to='user/login'
-                className={`
-                  ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                  dark:border
-                  hover:dark:border-pink-600
-                  dark:bg-black
-                  bg-white
-                  px-4
-                  py-3
-                  text-2xl
-                  rounded-full
-                  shadow-xl
-                  hover:bg-gray-100
-                `}
-              >
-                {keyIcon} 
-              </Link>
-              :
-              <button
-                className={`
-                  ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                  dark:border
-                  hover:dark:border-pink-600
-                  dark:bg-black
-                  bg-white
-                  px-4
-                  py-3
-                  text-2xl
-                  rounded-full
-                  shadow-xl
-                  hover:bg-gray-100
-                `}
-                onClick={handleLogout}
-              >
-                {disconnectIcon}
-              </button>
-            }
-
-            <Link
-              to={props.dataUser === undefined ? '/user/register' : `/user/${props.dataUser._id}`}
-              className={`
-                ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                dark:border
-                hover:dark:border-pink-600
-                dark:bg-black
-                bg-white
-                px-4
-                py-3
-                text-2xl
-                rounded-full
-                shadow-xl
-                hover:bg-gray-100
-              `}
-            >
-              {userIcon}
-            </Link>
+        <nav className='p-4 fixed bottom-0 w-full space-x-4 flex justify-end'>
+          
 
 
 
-            {props.dataUser && (
-              <Link
-                to={`user/${props.dataUser._id}/new`}
-                className={`
-                  dark:bg-black
-                  bg-white
-                  px-4
-                  py-3
-                  text-2xl
-                  rounded-full
-                  shadow-xl
-                `}
-              >
-                {plusIcon} 
-              </Link>
+
+            {isMenuOpen && (
+              <>
+                {props.dataUser === undefined ?
+                  <Link
+                    to='user/login'
+                    className={`
+                      ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                      dark:border
+                      hover:dark:border-pink-600
+                      dark:bg-black
+                      bg-white
+                      px-4
+                      py-3
+                      text-2xl
+                      rounded-full
+                      shadow-xl
+                      hover:bg-gray-100
+                    `}
+                  >
+                    {keyIcon} 
+                  </Link>
+                  :
+                  <button
+                    className={`
+                      ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                      dark:border
+                      hover:dark:border-pink-600
+                      dark:bg-black
+                      bg-white
+                      px-4
+                      py-3
+                      text-2xl
+                      rounded-full
+                      shadow-xl
+                      hover:bg-gray-100
+                    `}
+                    onClick={handleLogout}
+                  >
+                    {disconnectIcon}
+                  </button>
+                }
+
+                <Link
+                  to={props.dataUser === undefined ? '/user/register' : `/user/${props.dataUser._id}`}
+                  className={`
+                    ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                    dark:border
+                    hover:dark:border-pink-600
+                    dark:bg-black
+                    bg-white
+                    px-4
+                    py-3
+                    text-2xl
+                    rounded-full
+                    shadow-xl
+                    hover:bg-gray-100
+                  `}
+                >
+                  {userIcon}
+                </Link>
+
+                {props.dataUser && (
+                  <Link
+                    to={`user/${props.dataUser._id}/new`}
+                    className={`
+                      dark:bg-black
+                      bg-white
+                      px-4
+                      py-3
+                      text-2xl
+                      rounded-full
+                      shadow-xl
+                    `}
+                  >
+                    {plusIcon} 
+                  </Link>
+                )}
+              </>
             )}
 
 
+            <button
+              className={`
+                py-4
+                px-2
+                rounded-full
+                bg-white
+                text-black
+                border
+                border-transparent
 
-          </div>
+                dark:bg-black
+                dark:text-white
+                dark:border-white
+                shadow-xl
+              `}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              menu
+            </button>
+
+
+
+          
 
           {menu && (
             <Ul className='dark:text-white text-black'>

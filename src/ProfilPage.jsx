@@ -52,7 +52,7 @@ function ProfilPage(props) {
                 {ads.length > 0 ? 'Vos annonces' : "Vous n'avez aucune annonce"}
               </h2>
             </div>
-            <div>
+            <div className='flex flex-col justify-center'>
               <div className='flex'>
                 <button
                   className={`
@@ -93,7 +93,7 @@ function ProfilPage(props) {
                           <div className='flex flex-col justify-center'>
                             <p className='text-2xl dark:text-yellow-100'>{ad.price} / heure</p>
                           </div>
-                          <div className='flex'>
+                          <div className='flex items-center'>
                             <button
                               className={`
                                 dark:bg-gray-600
@@ -116,7 +116,7 @@ function ProfilPage(props) {
                               `}
                             >
                             <input
-                              className='w-8 h-8 rounded-full'
+                              className='border-transparent w-8 h-8 rounded-full'
                               type="checkbox"
                               id={ad._id}
                               name={ad._id}
