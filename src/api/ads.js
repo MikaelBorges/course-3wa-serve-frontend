@@ -4,7 +4,7 @@ import { config } from '../config'
 //on charge toutes les annonces
 export function loadAds() {
     return axios.get(config.api_url)
-    .then((res) => {
+    .then(res => {
         return res.data
     })
     .catch((err) => {

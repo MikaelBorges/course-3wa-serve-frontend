@@ -3,15 +3,17 @@ import { useState } from 'react'
 import { Ul, Li } from './components/Ul'
 import { Lien } from './components/Lien'
 import { Link, useNavigate } from 'react-router-dom'
-import { lightIcon, darkIcon, systemIcon, userIcon, keyIcon, disconnectIcon } from './icons/Icons'
+import { lightIcon, darkIcon, systemIcon, userIcon, keyIcon, disconnectIcon, plusIcon } from './icons/Icons'
 import logo from './images/logos/gitlab_tile_logo_icon_170092.png'
 import { logoutUser } from './api/user'
 import { config } from './config'
 
 function Layout(props) {
+  //console.log('props.rightHand', props.rightHand)
   const navigate = useNavigate(),
         [menu, setMenu] = useState(false),
         [error, setError] = useState(null),
+        [isMenuOpen, setIsMenuOpen] = useState(false),
         [dbLocationIsOnline, setDbLocationIsOnline] = useState(false)
 
   function handleDbLocationIsOnline() {
@@ -105,15 +107,106 @@ function Layout(props) {
 
   return (
     <div className={`min-h-screen ${menu ? 'dark:bg-black bg-gray-100 py-40 px-5' : ''}`}>
-      <header className='fixed p-6 w-full h-28 flex justify-between'>
+      <header className='fixed p-6 w-full h-28 flex justify-between z-10'>
 
-        <Link
-          to='/'
-        >
-          <img src={logo} alt="logo" className={styleOf.logo} />
+        <Link to='/'>
+          <img src={logo} alt="logo" className={`${styleOf.logo} max-w-none`} />
         </Link>
 
-        {config.api_url === 'http://localhost:3306' && (
+        <div
+          className={`
+            ${styleOf.filters}
+            bg-orange-200
+            rounded-2xl
+            ml-6
+            p-2
+            flex
+            flex-wrap
+            content-start
+            dark:text-white
+            dark:bg-slate-700
+            dark:border
+            dark:border-white
+          `}
+        >
+            <button
+              className={`
+                ${styleOf.filtersButtons}
+                border
+                border-solid
+                border-black
+                rounded-3xl
+                text-xs
+                px-2
+                dark:border-white
+              `}
+              onClick={() => console.log('clic')}
+            >
+              Prix
+            </button>
+            <button
+              className={`
+                ${styleOf.filtersButtons}
+                border
+                border-solid
+                border-black
+                rounded-3xl
+                text-xs
+                px-2
+                dark:border-white
+              `}
+              onClick={() => console.log('clic')}
+            >
+              Filtres
+            </button>
+            <button
+              className={`
+                ${styleOf.filtersButtons}
+                border
+                border-solid
+                border-black
+                rounded-3xl
+                text-xs
+                px-2
+                dark:border-white
+              `}
+              onClick={() => console.log('clic')}
+            >
+              Sans livraison
+            </button>
+            <button
+              className={`
+                ${styleOf.filtersButtons}
+                border
+                border-solid
+                border-black
+                rounded-3xl
+                text-xs
+                px-2
+                dark:border-white
+              `}
+              onClick={() => console.log('clic')}
+            >
+              Tri : Pertinence
+            </button>
+            <button
+              className={`
+                ${styleOf.filtersButtons}
+                border
+                border-solid
+                border-black
+                rounded-3xl
+                text-xs
+                px-2
+                dark:border-white
+              `}
+              onClick={() => console.log('clic')}
+            >
+              Vue : Liste
+            </button>
+        </div>
+
+        {/* {config.api_url === 'http://localhost:3306' && (
           <div className=''>
             <button
               className={`
@@ -130,75 +223,119 @@ function Layout(props) {
               {dbLocationIsOnline ? 'online' : 'local'}
             </button>
           </div>
-        )}
+        )} */}
       </header>
 
 
       <main className="min-h-screen dark:bg-slate-800">
         {props.children}
-        <nav className='p-4 fixed bottom-0 w-full'>
-          <div className='space-x-4 flex justify-center'>
+        <nav className={`p-4 fixed bottom-0 w-full space-x-3 flex ${props.rightHand ? 'justify-end' : ''}`}>
 
-            
-            {props.dataUser === undefined ?
-              <Link
-                to='user/login'
-                className={`
-                  ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                  dark:border
-                  hover:dark:border-pink-600
-                  dark:bg-black
-                  bg-white
-                  px-4
-                  py-3
-                  text-2xl
-                  rounded-full
-                  shadow-xl
-                  hover:bg-gray-100
-                `}
-              >
-                {keyIcon} 
-              </Link>
-              :
-              <button
-                className={`
-                  ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                  dark:border
-                  hover:dark:border-pink-600
-                  dark:bg-black
-                  bg-white
-                  px-4
-                  py-3
-                  text-2xl
-                  rounded-full
-                  shadow-xl
-                  hover:bg-gray-100
-                `}
-                onClick={handleLogout}
-              >
-                {disconnectIcon}
-              </button>
-            }
-            <Link
-              to={props.dataUser === undefined ? '/user/register' : `/user/${props.dataUser._id}`}
+            {isMenuOpen && (
+              <>
+                {props.dataUser === undefined ?
+                  <Link
+                    to='user/login'
+                    className={`
+                      ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                      dark:border
+                      hover:dark:border-pink-600
+                      dark:bg-black
+                      bg-white
+                      px-4
+                      py-3
+                      text-2xl
+                      rounded-full
+                      shadow-xl
+                      hover:bg-gray-100
+                    `}
+                    //onClick={setIsMenuOpen(false)}
+                  >
+                    {keyIcon} 
+                  </Link>
+                  :
+                  <button
+                    className={`
+                      ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                      dark:border
+                      hover:dark:border-pink-600
+                      dark:bg-black
+                      bg-white
+                      px-4
+                      py-3
+                      text-2xl
+                      rounded-full
+                      shadow-xl
+                      hover:bg-gray-100
+                    `}
+                    /* onClick={() => {
+                      handleLogout()
+                      setIsMenuOpen(false)
+                    }} */
+
+                  >
+                    {disconnectIcon}
+                  </button>
+                }
+
+                <Link
+                  to={props.dataUser === undefined ? '/user/register' : `/user/${props.dataUser._id}`}
+                  className={`
+                    ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                    bg-white
+                    px-4
+                    py-3
+                    text-2xl
+                    rounded-full
+                    shadow-xl
+                    hover:dark:border-pink-600
+                    dark:bg-black
+                    dark:border
+                    hover:bg-gray-100
+                  `}
+                  //onClick={setIsMenuOpen(false)}
+                >
+                  {userIcon}
+                </Link>
+
+                {props.dataUser && (
+                  <Link
+                    to={`user/${props.dataUser._id}/new`}
+                    className={`
+                      dark:bg-black
+                      bg-white
+                      px-4
+                      py-3
+                      text-2xl
+                      rounded-full
+                      shadow-xl
+                    `}
+                    //onClick={setIsMenuOpen(false)}
+                  >
+                    {plusIcon} 
+                  </Link>
+                )}
+              </>
+            )}
+
+            <button
               className={`
-                ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                dark:border
-                hover:dark:border-pink-600
-                dark:bg-black
-                bg-white
-                px-4
-                py-3
-                text-2xl
+                py-4
+                px-2
                 rounded-full
+                bg-white
+                text-black
+                border
+                border-black
+                border-transparent
+                dark:bg-black
+                dark:text-white
                 shadow-xl
-                hover:bg-gray-100
               `}
+              onClick={() => console.log('!isMenuOpen')}
             >
-              {userIcon}
-            </Link>
-
-          </div>
+              menu
+            </button>
 
           {menu && (
             <Ul className='dark:text-white text-black'>
@@ -238,7 +375,7 @@ function Layout(props) {
         </nav>
       </main>
 
-      {/* <footer className="m-16 text-center">
+      {/* <footer className="m-1 6 text-center">
         {footerLists.map((footerList, index) =>
           <FooterList footerList={footerList} key={index} />
         )}

@@ -4,7 +4,7 @@ import "./fonts/gilroy.css"
 import { Route, Routes } from 'react-router-dom'
 import HomePage from './HomePage'
 import { useState, useEffect } from 'react'
-import { lightIcon, darkIcon, systemIcon } from './icons/Icons'
+import { lightIcon, darkIcon, systemIcon, leftHandIcon, rightHandIcon } from './icons/Icons'
 import LoginPage from './LoginPage'
 import NewAdPage from './NewAdPage'
 import { checkIfDataUserIsAccessible } from './api/user'
@@ -16,7 +16,8 @@ function App() {
         [dataUser, setDataUser] = useState(),
         [theme, setTheme] = useState('light'),
         [urlUserId, setUrlUserId] = useState(''),
-        [darkMode, setDarkMode] = useState(false)
+        [darkMode, setDarkMode] = useState(false),
+        [rightHand, setRightHand] = useState(true)
 
   useEffect(() => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -66,11 +67,24 @@ function App() {
       setDataUser(JSON.parse(userDataRetrieved))
       setUrlUserId(`/user/${JSON.parse(userDataRetrieved)._id}`)
       setUserId(JSON.parse(userDataRetrieved)._id)
-      console.log('userId', JSON.parse(userDataRetrieved)._id)
+      //console.log('userId', JSON.parse(userDataRetrieved)._id)
     }
   }, []);
 
-  //console.log('in app', urlUserId)
+  function toggleHand(handSelected) {
+    switch (handSelected) {
+      case leftHandIcon:
+        setRightHand(false)
+        localStorage.hand = 'left'
+        break
+      case rightHandIcon:
+        setRightHand(true)
+        localStorage.hand = 'right'
+        break;
+      default:
+        console.error('Problème dans la sélection de la main');
+    }
+  }
 
   function toggleTheme(themeSelected) {
     switch (themeSelected) {
@@ -123,12 +137,13 @@ function App() {
       dataUser={dataUser}
       updateUser={updateUser}
       displayUser={displayUser}
+      rightHand={rightHand}
     >
       <Routes>
         <Route
           exact
           path='/'
-          element={<HomePage darkMode={darkMode} updateUser={updateUser} />}
+          element={<HomePage toggleHand={toggleHand} toggleTheme={toggleTheme} darkMode={darkMode} updateUser={updateUser} />}
         />
         <Route
           exact
