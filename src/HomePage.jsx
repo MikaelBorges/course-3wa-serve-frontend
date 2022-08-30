@@ -184,7 +184,7 @@ function HomePage(props) {
                   border-black
                   rounded-3xl
                   px-2
-                  ${layoutOneColumn ? '' : 'bg-gray-200'}
+                  ${layoutOneColumn ? '' : 'bg-gray-300 text-gray-100 border-gray-300 dark:border-gray-300'}
                   dark:border-white
                 `}
                 onClick={() => handleStyleOfCards()}
