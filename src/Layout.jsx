@@ -16,8 +16,8 @@ function Layout(props) {
         [isMenuOpen, setIsMenuOpen] = useState(false),
         [dbLocationIsOnline, setDbLocationIsOnline] = useState(false)
 
-  function handleDbLocationIsOnline() {
-    /* if(goOnline) {
+  /* function handleDbLocationIsOnline() {
+    if(goOnline) {
       changeConfig('https://mikaelborges-serve.herokuapp.com')
       setDbLocationIsOnline(goOnline)
     }
@@ -28,19 +28,19 @@ function Layout(props) {
 
     setDbLocationIsOnline(goOnline)
     console.log('NEW CONFIG :')
-    console.log(config.api_url) */
+    console.log(config.api_url)
 
     props.displayUser()
-  }
+  } */
 
-  function initState () {
+  /* function initState () {
     if (config.api_url === 'http://localhost:3306') {
       return false
     }
     else {
       return true
     }
-  }
+  } */
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
