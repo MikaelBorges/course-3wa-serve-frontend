@@ -1,0 +1,44 @@
+.adsColumnContainer {
+  width: calc(50% - 0.75rem);
+}
+
+.limitTextOnMultipleLines {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  display: box;
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+}
+
+.titleUser {
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-clamp: 2;
+}
+
+.descriptionUser {
+  -webkit-line-clamp: 3; /* number of lines to show */
+  line-clamp: 3;
+}
+
+.imagePartHorizontalAd {
+  width: 45%;
+}
+
+.textPartHorizontalAd {
+  width: 55%;
+}
+
+.superUserBadge {
+  position: absolute;
+  top: 2px;
+  right: 10px;
+}
+
+.filters {
+  height: calc(100vw/2 - 2.25rem);
+}
+
+.uiButtons {
+  margin: 0.2rem;
+}

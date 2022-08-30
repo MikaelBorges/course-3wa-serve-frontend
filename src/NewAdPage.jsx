@@ -4,23 +4,23 @@ import { newAd } from './api/ads'
 function NewAdPage(props) {
   const [description, setDescription] = useState(''),
         [price, setPrice] = useState(''),
-        [name, setName] = useState(''),
+        [title, setName] = useState(''),
         [disabled, setDisabled] = useState(true),
         [error, setError] = useState(null),
         [info, setInfo] = useState(null)
 
   useEffect(() => {
-      if (name !== '' && description !== '' && price !== '') {
+      if (title !== '' && description !== '' && price !== '') {
           setDisabled(false);
       }
       else {
           setDisabled(true);
       }
-  }, [name, price, description]);
+  }, [title, price, description]);
     
   const onSubmitForm = (e) => {
       let data = {
-          name: e.target.name.value,
+          title: e.target.name.value,
           description: e.target.description.value,
           price: e.target.price.value,
           userId: props.dataUser._id,
@@ -63,7 +63,7 @@ function NewAdPage(props) {
                   setName(e.currentTarget.value);
                 }}
                 type="text"
-                name="name"
+                name="titre"
                 placeholder="Le titre de votre annonce"
                 className='border dark:bg-slate-800 dark:text-white'
               />

@@ -5,6 +5,7 @@ import { lightIcon, goodEveningIcon, pencilIcon, binIcon } from './icons/Icons'
 function ProfilPage(props) {
   const [ads, setAds] = useState([]),
         hour = new Date().getHours(),
+        [showDraft, setShowDraft] = useState(false),
         user = JSON.parse(window.localStorage.getItem('user'))
 
   // console.log('user', user.firstname)
@@ -52,33 +53,41 @@ function ProfilPage(props) {
                 {ads.length > 0 ? 'Vos annonces' : "Vous n'avez aucune annonce"}
               </h2>
             </div>
-            <div className='flex flex-col justify-center'>
-              <div className='flex'>
-                <button
-                  className={`
-                    dark:bg-gray-800
-                    bg-gray-100
-                    px-4
-                    py-3
-                    text-2xl
-                    rounded-full
-                    mr-2
-                  `}
-                  onClick={e => handleDeleteAd(e)}
-                >
-                  {binIcon}
-                </button>
-                <div
-                  className={`
-                    flex
-                    flex-col
-                    justify-center
-                  `}
-                >
-                  <input className='w-8 h-8 rounded-full' type="checkbox" id="check-all" name="check-all" value="yes" />
+              <div className='flex flex-col justify-center'>
+                <div className='flex'>
+                  <button
+                    className={`
+                      dark:bg-gray-800
+                      bg-gray-100
+                      px-4
+                      py-3
+                      text-2xl
+                      rounded-full
+                      mr-2
+                    `}
+                    onClick={e => handleDeleteAd(e)}
+                  >
+                    {binIcon}
+                  </button>
+                  {showDraft && (
+                    <div
+                      className={`
+                        flex
+                        flex-col
+                        justify-center
+                      `}
+                    >
+                      <input
+                        className='w-8 h-8 rounded-full'
+                        type="checkbox"
+                        id="check-all"
+                        name="check-all"
+                        value="yes"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
           </div>
           {ads.length > 0 &&
             <>
@@ -87,11 +96,11 @@ function ProfilPage(props) {
                   return (
                     <li key={ad._id} className='flex last:mb-0 mb-8'>
                       <div className='dark:bg-slate-700 dark:text-white bg-slate-200 rounded-3xl p-4'>
-                        <h3 className='text-2xl'>{ad.name}</h3>
-                        <p className='text-2xl mb-2'>{ad.description}</p>
+                        <h3 className='text-3xl pb-3'>{ad.title}</h3>
+                        <p className='text-2xl pb-3'>{ad.description}</p>
                         <div className='flex justify-between'>
                           <div className='flex flex-col justify-center'>
-                            <p className='text-2xl dark:text-yellow-100'>{ad.price} / heure</p>
+                            <p className='text-xl dark:text-yellow-100'>{ad.price} / heure</p>
                           </div>
                           <div className='flex items-center'>
                             <button
@@ -102,27 +111,23 @@ function ProfilPage(props) {
                                 py-3
                                 text-2xl
                                 rounded-full
-                                mr-2
+                                ml-2
                               `}
                               onClick={e => handleModifyAd(e)}
                             >
                               {pencilIcon}
                             </button>
-                            <div
-                              className={`
-                                flex
-                                flex-col
-                                justify-center
-                              `}
-                            >
-                            <input
-                              className='border-transparent w-8 h-8 rounded-full'
-                              type="checkbox"
-                              id={ad._id}
-                              name={ad._id}
-                              value="yes"
-                            />
-                            </div>
+                            {showDraft && (
+                              <div className='flex flex-col justify-center'>
+                                <input
+                                  className='border border-transparent rounded-full w-8 h-8'
+                                  type="checkbox"
+                                  id={ad._id}
+                                  name={ad._id}
+                                  value="yes"
+                                />
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
