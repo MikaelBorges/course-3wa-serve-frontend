@@ -100,7 +100,7 @@ function ProfilPage(props) {
                         <p className='text-2xl pb-3'>{ad.description}</p>
                         <div className='flex justify-between'>
                           <div className='flex flex-col justify-center'>
-                            <p className='text-xl dark:text-yellow-100'>{ad.price} / heure</p>
+                            <p className='text-xl dark:text-yellow-100'>{ad.price} / h</p>
                           </div>
                           <div className='flex items-center'>
                             <button

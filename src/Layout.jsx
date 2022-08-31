@@ -123,10 +123,9 @@ function Layout(props) {
             flex
             flex-wrap
             content-start
+            overflow-hidden
             dark:text-white
-            dark:bg-slate-700
-            dark:border
-            dark:border-white
+            dark:bg-orange-700
           `}
         >
             <button
@@ -158,21 +157,17 @@ function Layout(props) {
               onClick={() => console.log('clic')}
             >
               Filtres
-            </button>
-            <button
-              className={`
-                ${styleOf.filtersButtons}
-                border
-                border-solid
-                border-black
-                rounded-3xl
-                text-xs
-                px-2
-                dark:border-white
-              `}
-              onClick={() => console.log('clic')}
-            >
-              Sans livraison
+              <span
+                className={`
+                  px-1
+                  ml-1
+                  rounded-full
+                  bg-orange-400
+                  ${styleOf.filtersNb}
+                `}
+              >
+                2
+              </span>
             </button>
             <button
               className={`
@@ -202,7 +197,37 @@ function Layout(props) {
               `}
               onClick={() => console.log('clic')}
             >
+              Sans livraison
+            </button>
+            <button
+              className={`
+                ${styleOf.filtersButtons}
+                border
+                border-solid
+                border-black
+                rounded-3xl
+                text-xs
+                px-2
+                dark:border-white
+              `}
+              onClick={() => console.log('clic')}
+            >
               Vue : Liste
+            </button>
+            <button
+              className={`
+                ${styleOf.filtersButtons}
+                border
+                border-solid
+                border-black
+                rounded-3xl
+                text-xs
+                px-2
+                dark:border-white
+              `}
+              onClick={() => console.log('clic')}
+            >
+              Lieu
             </button>
         </div>
 
