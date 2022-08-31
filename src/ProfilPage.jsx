@@ -1,51 +1,62 @@
 import { useState, useEffect } from 'react'
 import { loadUserAds } from './api/ads'
 import { lightIcon, goodEveningIcon, pencilIcon, binIcon } from './icons/Icons'
+import {
+  Image,
+  Transformation,
+  CloudinaryContext
+} from 'cloudinary-react'
 
 function ProfilPage(props) {
-  const [ads, setAds] = useState([]),
-        hour = new Date().getHours(),
+  const hour = new Date().getHours(),
+        [ads, setAds] = useState([]),
+        [imgUrl, setImgUrl] = useState(''),
         [showDraft, setShowDraft] = useState(false),
-        user = JSON.parse(window.localStorage.getItem('user'))
+        user = JSON.parse(window.localStorage.getItem('user')),
 
-  // console.log('user', user.firstname)
-  // console.log('props.dataUser (PROFIL PAGE)', props.dataUser)
+        wayToGreet = () => {
+          return hour > 6 && hour < 20 ? `Bonjour ${user.firstname} ${lightIcon}` : `Bonsoir ${user.firstname} ${goodEveningIcon}`
+        },
+
+        handleDeleteAd = e => {
+          console.log('supprimer')
+          // console.log('e', e)
+          // deleteAd(userId, adId)
+          /* .then((res)=>{
+              // console.log('res', res)
+              setAds(res)
+          })
+          .catch(err => console.log('err', err)) */
+        },
+
+        handleModifyAd = e => {
+          // console.log('e', e)
+          console.log('modifier')
+        }
 
   useEffect(() => {
-    // console.log('props.dataUser', props.dataUser)
-    // if (props.dataUser) console.log('props.dataUser', props.dataUser)
     loadUserAds(props.dataUser._id)
-    .then((res)=>{
-        // console.log('res', res)
+    .then(res => {
+        console.log('res reçu coté ProfilPage.jsx', res)
+        setImgUrl(res.imageUser)
         setAds(res)
     })
     .catch(err => console.log('err', err))
   }, []);
 
-  const wayToGreet = () => {
-    return hour > 6 && hour < 20 ? `Bonjour ${user.firstname} ${lightIcon}` : `Bonsoir ${user.firstname} ${goodEveningIcon}`
-  }
-
-  const handleDeleteAd = e => {
-    console.log('supprimer')
-    // console.log('e', e)
-    // deleteAd(userId, adId)
-    /* .then((res)=>{
-        // console.log('res', res)
-        setAds(res)
-    })
-    .catch(err => console.log('err', err)) */
-  }
-
-  const handleModifyAd = e => {
-    // console.log('e', e)
-    console.log('modifier')
-  }
-
   return (
     <section className='pt-28 px-8 pb-24 dark:bg-slate-900'>
       {props.dataUser && (
         <>
+
+          <CloudinaryContext cloudName="mika4ever">
+            <div>
+              <Image publicId={imgUrl}>
+                <Transformation quality="auto" fetchFormat="auto" />
+              </Image>
+            </div>
+          </CloudinaryContext>
+
           <h1 className='py-4 text-4xl dark:text-white'>{wayToGreet()}</h1>
           <div className='py-4 flex justify-between'>
             <div className='flex flex-col justify-center'>

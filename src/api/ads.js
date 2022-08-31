@@ -41,11 +41,11 @@ export function newAd(data) {
 //on charge toutes les annonces de l'user
 export function loadUserAds(id) {
   return axios.get(`${config.api_url}/user/${id}`)
-  .then((res) => {
-      //console.log('res ads.js', res)
-      return res.data
+  .then(res => {
+      console.log('res reçu coté ads.js', res)
+      return res.data[0]
   })
-  .catch((err) => {
+  .catch(err => {
       return err
   })
 }

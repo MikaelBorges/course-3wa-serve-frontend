@@ -1,18 +1,15 @@
-h2 {
-  margin-bottom: 1rem;
+/* .c-form {
+  text-align: center;
+  margin: auto;
+  padding: 25px;
+  border: 3px solid #23a339;
+  border-radius: 15px;
 }
 
-nav {
-  margin-bottom: 1rem;
-}
-
-ul {
-  list-style-type: none;
-}
-
-.annonces li {
-  border-radius: 2rem;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  background-color: lightgray;
-}
+.c-form input {
+  display: block;
+  width:90%;
+  padding: 10px;
+  text-align: center;
+  margin: 15px auto
+} */

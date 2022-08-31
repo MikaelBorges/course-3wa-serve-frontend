@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import { newAd } from './api/ads'
 
 function NewAdPage(props) {
+
+  console.log('props.dataUser._id,', props.dataUser._id)
+
   const [description, setDescription] = useState(''),
         [price, setPrice] = useState(''),
         [title, setName] = useState(''),
