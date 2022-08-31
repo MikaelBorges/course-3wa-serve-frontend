@@ -119,10 +119,11 @@ function App() {
     }
 
     const userDataInLS = window.localStorage.getItem('user')
-    if (window.localStorage.getItem('user')) {
+    if (userDataInLS) {
       setDataUser(JSON.parse(userDataInLS))
-      setUrlUserId(`/user/${JSON.parse(userDataInLS)._id}`)
       setUserId(JSON.parse(userDataInLS)._id)
+      setUrlUserId(`/user/${JSON.parse(userDataInLS)._id}`)
+      setUrlNewAd(`/user/${JSON.parse(userDataInLS)._id}/new`)
     }
   }, []);
 

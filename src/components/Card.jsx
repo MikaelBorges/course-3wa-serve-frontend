@@ -76,9 +76,9 @@ function Card(props) {
             }
           `}
         >
-          {props.ad.superUser && (
+          {props.ad.superUser &&
             <div className={`mt-1 mx-2 mb-2 ${styleOf.superUserBadge}`}>{crownIcon}</div>
-          )}
+          }
         </div>
         <div>
           <h3
@@ -135,7 +135,7 @@ function Card(props) {
             onClick={e => handleViewReviews(e)}
           >
             <div className='text-xs'>{paperPencilIcon}</div>
-            {props.ad.reviewsNb > 0 && (
+            {props.ad.reviewsNb > 0 &&
               <div
                 className={`
                   ml-2
@@ -145,8 +145,9 @@ function Card(props) {
                   }
                 `}
               >
-                {props.ad.reviewsNb}</div>
-            )}
+                {props.ad.reviewsNb}
+              </div>
+            }
           </button>
           <button
             className={`
@@ -162,7 +163,7 @@ function Card(props) {
             onClick={e => handleAddToFavorites(e)}
           >
             <div>{heartIcon}</div>
-            {props.ad.favoritesNb > 0 && (
+            {props.ad.favoritesNb > 0 &&
               <div
                 className={`
                   ml-1
@@ -174,7 +175,7 @@ function Card(props) {
               >
                 {props.ad.favoritesNb}
               </div>
-            )}
+            }
           </button>
         </div>
       </div>

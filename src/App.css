@@ -13,3 +13,7 @@
   text-align: center;
   margin: 15px auto
 } */
+
+.imageUrl::placeholder {
+  font-size: 0.7rem;
+}

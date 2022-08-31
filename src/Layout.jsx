@@ -262,7 +262,7 @@ function Layout(props) {
             ${props.rightHand ? 'justify-end' : ''}
           `}
         >
-          {isMenuOpen && (
+          {isMenuOpen &&
             <>
               {props.dataUser === undefined ?
                 <Link
@@ -325,7 +325,7 @@ function Layout(props) {
                 {userIcon}
               </Link>
 
-              {props.dataUser && (
+              {props.dataUser &&
                 <Link
                   to={props.dataUser === undefined ? '/user/login' : `/user/${props.dataUser._id}/new`}
                   //to={`user/${props.dataUser._id}/new`}
@@ -338,13 +338,12 @@ function Layout(props) {
                     dark:bg-black
                     ${styleOf.plusButton}
                   `}
-                  onClick={() => console.log('props.dataUser', props.dataUser)}
                 >
                   {plusIcon} 
                 </Link>
-              )}
+              }
             </>
-          )}
+          }
 
           <button
             className={`
@@ -365,7 +364,7 @@ function Layout(props) {
             menu
           </button>
 
-          {menu && (
+          {menu &&
             <Ul className='dark:text-white text-black'>
               <Li>
                 <Lien
@@ -399,7 +398,7 @@ function Layout(props) {
                 À propos
               </Li>
             </Ul>
-          )}
+          }
         </nav>
       </main>
 

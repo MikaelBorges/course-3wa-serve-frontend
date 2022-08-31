@@ -17,7 +17,6 @@ export function registerUser(datas) {
 export function loginUser(datas) {
   return axios.post(`${config.api_url}/user/login`, datas)
   .then(res => {
-    console.log('res reçu coté user.js', res)
     return res
   })
   .catch(err => {
