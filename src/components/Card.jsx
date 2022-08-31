@@ -13,11 +13,14 @@ function Card(props) {
 
         handleAddToFavorites = e => {
           console.log('ajouter aux favoris')
+        },
+
+        handleViewReviews = e => {
+          console.log('voir les avis')
         }
 
   return (
     <li
-      key={props.ad._id}
       className={`
         mb-6
         rounded-3xl
@@ -62,9 +65,21 @@ function Card(props) {
           }
         `}
       >
-        {props.ad.superUser && (
-          <span className={styleOf.superUserBadge}>{crownIcon}</span>
-        )}
+        <div
+          className={`
+            absolute
+          bg-slate-600
+            dark:bg-slate-500
+            ${styleOf.badgeContainer}
+            ${props.layoutOneColumn && props.horizontalCard ?
+              'rounded-bl-xl' : 'rounded-bl-2xl'
+            }
+          `}
+        >
+          {props.ad.superUser && (
+            <div className={`mt-1 mx-2 mb-2 ${styleOf.superUserBadge}`}>{crownIcon}</div>
+          )}
+        </div>
         <div>
           <h3
             className={`
@@ -117,7 +132,7 @@ function Card(props) {
               bg-gray-100
               dark:bg-slate-600
             `}
-            onClick={e => handleAddToFavorites(e)}
+            onClick={e => handleViewReviews(e)}
           >
             <div className='text-xs'>{paperPencilIcon}</div>
             {props.ad.reviewsNb > 0 && (
@@ -130,7 +145,7 @@ function Card(props) {
                   }
                 `}
               >
-                {props.ad.favoritesNb}</div>
+                {props.ad.reviewsNb}</div>
             )}
           </button>
           <button

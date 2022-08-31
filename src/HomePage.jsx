@@ -42,13 +42,22 @@ function HomePage(props) {
           setHorizontalCard(!horizontalCard)
         }
 
+        /* useEffect(() => {
+          async function fetchData() {
+            // You can await here
+            const response = await MyAPI.getData(someId);
+            // ...
+          }
+          fetchData();
+        }, [someId]); // Or [] if effect doesn't need props or state */
+
   // useEffect( async () => {
   useEffect(() => {
-    const layoutOneColumnInLS = window.localStorage.getItem('layoutOneColumn'),
-          horizontalCardInLS = window.localStorage.getItem('horizontalCard')
+    const horizontalCardInLS = window.localStorage.getItem('horizontalCard'),
+          layoutOneColumnInLS = window.localStorage.getItem('layoutOneColumn')
 
-    if(layoutOneColumnInLS === 'true') setLayoutOneColumn(true)
     if(horizontalCardInLS === 'true') setHorizontalCard(true)
+    if(layoutOneColumnInLS === 'true') setLayoutOneColumn(true)
 
     // await loadAds()
     loadAds()
@@ -60,8 +69,7 @@ function HomePage(props) {
   }, []);
 
   useEffect(() => {
-    // console.log('ads', ads)
-    arrangeAds()
+    if(!areAdsArranged) arrangeAds()
   }, [ads]);
 
   if(areAdsArranged) {
@@ -205,6 +213,7 @@ function HomePage(props) {
               return (
                 <Card
                   ad={ad}
+                  key={ad._id}
                   horizontalCard={horizontalCard}
                   layoutOneColumn={layoutOneColumn}
                 />
@@ -216,6 +225,7 @@ function HomePage(props) {
               return (
                 <Card
                   ad={ad}
+                  key={ad._id}
                   horizontalCard={horizontalCard}
                   layoutOneColumn={layoutOneColumn}
                 />
