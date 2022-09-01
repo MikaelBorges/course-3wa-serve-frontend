@@ -1,10 +1,23 @@
-.limitText {
+.limitTextTo {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   display: box;
   -webkit-box-orient: vertical;
   box-orient: vertical;
+}
+
+.bulletPoints {
+  bottom: 0.5rem;
+}
+
+.userButton {
+  padding: 0.1rem 0.8rem 0.1rem 0.3rem;
+}
+
+.twoLinesMax {
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-clamp: 2;
 }
 
 .titleUser {
@@ -37,6 +50,4 @@
 
 .superUserBadge {
   
-  
 }
-

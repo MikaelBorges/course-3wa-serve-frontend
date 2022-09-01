@@ -7,6 +7,7 @@ function NewAdPage(props) {
         [price, setPrice] = useState(''),
         [info, setInfo] = useState(null),
         [error, setError] = useState(null),
+        [location, setLocation] = useState(''),
         [disabled, setDisabled] = useState(true),
         [description, setDescription] = useState(''),
 
@@ -23,8 +24,12 @@ function NewAdPage(props) {
             reviewsNb: props.dataUser.reviewsNb,
             starsNb: props.dataUser.starsNb,
             imageUser: props.dataUser.imageUser,
+            imageAd: e.target.image.value,
+            location: e.target.location.value,
+            date: e.target.date.value,
+            time: e.target.time.value,
           }
-          console.log('data .jsx', data)
+          // console.log('data .jsx', data)
           newAd(data)
           .then(res => {
             // console.log('res Register page', res)
@@ -48,12 +53,12 @@ function NewAdPage(props) {
         }
 
   useEffect(() => {
-    if (title !== '' && description !== '' && price !== '') {
+    if (title !== '' && description !== '' && price !== '' && location !== '') {
       setDisabled(false)
     } else {
       setDisabled(true)
     }
-  }, [title, price, description]);
+  }, [title, price, description, location]);
 
   return (
     <section className='min-h-screen pt-32 pb-8 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>
@@ -64,12 +69,20 @@ function NewAdPage(props) {
       >
         <input
           type='text'
+          name='imageAd'
+          className='pl-1 imageUrl w-full border dark:bg-slate-800 dark:text-white'
+          placeholder='url de votre photo de votre annonce si vous la connaissez (facultatif)'
+        />
+        <input
+          required
+          type='text'
           name='titre'
           placeholder='Titre de votre annonce'
           onChange={e => setName(e.currentTarget.value)}
           className='w-full border dark:bg-slate-800 dark:text-white'
         />
         <input
+          required
           type='text'
           name='description'
           placeholder='Description de votre annonce'
@@ -77,10 +90,19 @@ function NewAdPage(props) {
           className='w-full border dark:bg-slate-800 dark:text-white'
         />
         <input
+          required
+          type='text'
+          name='location'
+          placeholder='Lieu de votre prestation'
+          onChange={e => setLocation(e.currentTarget.value)}
+          className='w-full border dark:bg-slate-800 dark:text-white'
+        />
+        <input
+          required
           name='price'
           type='number'
-          onChange={(e) => setPrice(e.currentTarget.value)}
           placeholder='votre prix par heure'
+          onChange={e => setPrice(e.currentTarget.value)}
           className='w-full border dark:bg-slate-800 dark:text-white'
         />
         <button

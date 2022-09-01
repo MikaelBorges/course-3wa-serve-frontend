@@ -29,7 +29,7 @@ export function newAd(data) {
   // console.log('data ads.js', data)
   return axios.post(`${config.api_url}/user/ad/${data.userId}`, data)
   .then(res => {
-    console.log('res (newAd.js)', res)
+    // console.log('res (newAd.js)', res)
     return res
   })
   .catch(err => {
