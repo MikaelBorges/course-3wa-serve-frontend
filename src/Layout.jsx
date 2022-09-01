@@ -46,30 +46,29 @@ function Layout(props) {
     return classes.filter(Boolean).join(' ')
   }
 
-  let themeButtonIcon;
+  let themeButtonIcon
   switch (props.theme) {
     case 'light':
-      themeButtonIcon = lightIcon;
-      break;
+      themeButtonIcon = lightIcon
+      break
     case 'dark':
-      themeButtonIcon = darkIcon;
-      break;
+      themeButtonIcon = darkIcon
+      break
     case 'system':
-      themeButtonIcon = systemIcon;
-      break;
+      themeButtonIcon = systemIcon
+      break
     default:
-      console.error("Problème dans props.theme et du coup dans le state theme de l'app");
+      console.error("Problème dans props.theme et du coup dans le state theme de l'app")
   }
 
   function handleLogout() {
-    window.localStorage.removeItem('user');
+    setIsMenuOpen(!isMenuOpen)
+    window.localStorage.removeItem('user')
     /* console.log('handleLogout')
     props.dataUser === undefined ? '/user/login' : '/logout'
     navigate("/", { state: { user: undefined } });
     props.updateUser(undefined) */
-    let data = {
-      _id: props.dataUser._id
-    };
+    let data = { _id : props.dataUser._id }
     logoutUser(data)
     .then((res) => {
         /* console.log('RES (LAYOUT) :')
@@ -86,9 +85,7 @@ function Layout(props) {
 
             props.updateUser(undefined)
 
-            if(window.location.pathname !== '/') {
-              navigate('/')
-            }
+            if(window.location.pathname !== '/') navigate('/')
         }
         else {
             console.log('res.msg')
@@ -99,11 +96,11 @@ function Layout(props) {
     .catch((err) => {
         console.log('erreur: rentre dans le catch du Layout')
         console.log(err)
-        //setError(err);
-    });
+        // setError(err);
+    })
   }
 
-  //if (props.dataUser) console.log('in layout',props.dataUser._id)
+  // if (props.dataUser) console.log('in layout',props.dataUser._id)
 
   return (
     <div className={`min-h-screen ${menu ? 'dark:bg-black bg-gray-100 py-40 px-5' : ''}`}>
@@ -115,94 +112,119 @@ function Layout(props) {
 
         <div
           className={`
-            ${styleOf.filters}
-            bg-orange-200
-            rounded-2xl
-            ml-6
             p-2
+            ml-6
             flex
             flex-wrap
+            rounded-2xl
             content-start
+            bg-orange-200
+            overflow-hidden
             dark:text-white
-            dark:bg-slate-700
-            dark:border
-            dark:border-white
+            ${styleOf.filters}
+            dark:bg-orange-700
           `}
         >
             <button
               className={`
-                ${styleOf.filtersButtons}
+                px-2
                 border
+                text-xs
+                rounded-3xl
                 border-solid
                 border-black
-                rounded-3xl
-                text-xs
-                px-2
                 dark:border-white
+                ${styleOf.filtersButtons}
               `}
-              onClick={() => console.log('clic')}
+              onClick={() => console.log('clic on filters')}
             >
               Prix
             </button>
             <button
               className={`
-                ${styleOf.filtersButtons}
+                px-2
                 border
+                text-xs
+                rounded-3xl
                 border-solid
                 border-black
-                rounded-3xl
-                text-xs
-                px-2
                 dark:border-white
+                ${styleOf.filtersButtons}
               `}
-              onClick={() => console.log('clic')}
+              onClick={() => console.log('clic on filters')}
             >
               Filtres
+              <span
+                className={`
+                  px-1
+                  ml-1
+                  rounded-full
+                  bg-orange-400
+                  ${styleOf.filtersNb}
+                `}
+              >
+                2
+              </span>
             </button>
             <button
               className={`
-                ${styleOf.filtersButtons}
+                px-2
                 border
+                text-xs
+                rounded-3xl
                 border-solid
                 border-black
-                rounded-3xl
-                text-xs
-                px-2
                 dark:border-white
-              `}
-              onClick={() => console.log('clic')}
-            >
-              Sans livraison
-            </button>
-            <button
-              className={`
                 ${styleOf.filtersButtons}
-                border
-                border-solid
-                border-black
-                rounded-3xl
-                text-xs
-                px-2
-                dark:border-white
               `}
-              onClick={() => console.log('clic')}
+              onClick={() => console.log('clic on filters')}
             >
               Tri : Pertinence
             </button>
             <button
               className={`
-                ${styleOf.filtersButtons}
+                px-2
                 border
+                text-xs
+                rounded-3xl
                 border-solid
                 border-black
-                rounded-3xl
-                text-xs
-                px-2
                 dark:border-white
+                ${styleOf.filtersButtons}
               `}
-              onClick={() => console.log('clic')}
+              onClick={() => console.log('clic on filters')}
+            >
+              Sans livraison
+            </button>
+            <button
+              className={`
+                px-2
+                border
+                text-xs
+                rounded-3xl
+                border-solid
+                border-black
+                dark:border-white
+                ${styleOf.filtersButtons}
+              `}
+              onClick={() => console.log('clic on filters')}
             >
               Vue : Liste
+            </button>
+            <button
+              className={`
+                px-2
+                border
+                text-xs
+                rounded-3xl
+                border-solid
+                border-black
+                dark:border-white
+                ${styleOf.filtersButtons}
+              `}
+              onClick={() => console.log('clic on filters')}
+            >
+              Lieu
             </button>
         </div>
 
@@ -229,115 +251,120 @@ function Layout(props) {
 
       <main className="min-h-screen dark:bg-slate-800">
         {props.children}
-        <nav className={`p-4 fixed bottom-0 w-full space-x-3 flex ${props.rightHand ? 'justify-end' : ''}`}>
-
-            {isMenuOpen && (
-              <>
-                {props.dataUser === undefined ?
-                  <Link
-                    to='user/login'
-                    className={`
-                      ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                      dark:border
-                      hover:dark:border-pink-600
-                      dark:bg-black
-                      bg-white
-                      px-4
-                      py-3
-                      text-2xl
-                      rounded-full
-                      shadow-xl
-                      hover:bg-gray-100
-                    `}
-                    //onClick={setIsMenuOpen(false)}
-                  >
-                    {keyIcon} 
-                  </Link>
-                  :
-                  <button
-                    className={`
-                      ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                      dark:border
-                      hover:dark:border-pink-600
-                      dark:bg-black
-                      bg-white
-                      px-4
-                      py-3
-                      text-2xl
-                      rounded-full
-                      shadow-xl
-                      hover:bg-gray-100
-                    `}
-                    /* onClick={() => {
-                      handleLogout()
-                      setIsMenuOpen(false)
-                    }} */
-
-                  >
-                    {disconnectIcon}
-                  </button>
-                }
-
+        <nav
+          className={`
+            p-4
+            flex
+            fixed
+            w-full
+            bottom-0
+            space-x-3
+            ${props.rightHand ? 'justify-end' : ''}
+          `}
+        >
+          {isMenuOpen &&
+            <>
+              {props.dataUser === undefined ?
                 <Link
-                  to={props.dataUser === undefined ? '/user/register' : `/user/${props.dataUser._id}`}
+                  to='user/login'
                   className={`
-                    ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
-                    bg-white
                     px-4
                     py-3
                     text-2xl
-                    rounded-full
                     shadow-xl
-                    hover:dark:border-pink-600
-                    dark:bg-black
+                    bg-white
                     dark:border
+                    rounded-full
+                    dark:bg-black
                     hover:bg-gray-100
+                    hover:dark:border-pink-600
+                    ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
                   `}
                   //onClick={setIsMenuOpen(false)}
                 >
-                  {userIcon}
+                  {keyIcon} 
                 </Link>
+                :
+                <button
+                  className={`
+                    px-4
+                    py-3
+                    text-2xl
+                    shadow-xl
+                    bg-white
+                    dark:border
+                    rounded-full
+                    dark:bg-black
+                    hover:bg-gray-100
+                    hover:dark:border-pink-600
+                    ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                  `}
+                  onClick={() => handleLogout()}
+                >
+                  {disconnectIcon}
+                </button>
+              }
 
-                {props.dataUser && (
-                  <Link
-                    to={`user/${props.dataUser._id}/new`}
-                    className={`
-                      dark:bg-black
-                      bg-white
-                      px-4
-                      py-3
-                      text-2xl
-                      rounded-full
-                      shadow-xl
-                    `}
-                    //onClick={setIsMenuOpen(false)}
-                  >
-                    {plusIcon} 
-                  </Link>
-                )}
-              </>
-            )}
+              <Link
+                to={props.dataUser === undefined ? '/user/register' : `/user/${props.dataUser._id}`}
+                className={`
+                  px-4
+                  py-3
+                  text-2xl
+                  shadow-xl
+                  bg-white
+                  dark:border
+                  rounded-full
+                  dark:bg-black
+                  hover:bg-gray-100
+                  hover:dark:border-pink-600
+                  ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                `}
+                //onClick={setIsMenuOpen(false)}
+              >
+                {userIcon}
+              </Link>
 
-            <button
-              className={`
-                py-4
-                px-2
-                rounded-full
-                bg-white
-                text-black
-                border
-                border-black
-                border-transparent
-                dark:bg-black
-                dark:text-white
-                shadow-xl
-              `}
-              onClick={() => console.log('!isMenuOpen')}
-            >
-              menu
-            </button>
+              {props.dataUser &&
+                <Link
+                  to={props.dataUser === undefined ? '/user/login' : `/user/${props.dataUser._id}/new`}
+                  //to={`user/${props.dataUser._id}/new`}
+                  className={`
+                    px-4
+                    text-2xl
+                    shadow-xl
+                    bg-white
+                    rounded-full
+                    dark:bg-black
+                    ${styleOf.plusButton}
+                  `}
+                >
+                  {plusIcon} 
+                </Link>
+              }
+            </>
+          }
 
-          {menu && (
+          <button
+            className={`
+              py-4
+              px-2
+              border
+              shadow-xl
+              bg-white
+              text-black
+              rounded-full
+              border-black
+              dark:bg-black
+              dark:text-white
+              border-transparent
+            `}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            menu
+          </button>
+
+          {menu &&
             <Ul className='dark:text-white text-black'>
               <Li>
                 <Lien
@@ -371,7 +398,7 @@ function Layout(props) {
                 À propos
               </Li>
             </Ul>
-          )}
+          }
         </nav>
       </main>
 

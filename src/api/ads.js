@@ -26,10 +26,10 @@ export function loadAds() {
 } */
 
 export function newAd(data) {
-  console.log('data ads.js', data)
+  // console.log('data ads.js', data)
   return axios.post(`${config.api_url}/user/ad/${data.userId}`, data)
   .then(res => {
-    console.log('res (newAd.js)', res)
+    // console.log('res (newAd.js)', res)
     return res
   })
   .catch(err => {
@@ -41,11 +41,10 @@ export function newAd(data) {
 //on charge toutes les annonces de l'user
 export function loadUserAds(id) {
   return axios.get(`${config.api_url}/user/${id}`)
-  .then((res) => {
-      //console.log('res ads.js', res)
+  .then(res => {
       return res.data
   })
-  .catch((err) => {
+  .catch(err => {
       return err
   })
 }
