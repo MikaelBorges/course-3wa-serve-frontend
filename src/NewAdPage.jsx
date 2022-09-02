@@ -71,7 +71,7 @@ function NewAdPage(props) {
           type='text'
           name='imageAd'
           className='pl-1 imageUrl w-full border dark:bg-slate-800 dark:text-white'
-          placeholder='url de votre photo de votre annonce si vous la connaissez (facultatif)'
+          placeholder='url de la photo de votre annonce si vous la connaissez (facultatif)'
         />
         <input
           required

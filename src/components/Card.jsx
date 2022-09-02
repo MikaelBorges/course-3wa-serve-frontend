@@ -76,7 +76,7 @@ function Card(props) {
           src={props.ad.imageWork}
           className={`${props.layoutOneColumn ? 'max-w-none h-full' : ''}`}
         />
-        <div
+        {/* <div
           className={`
             px-2
             py-1
@@ -92,7 +92,7 @@ function Card(props) {
           `}
         >
           • • • •
-        </div>
+        </div> */}
       </div>
       <div
         className={`
@@ -134,7 +134,8 @@ function Card(props) {
               font-bold
               leading-5
               ${styleOf.limitTextTo}
-              ${styleOf.titleUser}
+              ${styleOf.twoLinesMax}
+              ${styleOf.letterSpacingThinner}
               ${props.layoutOneColumn && !props.horizontalCard ?
                 'leading-7' : ''
               }
@@ -172,7 +173,7 @@ function Card(props) {
                   alt="image de l'utilisateur"
                   className={`
                     ${props.layoutOneColumn ?
-                      'max-w-none h-full' : 'rounded-full'
+                      'max-w-none h-full rounded-full' : 'rounded-full'
                     }
                   `}
                 />
@@ -220,7 +221,9 @@ function Card(props) {
               rounded-3xl
               bg-gray-100
               dark:bg-slate-600
+              
               dark:text-yellow-100
+              ${styleOf.letterSpacingThinner}
             `}
             onClick={e => handleRateUser(e)}
           >
@@ -297,6 +300,7 @@ function Card(props) {
               bg-fuchsia-500
               dark:bg-slate-600
               dark:text-yellow-100
+              ${styleOf.letterSpacingThinner}
             `}
             onClick={e => handleShowPriceDetails(e)}
           >
