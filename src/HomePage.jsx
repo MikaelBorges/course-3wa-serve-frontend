@@ -81,7 +81,6 @@ function HomePage(props) {
             mt-px
             ${layoutOneColumn ? 'flex-col' : 'justify-between'}
         `}>
-
           {layoutOneColumn &&
             <ul>
               <li
@@ -223,7 +222,6 @@ function HomePage(props) {
               })}
             </ul>
           }
-
           {!layoutOneColumn &&
             <>
               <ul className={styleOf.adsColumnContainer}>
@@ -379,7 +377,6 @@ function HomePage(props) {
               </ul>
             </>
           }
-
         </article>
       </section>
     )
