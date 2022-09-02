@@ -1,5 +1,6 @@
 import { newAd } from './api/ads'
 import { useState, useEffect } from 'react'
+import styleOf from './NewAdPage.module.scss'
 
 function NewAdPage(props) {
 
@@ -70,7 +71,7 @@ function NewAdPage(props) {
         <input
           type='text'
           name='imageAd'
-          className='pl-1 imageUrl w-full border dark:bg-slate-800 dark:text-white'
+          className={`pl-1 ${styleOf.imageUrl} w-full border dark:bg-slate-800 dark:text-white`}
           placeholder='url de la photo de votre annonce si vous la connaissez (facultatif)'
         />
         <input
