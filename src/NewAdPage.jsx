@@ -1,5 +1,6 @@
 import { newAd } from './api/ads'
 import { useState, useEffect } from 'react'
+import styleOf from './NewAdPage.module.scss'
 
 function NewAdPage(props) {
 
@@ -13,7 +14,7 @@ function NewAdPage(props) {
 
         onSubmitForm = e => {
           e.preventDefault()
-          let data = {
+          const data = {
             title: e.target.titre.value,
             description: e.target.description.value,
             price: e.target.price.value,
@@ -24,12 +25,9 @@ function NewAdPage(props) {
             reviewsNb: props.dataUser.reviewsNb,
             starsNb: props.dataUser.starsNb,
             imageUser: props.dataUser.imageUser,
-            imageAd: e.target.image.value,
+            imageAd: e.target.imageAd.value,
             location: e.target.location.value,
-            date: e.target.date.value,
-            time: e.target.time.value,
           }
-          // console.log('data .jsx', data)
           newAd(data)
           .then(res => {
             // console.log('res Register page', res)
@@ -70,8 +68,8 @@ function NewAdPage(props) {
         <input
           type='text'
           name='imageAd'
-          className='pl-1 imageUrl w-full border dark:bg-slate-800 dark:text-white'
-          placeholder='url de votre photo de votre annonce si vous la connaissez (facultatif)'
+          className={`pl-1 ${styleOf.imageUrl} w-full border dark:bg-slate-800 dark:text-white`}
+          placeholder='url de la photo de votre annonce si vous la connaissez (facultatif)'
         />
         <input
           required

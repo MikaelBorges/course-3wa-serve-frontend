@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
 import { loginUser } from './api/user'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import './App.css'
 
 function LoginPage(props) {
     const navigate = useNavigate(),

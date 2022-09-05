@@ -3,6 +3,9 @@
 # config
 /src/config.js
 
+# public
+/public
+
 # dependencies
 /node_modules
 /.pnp

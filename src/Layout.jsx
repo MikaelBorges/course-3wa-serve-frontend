@@ -3,17 +3,18 @@ import { useState } from 'react'
 import { Ul, Li } from './components/Ul'
 import { Lien } from './components/Lien'
 import { Link, useNavigate } from 'react-router-dom'
-import { lightIcon, darkIcon, systemIcon, userIcon, keyIcon, disconnectIcon, plusIcon } from './icons/Icons'
+import { lightIcon, darkIcon, systemIcon, userIcon, keyIcon, disconnectIcon, plusIcon, wheelIcon, leftHandIcon, rightHandIcon,
+  cardIcon,columnLayoutIcon,rowLayoutIcon
+} from './icons/Icons'
 import logo from './images/logos/gitlab_tile_logo_icon_170092.png'
 import { logoutUser } from './api/user'
 import { config } from './config'
 
 function Layout(props) {
-  //console.log('props.rightHand', props.rightHand)
   const navigate = useNavigate(),
-        [menu, setMenu] = useState(false),
         [error, setError] = useState(null),
-        [isMenuOpen, setIsMenuOpen] = useState(false),
+        //[menu, setMenu] = useState(false),
+        [isMenuOpen, setIsMenuOpen] = useState(true),
         [dbLocationIsOnline, setDbLocationIsOnline] = useState(false)
 
   /* function handleDbLocationIsOnline() {
@@ -42,12 +43,12 @@ function Layout(props) {
     }
   } */
 
-  function classNames(...classes) {
+  /* function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
-  }
+  } */
 
   let themeButtonIcon
-  switch (props.theme) {
+  switch(props.theme) {
     case 'light':
       themeButtonIcon = lightIcon
       break
@@ -103,7 +104,11 @@ function Layout(props) {
   // if (props.dataUser) console.log('in layout',props.dataUser._id)
 
   return (
-    <div className={`min-h-screen ${menu ? 'dark:bg-black bg-gray-100 py-40 px-5' : ''}`}>
+    <div
+      className={`
+        min-h-screen
+      `}
+    >
       <header className='fixed p-6 w-full h-28 flex justify-between z-10'>
 
         <Link to='/'>
@@ -247,8 +252,6 @@ function Layout(props) {
           </div>
         )} */}
       </header>
-
-
       <main className="min-h-screen dark:bg-slate-800">
         {props.children}
         <nav
@@ -256,29 +259,87 @@ function Layout(props) {
             p-4
             flex
             fixed
-            w-full
-            bottom-0
-            space-x-3
-            ${props.rightHand ? 'justify-end' : ''}
+            bottom-2
+            space-x-2
+            bg-white
+            shadow-2xl
+            rounded-full
+            dark:bg-black
+            ${props.rightHand ? 'justify-end right-2' : 'left-2'}
           `}
         >
           {isMenuOpen &&
             <>
+
+              <button
+                className={`
+                  h-8
+                  px-2
+                  text-xs
+                  rounded-full
+                  bg-slate-200
+                  dark:bg-slate-600
+                  ${props.layoutOneColumn ? '' : 'bg-gray-500 dark:bg-gray-500'}
+                `}
+                onClick={() => props.toggleDirectionCard('toggle')}
+                disabled={props.layoutOneColumn ? false : true}
+              >
+                {cardIcon}
+              </button>
+
+              <button
+                className={`
+                  h-8
+                  px-2
+                  text-xs
+                  rounded-full
+                  bg-slate-200
+                  dark:bg-slate-600
+                `}
+                onClick={() => props.toggleLayout('toggle')}
+              >
+                {props.layoutOneColumn ? rowLayoutIcon : columnLayoutIcon}
+              </button>
+
+              <button
+                className={`
+                  h-8
+                  px-2
+                  text-xs
+                  rounded-full
+                  bg-slate-200
+                  dark:bg-slate-600
+                `}
+                onClick={() => props.toggleHand()}
+              >
+                {props.rightHand ? leftHandIcon : rightHandIcon}
+              </button>
+
+              <button
+                className={`
+                  h-8
+                  px-2
+                  text-xs
+                  rounded-full
+                  bg-slate-200
+                  dark:bg-slate-600
+                `}
+                onClick={e => props.toggleTheme(e.target.innerText)}
+              >
+                {systemIcon}
+              </button>
+
               {props.dataUser === undefined ?
                 <Link
                   to='user/login'
                   className={`
-                    px-4
-                    py-3
-                    text-2xl
-                    shadow-xl
-                    bg-white
-                    dark:border
+                    h-8
+                    pt-1
+                    px-2
+                    text-xs
                     rounded-full
-                    dark:bg-black
-                    hover:bg-gray-100
-                    hover:dark:border-pink-600
-                    ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                    bg-slate-600
+                    dark:bg-slate-600
                   `}
                   //onClick={setIsMenuOpen(false)}
                 >
@@ -287,17 +348,12 @@ function Layout(props) {
                 :
                 <button
                   className={`
-                    px-4
-                    py-3
-                    text-2xl
-                    shadow-xl
-                    bg-white
-                    dark:border
+                    h-8
+                    px-2
+                    text-xs
                     rounded-full
-                    dark:bg-black
-                    hover:bg-gray-100
-                    hover:dark:border-pink-600
-                    ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                    bg-slate-200
+                    dark:bg-slate-600
                   `}
                   onClick={() => handleLogout()}
                 >
@@ -308,19 +364,14 @@ function Layout(props) {
               <Link
                 to={props.dataUser === undefined ? '/user/register' : `/user/${props.dataUser._id}`}
                 className={`
-                  px-4
-                  py-3
-                  text-2xl
-                  shadow-xl
-                  bg-white
-                  dark:border
+                  pr-2.5
+                  pl-2
+                  pt-2
+                  text-xs
                   rounded-full
-                  dark:bg-black
-                  hover:bg-gray-100
-                  hover:dark:border-pink-600
-                  ${menu ? 'dark:border-white hover:bg-slate-200' : 'dark:border-black'}
+                  bg-slate-200
+                  dark:bg-slate-600
                 `}
-                //onClick={setIsMenuOpen(false)}
               >
                 {userIcon}
               </Link>
@@ -330,13 +381,13 @@ function Layout(props) {
                   to={props.dataUser === undefined ? '/user/login' : `/user/${props.dataUser._id}/new`}
                   //to={`user/${props.dataUser._id}/new`}
                   className={`
-                    px-4
-                    text-2xl
-                    shadow-xl
-                    bg-white
+                    h-8
+                    pt-2
+                    px-2
+                    text-xs
                     rounded-full
-                    dark:bg-black
-                    ${styleOf.plusButton}
+                    bg-slate-200
+                    dark:bg-slate-600
                   `}
                 >
                   {plusIcon} 
@@ -347,31 +398,28 @@ function Layout(props) {
 
           <button
             className={`
-              py-4
-              px-2
-              border
-              shadow-xl
-              bg-white
-              text-black
+              h-8
+              pl-2
+              pr-3
+              text-xs
               rounded-full
-              border-black
-              dark:bg-black
-              dark:text-white
-              border-transparent
+              bg-slate-200
+              dark:bg-slate-600
             `}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            menu
+            {wheelIcon}
           </button>
 
-          {menu &&
+          {/* {menu &&
             <Ul className='dark:text-white text-black'>
               <Li>
                 <Lien
                   url={'/projects'}
                   target='_self'
                   className={`
-                    hover:bg-slate-200
+                    hover:bg-slate-100
+                    dark:bg-slate-1000
                     hover:dark:bg-black
                     dark:border-white
                     dark:border
@@ -382,11 +430,11 @@ function Layout(props) {
                     p-4
                     shadow-xl
                   `}
-                  /* className={`
-                    block
-                    w-fit
-                    shadow-xl
-                  `} */
+                  // className={`
+                    // block
+                    // w-fit
+                    // shadow-xl
+                  // `}
                 >
                   Projets
                 </Lien>
@@ -398,7 +446,7 @@ function Layout(props) {
                 À propos
               </Li>
             </Ul>
-          }
+          } */}
         </nav>
       </main>
 

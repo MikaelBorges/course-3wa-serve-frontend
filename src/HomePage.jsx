@@ -15,9 +15,7 @@ function HomePage(props) {
         [users, setUsers] = useState([]),
         [oddAds, setoddAds] = useState([]),
         [evenAds, setevenAds] = useState([]),
-        [horizontalCard, setHorizontalCard] = useState(false),
         [areAdsArranged, setAreAdsArranged] = useState(false),
-        [layoutOneColumn, setLayoutOneColumn] = useState(false),
 
         arrangeAds = () => {
           ads.forEach((ad, index) => {
@@ -30,16 +28,6 @@ function HomePage(props) {
             }
           })
           if(evenAds.length > 0 || oddAds.length > 0) setAreAdsArranged(true)
-        },
-
-        handleLayoutOfCards = () => {
-          window.localStorage.setItem('layoutOneColumn', !layoutOneColumn)
-          setLayoutOneColumn(!layoutOneColumn)
-        },
-
-        handleStyleOfCards = () => {
-          window.localStorage.setItem('horizontalCard', !horizontalCard)
-          setHorizontalCard(!horizontalCard)
         }
 
         /* useEffect(() => {
@@ -53,11 +41,11 @@ function HomePage(props) {
 
   // useEffect( async () => {
   useEffect(() => {
-    const horizontalCardInLS = window.localStorage.getItem('horizontalCard'),
+    /* const horizontalCardInLS = window.localStorage.getItem('horizontalCard'),
           layoutOneColumnInLS = window.localStorage.getItem('layoutOneColumn')
 
-    if(horizontalCardInLS === 'true') setHorizontalCard(true)
-    if(layoutOneColumnInLS === 'true') setLayoutOneColumn(true)
+    if(layoutOneColumnInLS === 'true') props.toggleLayout(true)
+    if(horizontalCardInLS === 'true') props.toggleDirectionCard(true) */
 
     // await loadAds()
     loadAds()
@@ -79,106 +67,89 @@ function HomePage(props) {
           className={`
             flex
             mt-px
-            ${layoutOneColumn ? 'flex-col' : 'justify-between'}
-        `}>
-          <ul className={`${layoutOneColumn ? 'w-auto' : styleOf.adsColumnContainer}`}>
-            <li
-              className={`
-                ${layoutOneColumn ? 'w-auto' : ''}
-                ${styleOf.filters}
-                flex
-                flex-col
-                justify-between
-                bg-slate-200
-                rounded-3xl
-                p-3
-                mb-6
-                dark:bg-slate-700
-                dark:text-white
-              `}
-            >
-              <button
+            ${props.layoutOneColumn ? 'flex-col' : 'justify-between'}
+          `}
+        >
+          {props.layoutOneColumn &&
+            <ul>
+              <li
                 className={`
-                  ${styleOf.uiButtons}
-                  border
-                  border-solid
-                  border-black
+                  ${props.layoutOneColumn ? 'w-auto' : ''}
+                  ${styleOf.filters}
+                  flex
+                  flex-col
+                  justify-between
+                  bg-slate-200
                   rounded-3xl
-                  px-2
-                  w-fit
-                  text-sm
-                  dark:border-white
+                  p-3
+                  mb-6
+                  dark:bg-slate-700
+                  dark:text-white
                 `}
-                onClick={() => handleLayoutOfCards()}
               >
-                {layoutOneColumn ? 'horizontal mode' : 'vertical mode'}
-              </button>
-              <div>
-                <button
+                {/* <button
                   className={`
                     ${styleOf.uiButtons}
                     border
                     border-solid
                     border-black
                     rounded-3xl
-                    py-1
-                    px-1
+                    px-2
+                    w-fit
+                    text-sm
                     dark:border-white
                   `}
-                  onClick={e => props.toggleTheme(e.target.innerText)}
+                  onClick={() => props.toggleLayout('toggle')}
                 >
-                  {lightIcon}
+                  {props.layoutOneColumn ? 'horizontal mode' : 'vertical mode'}
                 </button>
-                <button
-                  className={`
-                    ${styleOf.uiButtons}
-                    border
-                    border-solid
-                    border-black
-                    rounded-3xl
-                    px-1
-                    py-1
-                    dark:border-white
-                  `}
-                  onClick={e => props.toggleTheme(e.target.innerText)}
-                >
-                  {darkIcon}
-                </button>
-                <button
-                  className={`
-                    ${styleOf.uiButtons}
-                    border
-                    border-solid
-                    border-black
-                    rounded-3xl
-                    px-1
-                    py-1
-                    dark:border-white
-                  `}
-                  onClick={e => props.toggleTheme(e.target.innerText)}
-                >
-                  {systemIcon}
-                </button>
-              </div>
-              <button
-                className={`
-                  ${styleOf.uiButtons}
-                  border
-                  border-solid
-                  border-black
-                  rounded-3xl
-                  px-2
-                  w-fit
-                  text-sm
-                  ${layoutOneColumn ? '' : 'bg-gray-300 text-gray-100 border-gray-300 dark:border-gray-300'}
-                  dark:border-white
-                `}
-                onClick={() => handleStyleOfCards()}
-                disabled={layoutOneColumn ? false : true}
-              >
-                {horizontalCard ? 'horizontal card' : 'vertical card'}
-              </button>
-              <div>
+                <div>
+                  <button
+                    className={`
+                      ${styleOf.uiButtons}
+                      border
+                      border-solid
+                      border-black
+                      rounded-3xl
+                      py-1
+                      px-1
+                      dark:border-white
+                    `}
+                    onClick={e => props.toggleTheme(e.target.innerText)}
+                  >
+                    {lightIcon}
+                  </button>
+                  <button
+                    className={`
+                      ${styleOf.uiButtons}
+                      border
+                      border-solid
+                      border-black
+                      rounded-3xl
+                      px-1
+                      py-1
+                      dark:border-white
+                    `}
+                    onClick={e => props.toggleTheme(e.target.innerText)}
+                  >
+                    {darkIcon}
+                  </button>
+                  <button
+                    className={`
+                      ${styleOf.uiButtons}
+                      border
+                      border-solid
+                      border-black
+                      rounded-3xl
+                      px-1
+                      py-1
+                      dark:border-white
+                    `}
+                    onClick={e => props.toggleTheme(e.target.innerText)}
+                  >
+                    {systemIcon}
+                  </button>
+                </div>
                 <button
                   className={`
                     ${styleOf.uiButtons}
@@ -187,51 +158,214 @@ function HomePage(props) {
                     border-black
                     rounded-3xl
                     px-2
+                    w-fit
+                    text-sm
+                    ${props.layoutOneColumn ? '' : 'bg-gray-300 text-gray-100 border-gray-300 dark:border-gray-300'}
                     dark:border-white
                   `}
-                  onClick={e => props.toggleHand(e.target.innerText)}
+                  onClick={() => props.toggleDirectionCard('toggle')}
+                  disabled={props.layoutOneColumn ? false : true}
                 >
-                  {leftHandIcon}
+                  {props.horizontalCard ? 'horizontal card' : 'vertical card'}
                 </button>
-                <button
+                <div>
+                  <button
+                    className={`
+                      ${styleOf.uiButtons}
+                      border
+                      border-solid
+                      border-black
+                      rounded-3xl
+                      px-2
+                      dark:border-white
+                    `}
+                    onClick={e => props.toggleHand(e.target.innerText)}
+                  >
+                    {leftHandIcon}
+                  </button>
+                  <button
+                    className={`
+                      ${styleOf.uiButtons}
+                      border
+                      border-solid
+                      border-black
+                      rounded-3xl
+                      px-2
+                      dark:border-white
+                    `}
+                    onClick={e => props.toggleHand(e.target.innerText)}
+                  >
+                    {rightHandIcon}
+                  </button>
+                </div> */}
+              </li>
+              {ads.map(ad => {
+                return (
+                  <Card
+                    ad={ad}
+                    key={ad._id}
+                    horizontalCard={props.horizontalCard}
+                    layoutOneColumn={props.layoutOneColumn}
+                  />
+                )
+              })}
+            </ul>
+          }
+          {!props.layoutOneColumn &&
+            <>
+              <ul className={styleOf.adsColumnContainer}>
+                <li
                   className={`
-                    ${styleOf.uiButtons}
-                    border
-                    border-solid
-                    border-black
+                    ${props.layoutOneColumn ? 'w-auto' : ''}
+                    ${styleOf.filters}
+                    flex
+                    flex-col
+                    justify-between
+                    bg-slate-200
                     rounded-3xl
-                    px-2
-                    dark:border-white
+                    p-3
+                    mb-6
+                    dark:bg-slate-700
+                    dark:text-white
                   `}
-                  onClick={e => props.toggleHand(e.target.innerText)}
                 >
-                  {rightHandIcon}
-                </button>
-              </div>
-            </li>
-            {oddAds.map(ad => {
-              return (
-                <Card
-                  ad={ad}
-                  key={ad._id}
-                  horizontalCard={horizontalCard}
-                  layoutOneColumn={layoutOneColumn}
-                />
-              )
-            })}
-          </ul>
-          <ul className={`${layoutOneColumn ? 'w-auto' : styleOf.adsColumnContainer}`}>
-            {evenAds.map(ad => {
-              return (
-                <Card
-                  ad={ad}
-                  key={ad._id}
-                  horizontalCard={horizontalCard}
-                  layoutOneColumn={layoutOneColumn}
-                />
-              )
-            })}
-          </ul>
+                  {/* <button
+                    className={`
+                      ${styleOf.uiButtons}
+                      border
+                      border-solid
+                      border-black
+                      rounded-3xl
+                      px-2
+                      w-fit
+                      text-sm
+                      dark:border-white
+                    `}
+                    onClick={() => props.toggleLayout('toggle')}
+                  >
+                    {props.layoutOneColumn ? 'horizontal mode' : 'vertical mode'}
+                  </button>
+                  <div>
+                    <button
+                      className={`
+                        ${styleOf.uiButtons}
+                        border
+                        border-solid
+                        border-black
+                        rounded-3xl
+                        py-1
+                        px-1
+                        dark:border-white
+                      `}
+                      onClick={e => props.toggleTheme(e.target.innerText)}
+                    >
+                      {lightIcon}
+                    </button>
+                    <button
+                      className={`
+                        ${styleOf.uiButtons}
+                        border
+                        border-solid
+                        border-black
+                        rounded-3xl
+                        px-1
+                        py-1
+                        dark:border-white
+                      `}
+                      onClick={e => props.toggleTheme(e.target.innerText)}
+                    >
+                      {darkIcon}
+                    </button>
+                    <button
+                      className={`
+                        ${styleOf.uiButtons}
+                        border
+                        border-solid
+                        border-black
+                        rounded-3xl
+                        px-1
+                        py-1
+                        dark:border-white
+                      `}
+                      onClick={e => props.toggleTheme(e.target.innerText)}
+                    >
+                      {systemIcon}
+                    </button>
+                  </div>
+                  <button
+                    className={`
+                      ${styleOf.uiButtons}
+                      border
+                      border-solid
+                      border-black
+                      rounded-3xl
+                      px-2
+                      w-fit
+                      text-sm
+                      ${props.layoutOneColumn ? '' : 'bg-gray-300 text-gray-100 border-gray-300 dark:border-gray-300'}
+                      dark:border-white
+                    `}
+                    onClick={() => props.toggleDirectionCard('toggle')}
+                    disabled={props.layoutOneColumn ? false : true}
+                  >
+                    {props.horizontalCard ? 'horizontal card' : 'vertical card'}
+                  </button>
+                  <div>
+                    <button
+                      className={`
+                        ${styleOf.uiButtons}
+                        border
+                        border-solid
+                        border-black
+                        rounded-3xl
+                        px-2
+                        dark:border-white
+                      `}
+                      onClick={e => props.toggleHand(e.target.innerText)}
+                    >
+                      {leftHandIcon}
+                    </button>
+                    <button
+                      className={`
+                        ${styleOf.uiButtons}
+                        border
+                        border-solid
+                        border-black
+                        rounded-3xl
+                        px-2
+                        dark:border-white
+                      `}
+                      onClick={e => props.toggleHand(e.target.innerText)}
+                    >
+                      {rightHandIcon}
+                    </button>
+                  </div> */}
+                </li>
+                {oddAds.map(ad => {
+                  return (
+                    <Card
+                      ad={ad}
+                      key={ad._id}
+                      horizontalCard={props.horizontalCard}
+                      layoutOneColumn={props.layoutOneColumn}
+                    />
+                  )
+                })}
+              </ul>
+              <ul className={styleOf.adsColumnContainer}>
+                {evenAds.map(ad => {
+                  return (
+                    <Card
+                      ad={ad}
+                      key={ad._id}
+                      horizontalCard={props.horizontalCard}
+                      layoutOneColumn={props.layoutOneColumn}
+                    />
+                  )
+                })}
+              </ul>
+            </>
+          }
         </article>
       </section>
     )

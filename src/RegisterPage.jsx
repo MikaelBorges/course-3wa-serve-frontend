@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
 import { registerUser } from './api/user'
+import { useState, useEffect } from 'react'
+import styleOf from './Register.module.scss'
 
-import './App.css'
 import {
   Image,
   Transformation,
@@ -108,10 +108,6 @@ function RegisterPage(props) {
           widget.open()
         }
 
-
-
-
-
   useEffect(() => {
       if (email !== '' && password !== '' && firstname !== '' && lastname !== '') {
           setDisabled(false);
@@ -120,6 +116,7 @@ function RegisterPage(props) {
           setDisabled(true);
       }
   }, [email, password]);
+
   return (
     <section className='min-h-screen pt-32 pb-8 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>
       <form
@@ -128,12 +125,6 @@ function RegisterPage(props) {
         onSubmit={e => onSubmitForm(e)}
         className='c-form'
       >
-
-
-
-
-
-
 
         {/* {img !== null && <CloudinaryContext cloudName="mika4ever">
           <div>
@@ -149,17 +140,11 @@ function RegisterPage(props) {
           Ajouter ma photo de profil
         </button> */}
 
-
-
-
-
-
-
         <input
           type='text'
           name='image'
           placeholder='url de votre photo de profil si vous la connaissez (facultatif)'
-          className='pl-1 imageUrl w-full border dark:bg-slate-800 dark:text-white'
+          className={`pl-1 ${styleOf.imageUrl} w-full border dark:bg-slate-800 dark:text-white`}
         />
         <input
           onChange={e => {
