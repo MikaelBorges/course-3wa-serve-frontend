@@ -1,8 +1,40 @@
+import { deleteAd } from '../api/ads'
 import styleOf from './Card.module.scss'
-import { heartIcon, starIcon, crownIcon, paperPencilIcon, pinIcon } from '../icons/Icons'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import {
+  binIcon,
+  pinIcon,
+  eyeIcon,
+  heartIcon,
+  starIcon,
+  crownIcon,
+  pencilIcon,
+  paperPencilIcon
+} from '../icons/Icons'
 
 function Card(props) {
-  const displayStars = (starsNb) => {
+  const navigate = useNavigate(),
+        urlOnBrowser = window.location.pathname,
+        [isItChecked, setIsItChecked] = useState(false),
+        [isSubscribed, setIsSubscribed] = useState(false),
+        userPage = `/projects/serve/user/${props.ad.userId}`,
+        [weAreOnUserPage, setWeAreOnUserPage] = useState(false),
+        userPageWithSlash = `/projects/serve/user/${props.ad.userId}/`,
+
+        handleChange = e => {
+          e.stopPropagation()
+
+          if(props.allCardsChecked) {
+            props.uncheckAllCheckboxes()
+          }
+
+          setIsSubscribed(e.target.checked)
+
+          //props.allCardsChecked && (isSubscribed || props.allCardsChecked)
+        },
+
+        displayStars = (starsNb) => {
           let stringOfStars = ''
           while(starsNb) {
             stringOfStars += starIcon
@@ -40,10 +72,57 @@ function Card(props) {
           console.log('noter')
         },
 
+        handleModifyAd = e => {
+          e.stopPropagation()
+          console.log('modifier annonce')
+        },
+
         handleShowUserProfile = e => {
           e.stopPropagation()
-          console.log("afficher la page de l'utilisateur")
+          if (!weAreOnUserPage) {
+            if (urlOnBrowser !== userPage) {
+              navigate(`/user/${props.ad.userId}`)
+            }
+            if (urlOnBrowser !== userPageWithSlash) {
+              navigate(`user/${props.ad.userId}`)
+            }
+          }
+        },
+
+        handleDeleteAd = (e, id) => {
+          e.stopPropagation()
+
+          const adToDelete = {
+            id: id
+          }
+
+          deleteAd(adToDelete)
+          .then(res => {
+            if(res.status === 200) {
+              //console.log('res.data.message', res.data.message)
+              props.openPopup(res.data.message)
+              //window.location.reload(false)
+            }
+            else {
+              console.log('res.response.data.message', res.response.data.message)
+            }
+          })
+          .catch(err => {
+            console.log('err', err)
+          })
+
+        },
+
+        showStatistics = e => {
+          e.stopPropagation()
+          console.log('montrer les stats')
         }
+
+  useEffect(() => {
+    if (urlOnBrowser === userPage || urlOnBrowser === userPageWithSlash) {
+      setWeAreOnUserPage(true)
+    }
+  }, []);
 
   return (
     <li
@@ -72,7 +151,7 @@ function Card(props) {
         `}
       >
         <img
-          alt="images du service"
+          alt='images du service'
           src={props.ad.imageWork}
           className={`${props.layoutOneColumn ? 'max-w-none h-full' : ''}`}
         />
@@ -221,7 +300,6 @@ function Card(props) {
               rounded-3xl
               bg-gray-100
               dark:bg-slate-600
-              
               dark:text-yellow-100
               ${styleOf.letterSpacingThinner}
             `}
@@ -346,6 +424,32 @@ function Card(props) {
               bg-gray-100
               dark:bg-slate-600
             `}
+            onClick={e => showStatistics(e)}
+          >
+            <div>{eyeIcon}</div>
+            <div
+              className={`
+                ml-1
+                text-green-500 
+                ${props.layoutOneColumn && !props.horizontalCard ?
+                  'text-xl' : 'text-base'
+                }
+              `}
+            >
+              {props.ad.views}
+            </div>
+          </button>
+          <button
+            className={`
+              px-2
+              py-2
+              flex
+              text-xl
+              items-center
+              rounded-full
+              bg-gray-100
+              dark:bg-slate-600
+            `}
             onClick={e => handleAddToFavorites(e)}
           >
             <div>{heartIcon}</div>
@@ -362,6 +466,55 @@ function Card(props) {
             </div>
           </button>
         </div>
+        {weAreOnUserPage &&
+          <div className='flex justify-between'>
+            <button
+              className={`
+                px-2
+                py-2
+                flex
+                text-xl
+                items-center
+                rounded-full
+                bg-gray-100
+                dark:bg-slate-600
+              `}
+              onClick={e => handleDeleteAd(e, props.ad._id)}
+            >
+              {binIcon}
+            </button>
+            {props.showDraft &&
+              <input
+                value='yes'
+                name='check'
+                type='checkbox'
+                id={props.ad._id}
+                className='w-8 h-8 rounded-full'
+                //checked={props.allCardsChecked ? true : false}
+                //defaultChecked
+                //onChange={}
+                onClick={e => handleChange(e)}
+                onChange={e => handleChange(e)}
+                checked={isSubscribed || props.allCardsChecked}
+              />
+            }
+            <button
+              className={`
+                px-2
+                py-2
+                flex
+                text-xl
+                items-center
+                rounded-full
+                bg-gray-100
+                dark:bg-slate-600
+              `}
+              onClick={e => handleModifyAd(e)}
+            >
+              {pencilIcon}
+            </button>
+          </div>
+        }
       </div>
     </li>
   )

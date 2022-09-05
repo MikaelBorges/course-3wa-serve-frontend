@@ -14,7 +14,7 @@ function NewAdPage(props) {
 
         onSubmitForm = e => {
           e.preventDefault()
-          let data = {
+          const data = {
             title: e.target.titre.value,
             description: e.target.description.value,
             price: e.target.price.value,
@@ -25,12 +25,9 @@ function NewAdPage(props) {
             reviewsNb: props.dataUser.reviewsNb,
             starsNb: props.dataUser.starsNb,
             imageUser: props.dataUser.imageUser,
-            imageAd: e.target.image.value,
+            imageAd: e.target.imageAd.value,
             location: e.target.location.value,
-            date: e.target.date.value,
-            time: e.target.time.value,
           }
-          // console.log('data .jsx', data)
           newAd(data)
           .then(res => {
             // console.log('res Register page', res)

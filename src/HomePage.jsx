@@ -15,9 +15,7 @@ function HomePage(props) {
         [users, setUsers] = useState([]),
         [oddAds, setoddAds] = useState([]),
         [evenAds, setevenAds] = useState([]),
-        [horizontalCard, setHorizontalCard] = useState(false),
         [areAdsArranged, setAreAdsArranged] = useState(false),
-        [layoutOneColumn, setLayoutOneColumn] = useState(false),
 
         arrangeAds = () => {
           ads.forEach((ad, index) => {
@@ -30,16 +28,6 @@ function HomePage(props) {
             }
           })
           if(evenAds.length > 0 || oddAds.length > 0) setAreAdsArranged(true)
-        },
-
-        handleLayoutOfCards = () => {
-          window.localStorage.setItem('layoutOneColumn', !layoutOneColumn)
-          setLayoutOneColumn(!layoutOneColumn)
-        },
-
-        handleStyleOfCards = () => {
-          window.localStorage.setItem('horizontalCard', !horizontalCard)
-          setHorizontalCard(!horizontalCard)
         }
 
         /* useEffect(() => {
@@ -53,11 +41,11 @@ function HomePage(props) {
 
   // useEffect( async () => {
   useEffect(() => {
-    const horizontalCardInLS = window.localStorage.getItem('horizontalCard'),
+    /* const horizontalCardInLS = window.localStorage.getItem('horizontalCard'),
           layoutOneColumnInLS = window.localStorage.getItem('layoutOneColumn')
 
-    if(horizontalCardInLS === 'true') setHorizontalCard(true)
-    if(layoutOneColumnInLS === 'true') setLayoutOneColumn(true)
+    if(layoutOneColumnInLS === 'true') props.toggleLayout(true)
+    if(horizontalCardInLS === 'true') props.toggleDirectionCard(true) */
 
     // await loadAds()
     loadAds()
@@ -79,13 +67,14 @@ function HomePage(props) {
           className={`
             flex
             mt-px
-            ${layoutOneColumn ? 'flex-col' : 'justify-between'}
-        `}>
-          {layoutOneColumn &&
+            ${props.layoutOneColumn ? 'flex-col' : 'justify-between'}
+          `}
+        >
+          {props.layoutOneColumn &&
             <ul>
               <li
                 className={`
-                  ${layoutOneColumn ? 'w-auto' : ''}
+                  ${props.layoutOneColumn ? 'w-auto' : ''}
                   ${styleOf.filters}
                   flex
                   flex-col
@@ -98,7 +87,7 @@ function HomePage(props) {
                   dark:text-white
                 `}
               >
-                <button
+                {/* <button
                   className={`
                     ${styleOf.uiButtons}
                     border
@@ -110,9 +99,9 @@ function HomePage(props) {
                     text-sm
                     dark:border-white
                   `}
-                  onClick={() => handleLayoutOfCards()}
+                  onClick={() => props.toggleLayout('toggle')}
                 >
-                  {layoutOneColumn ? 'horizontal mode' : 'vertical mode'}
+                  {props.layoutOneColumn ? 'horizontal mode' : 'vertical mode'}
                 </button>
                 <div>
                   <button
@@ -171,13 +160,13 @@ function HomePage(props) {
                     px-2
                     w-fit
                     text-sm
-                    ${layoutOneColumn ? '' : 'bg-gray-300 text-gray-100 border-gray-300 dark:border-gray-300'}
+                    ${props.layoutOneColumn ? '' : 'bg-gray-300 text-gray-100 border-gray-300 dark:border-gray-300'}
                     dark:border-white
                   `}
-                  onClick={() => handleStyleOfCards()}
-                  disabled={layoutOneColumn ? false : true}
+                  onClick={() => props.toggleDirectionCard('toggle')}
+                  disabled={props.layoutOneColumn ? false : true}
                 >
-                  {horizontalCard ? 'horizontal card' : 'vertical card'}
+                  {props.horizontalCard ? 'horizontal card' : 'vertical card'}
                 </button>
                 <div>
                   <button
@@ -208,26 +197,26 @@ function HomePage(props) {
                   >
                     {rightHandIcon}
                   </button>
-                </div>
+                </div> */}
               </li>
               {ads.map(ad => {
                 return (
                   <Card
                     ad={ad}
                     key={ad._id}
-                    horizontalCard={horizontalCard}
-                    layoutOneColumn={layoutOneColumn}
+                    horizontalCard={props.horizontalCard}
+                    layoutOneColumn={props.layoutOneColumn}
                   />
                 )
               })}
             </ul>
           }
-          {!layoutOneColumn &&
+          {!props.layoutOneColumn &&
             <>
               <ul className={styleOf.adsColumnContainer}>
                 <li
                   className={`
-                    ${layoutOneColumn ? 'w-auto' : ''}
+                    ${props.layoutOneColumn ? 'w-auto' : ''}
                     ${styleOf.filters}
                     flex
                     flex-col
@@ -240,7 +229,7 @@ function HomePage(props) {
                     dark:text-white
                   `}
                 >
-                  <button
+                  {/* <button
                     className={`
                       ${styleOf.uiButtons}
                       border
@@ -252,9 +241,9 @@ function HomePage(props) {
                       text-sm
                       dark:border-white
                     `}
-                    onClick={() => handleLayoutOfCards()}
+                    onClick={() => props.toggleLayout('toggle')}
                   >
-                    {layoutOneColumn ? 'horizontal mode' : 'vertical mode'}
+                    {props.layoutOneColumn ? 'horizontal mode' : 'vertical mode'}
                   </button>
                   <div>
                     <button
@@ -313,13 +302,13 @@ function HomePage(props) {
                       px-2
                       w-fit
                       text-sm
-                      ${layoutOneColumn ? '' : 'bg-gray-300 text-gray-100 border-gray-300 dark:border-gray-300'}
+                      ${props.layoutOneColumn ? '' : 'bg-gray-300 text-gray-100 border-gray-300 dark:border-gray-300'}
                       dark:border-white
                     `}
-                    onClick={() => handleStyleOfCards()}
-                    disabled={layoutOneColumn ? false : true}
+                    onClick={() => props.toggleDirectionCard('toggle')}
+                    disabled={props.layoutOneColumn ? false : true}
                   >
-                    {horizontalCard ? 'horizontal card' : 'vertical card'}
+                    {props.horizontalCard ? 'horizontal card' : 'vertical card'}
                   </button>
                   <div>
                     <button
@@ -350,15 +339,15 @@ function HomePage(props) {
                     >
                       {rightHandIcon}
                     </button>
-                  </div>
+                  </div> */}
                 </li>
                 {oddAds.map(ad => {
                   return (
                     <Card
                       ad={ad}
                       key={ad._id}
-                      horizontalCard={horizontalCard}
-                      layoutOneColumn={layoutOneColumn}
+                      horizontalCard={props.horizontalCard}
+                      layoutOneColumn={props.layoutOneColumn}
                     />
                   )
                 })}
@@ -369,8 +358,8 @@ function HomePage(props) {
                     <Card
                       ad={ad}
                       key={ad._id}
-                      horizontalCard={horizontalCard}
-                      layoutOneColumn={layoutOneColumn}
+                      horizontalCard={props.horizontalCard}
+                      layoutOneColumn={props.layoutOneColumn}
                     />
                   )
                 })}

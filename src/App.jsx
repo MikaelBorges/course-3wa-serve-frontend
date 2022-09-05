@@ -1,13 +1,13 @@
+import './fonts/gilroy.css'
 import Layout from './Layout'
-import "./fonts/gilroy.css"
-import { Route, Routes } from 'react-router-dom'
 import HomePage from './HomePage'
-import { useState, useEffect } from 'react'
-import { lightIcon, darkIcon, systemIcon, leftHandIcon, rightHandIcon } from './icons/Icons'
 import LoginPage from './LoginPage'
 import NewAdPage from './NewAdPage'
-import RegisterPage from './RegisterPage'
 import ProfilPage from './ProfilPage'
+import RegisterPage from './RegisterPage'
+import { useState, useEffect } from 'react'
+import { Route, Routes } from 'react-router-dom'
+import { lightIcon, darkIcon, systemIcon, leftHandIcon, rightHandIcon } from './icons/Icons'
 
 function App() {
   const [userId, setUserId] = useState(''),
@@ -16,25 +16,50 @@ function App() {
         [urlNewAd, setUrlNewAd] = useState(''),
         [urlUserId, setUrlUserId] = useState(''),
         [darkMode, setDarkMode] = useState(false),
-        [rightHand, setRightHand] = useState(true)
+        [rightHand, setRightHand] = useState(true),
+        [horizontalCard, setHorizontalCard] = useState(false),
+        [layoutOneColumn, setLayoutOneColumn] = useState(false)
 
-        function toggleHand(handSelected) {
-          switch (handSelected) {
-            case leftHandIcon:
-              setRightHand(false)
-              localStorage.hand = 'left'
+        function toggleDirectionCard(horizontalDirection) {
+          window.localStorage.setItem('horizontalCard', !horizontalCard)
+          switch(horizontalDirection) {
+            case 'toggle':
+              setHorizontalCard(!horizontalCard)
               break
-            case rightHandIcon:
-              setRightHand(true)
-              localStorage.hand = 'right'
-              break;
+            case true:
+              setHorizontalCard(true)
+              break
+            case false:
+              setHorizontalCard(false)
+              break
             default:
-              console.error('Problème dans la sélection de la main');
+              console.error('Problème dans la sélection du style des annonces');
           }
         }
-      
+
+        function toggleLayout(layoutSelected) {
+          switch(layoutSelected) {
+            case 'toggle':
+              setLayoutOneColumn(!layoutOneColumn)
+              window.localStorage.setItem('layoutOneColumn', !layoutOneColumn)
+              break
+            case true:
+              setLayoutOneColumn(true)
+              break
+            case false:
+              setLayoutOneColumn(false)
+              break
+            default:
+              console.error("Problème dans la sélection du layout de l'app");
+          }
+        }
+
+        function toggleHand() {
+          setRightHand(!rightHand)
+        }
+
         function toggleTheme(themeSelected) {
-          switch (themeSelected) {
+          switch(themeSelected) {
             case lightIcon:
               setTheme('light');
               localStorage.theme = 'light';
@@ -63,7 +88,7 @@ function App() {
               console.error('Problème dans la sélection du thème');
           }
         }
-      
+
         function updateUser(data) {
           setDataUser(data)
           //console.log('DATA', data)
@@ -72,12 +97,18 @@ function App() {
             setUrlNewAd(`/user/${data._id}/new`)
           }
         }
-      
+
         function displayUser() {
           console.log('dataUser', dataUser)
         }
 
   useEffect(() => {
+    const horizontalCardInLS = window.localStorage.getItem('horizontalCard'),
+          layoutOneColumnInLS = window.localStorage.getItem('layoutOneColumn')
+
+    if(layoutOneColumnInLS === 'true') setLayoutOneColumn(true)
+    if(horizontalCardInLS === 'true') setHorizontalCard(true)
+
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
     if(localStorage.theme) {
       if(localStorage.theme === 'light') {
@@ -131,17 +162,29 @@ function App() {
     <Layout
       theme={theme}
       darkMode={darkMode}
-      toggleTheme={toggleTheme}
       dataUser={dataUser}
+      rightHand={rightHand}
+      toggleHand={toggleHand}
       updateUser={updateUser}
       displayUser={displayUser}
-      rightHand={rightHand}
+      toggleTheme={toggleTheme}
+      toggleLayout={toggleLayout}
+      horizontalCard={horizontalCard}
+      layoutOneColumn={layoutOneColumn}
+      toggleDirectionCard={toggleDirectionCard}
     >
       <Routes>
         <Route
           exact
           path='/'
-          element={<HomePage toggleHand={toggleHand} toggleTheme={toggleTheme} darkMode={darkMode} updateUser={updateUser} />}
+          element={
+            <HomePage
+              darkMode={darkMode}
+              updateUser={updateUser}
+              horizontalCard={horizontalCard}
+              layoutOneColumn={layoutOneColumn}
+            />
+          }
         />
         <Route
           exact
@@ -156,7 +199,16 @@ function App() {
         <Route
           exact
           path={urlUserId}
-          element={<ProfilPage darkMode={darkMode} dataUser={dataUser} />}
+          element={
+            <ProfilPage
+              darkMode={darkMode}
+              dataUser={dataUser}
+              toggleLayout={toggleLayout}
+              horizontalCard={horizontalCard}
+              layoutOneColumn={layoutOneColumn}
+              toggleDirectionCard={toggleDirectionCard}
+            />
+          }
         />
         <Route
           exact
