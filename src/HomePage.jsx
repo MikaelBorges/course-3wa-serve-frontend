@@ -11,7 +11,6 @@ function HomePage(props) {
         [favs, setFavs] = useState(false),
         [oddAds, setOddAds] = useState([]),
         [evenAds, setEvenAds] = useState([]),
-        [adsLoaded, setAdsLoaded] = useState(false),
         [areAdsArranged, setAreAdsArranged] = useState(false),
 
         arrangeAds = () => {
@@ -19,7 +18,7 @@ function HomePage(props) {
           evenAds.length = 0
           /* setOddAds([])
           setEvenAds([]) */
-          console.log('début du classement')
+          // console.log('début du classement')
           ads.forEach((ad, index) => {
             const isAdEven = (index % 2 === 0) ? true : false
             if (isAdEven) {
@@ -30,7 +29,7 @@ function HomePage(props) {
             }
           })
           if(evenAds.length > 0 || oddAds.length > 0) setAreAdsArranged(true)
-          console.log('fin du classement')
+          // console.log('fin du classement')
         },
 
         checkIfAddToFavorites = adId => {
@@ -40,13 +39,13 @@ function HomePage(props) {
           }
           addToFavorites(ad)
           .then(res => {
-            console.log('res.data.message', res.data.message)
+            // console.log('res.data.message', res.data.message)
 
             if(res.status === 200) {
-              console.log('200')
+              // console.log('200')
               loadAds()
               .then(res => {
-                console.log('RES :', res)
+                // console.log('RES :', res)
                 setAds(res.ads)
                 setAreAdsArranged(false)
                 setFavs(true)
@@ -59,14 +58,13 @@ function HomePage(props) {
         }
 
   useEffect(() => {
-    console.log('useEffect favs')
-    console.log('favs', favs)
+    /* console.log('useEffect favs')
+    console.log('favs', favs) */
     if(favs) arrangeAds()
-    //setAreAdsArranged(false)
   }, [favs]);
 
   useEffect(() => {
-    console.log('useEffect')
+    // console.log('useEffect')
     // await loadAds()
     loadAds()
     .then(res => {
@@ -76,8 +74,8 @@ function HomePage(props) {
   }, []);
 
   useEffect(() => {
-    console.log('useEffect ads')
-    console.log('ads', ads)
+    /* console.log('useEffect ads')
+    console.log('ads', ads) */
     if(!areAdsArranged) arrangeAds()
   }, [ads]);
 
