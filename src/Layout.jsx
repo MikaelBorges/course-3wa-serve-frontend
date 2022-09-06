@@ -14,7 +14,7 @@ function Layout(props) {
   const navigate = useNavigate(),
         [error, setError] = useState(null),
         //[menu, setMenu] = useState(false),
-        [isMenuOpen, setIsMenuOpen] = useState(true),
+        [isMenuOpen, setIsMenuOpen] = useState(false),
         [dbLocationIsOnline, setDbLocationIsOnline] = useState(false)
 
   /* function handleDbLocationIsOnline() {
@@ -63,7 +63,6 @@ function Layout(props) {
   }
 
   function handleLogout() {
-    setIsMenuOpen(!isMenuOpen)
     window.localStorage.removeItem('user')
     /* console.log('handleLogout')
     props.dataUser === undefined ? '/user/login' : '/logout'
@@ -71,50 +70,43 @@ function Layout(props) {
     props.updateUser(undefined) */
     let data = { _id : props.dataUser._id }
     logoutUser(data)
-    .then((res) => {
-        /* console.log('RES (LAYOUT) :')
-        console.log(res) */
-        if (res.status === 200) {
-            /* console.log('res.status === 200')
-            window.localStorage.setItem("saas-token", res.token);
-            let user = res.data.user
-            console.log('user LoginPage', user)
-            user.token = res.token
-            dispatch(setUser(user))
-            setRedirect(true);
-            navigate("/", { state: { user: user } }); */
+    .then(res => {
+      /* console.log('RES (LAYOUT) :')
+      console.log(res) */
+      if (res.status === 200) {
+        /* console.log('res.status === 200')
+        window.localStorage.setItem("saas-token", res.token);
+        let user = res.data.user
+        console.log('user LoginPage', user)
+        user.token = res.token
+        dispatch(setUser(user))
+        setRedirect(true);
+        navigate("/", { state: { user: user } }); */
 
-            props.updateUser(undefined)
-
-            if(window.location.pathname !== '/') navigate('/')
-        }
-        else {
-            console.log('res.msg')
-            console.log(res.msg)
-            setError(res.msg);
-        }
+        props.updateUser(undefined)
+        if(window.location.pathname !== '/') navigate('/')
+      }
+      else {
+        console.log('res.msg')
+        console.log(res.msg)
+        setError(res.msg)
+      }
     })
-    .catch((err) => {
-        console.log('erreur: rentre dans le catch du Layout')
-        console.log(err)
-        // setError(err);
+    .catch(err => {
+      console.log('erreur: rentre dans le catch du Layout')
+      console.log(err)
+      // setError(err)
     })
   }
 
   // if (props.dataUser) console.log('in layout',props.dataUser._id)
 
   return (
-    <div
-      className={`
-        min-h-screen
-      `}
-    >
+    <div className='min-h-screen'>
       <header className='fixed p-6 w-full h-28 flex justify-between z-10'>
-
         <Link to='/'>
-          <img src={logo} alt="logo" className={`${styleOf.logo} max-w-none`} />
+          <img src={logo} alt='logo' className={`${styleOf.logo} max-w-none`} />
         </Link>
-
         <div
           className={`
             p-2
@@ -251,8 +243,9 @@ function Layout(props) {
             </button>
           </div>
         )} */}
+
       </header>
-      <main className="min-h-screen dark:bg-slate-800">
+      <main className='min-h-screen dark:bg-slate-800'>
         {props.children}
         <nav
           className={`
@@ -270,7 +263,6 @@ function Layout(props) {
         >
           {isMenuOpen &&
             <>
-
               <button
                 className={`
                   h-8
@@ -286,7 +278,6 @@ function Layout(props) {
               >
                 {cardIcon}
               </button>
-
               <button
                 className={`
                   h-8
@@ -300,7 +291,6 @@ function Layout(props) {
               >
                 {props.layoutOneColumn ? rowLayoutIcon : columnLayoutIcon}
               </button>
-
               <button
                 className={`
                   h-8
@@ -314,7 +304,6 @@ function Layout(props) {
               >
                 {props.rightHand ? leftHandIcon : rightHandIcon}
               </button>
-
               <button
                 className={`
                   h-8
@@ -328,7 +317,6 @@ function Layout(props) {
               >
                 {systemIcon}
               </button>
-
               {props.dataUser === undefined ?
                 <Link
                   to='user/login'
@@ -341,7 +329,6 @@ function Layout(props) {
                     bg-slate-600
                     dark:bg-slate-600
                   `}
-                  //onClick={setIsMenuOpen(false)}
                 >
                   {keyIcon} 
                 </Link>
@@ -360,7 +347,6 @@ function Layout(props) {
                   {disconnectIcon}
                 </button>
               }
-
               <Link
                 to={props.dataUser === undefined ? '/user/register' : `/user/${props.dataUser._id}`}
                 className={`
@@ -375,7 +361,6 @@ function Layout(props) {
               >
                 {userIcon}
               </Link>
-
               {props.dataUser &&
                 <Link
                   to={props.dataUser === undefined ? '/user/login' : `/user/${props.dataUser._id}/new`}
@@ -395,7 +380,6 @@ function Layout(props) {
               }
             </>
           }
-
           <button
             className={`
               h-8
@@ -410,7 +394,6 @@ function Layout(props) {
           >
             {wheelIcon}
           </button>
-
           {/* {menu &&
             <Ul className='dark:text-white text-black'>
               <Li>

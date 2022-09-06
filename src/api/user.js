@@ -1,6 +1,16 @@
 import axios from 'axios'
 import { config } from '../config'
 
+export function addToFavorites(ad) {
+  return axios.post(`${config.api_url}/addToFavorites`, ad)
+  .then(res => {
+    return res
+  })
+  .catch(err => {
+    return err
+  })
+}
+
 export function registerUser(datas) {
   return axios.post(`${config.api_url}/user/register`, datas)
   .then(res => {
