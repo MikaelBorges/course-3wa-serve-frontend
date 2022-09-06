@@ -269,9 +269,7 @@ function Layout(props) {
                   px-2
                   text-xs
                   rounded-full
-                  bg-slate-200
-                  dark:bg-slate-600
-                  ${props.layoutOneColumn ? '' : 'bg-gray-500 dark:bg-gray-500'}
+                  ${props.layoutOneColumn ? 'bg-slate-200 dark:bg-slate-400' : ' dark:bg-black'}
                 `}
                 onClick={() => props.toggleDirectionCard('toggle')}
                 disabled={props.layoutOneColumn ? false : true}
@@ -285,7 +283,7 @@ function Layout(props) {
                   text-xs
                   rounded-full
                   bg-slate-200
-                  dark:bg-slate-600
+                  dark:bg-slate-400
                 `}
                 onClick={() => props.toggleLayout('toggle')}
               >
@@ -298,7 +296,7 @@ function Layout(props) {
                   text-xs
                   rounded-full
                   bg-slate-200
-                  dark:bg-slate-600
+                  dark:bg-slate-400
                 `}
                 onClick={() => props.toggleHand()}
               >
@@ -311,7 +309,7 @@ function Layout(props) {
                   text-xs
                   rounded-full
                   bg-slate-200
-                  dark:bg-slate-600
+                  dark:bg-slate-400
                 `}
                 onClick={e => props.toggleTheme(e.target.innerText)}
               >
@@ -322,12 +320,12 @@ function Layout(props) {
                   to='user/login'
                   className={`
                     h-8
-                    pt-1
+                    pt-2
                     px-2
                     text-xs
                     rounded-full
-                    bg-slate-600
-                    dark:bg-slate-600
+                    bg-slate-200
+                    dark:bg-slate-400
                   `}
                 >
                   {keyIcon} 
@@ -340,7 +338,7 @@ function Layout(props) {
                     text-xs
                     rounded-full
                     bg-slate-200
-                    dark:bg-slate-600
+                    dark:bg-slate-400
                   `}
                   onClick={() => handleLogout()}
                 >
@@ -356,7 +354,7 @@ function Layout(props) {
                   text-xs
                   rounded-full
                   bg-slate-200
-                  dark:bg-slate-600
+                  dark:bg-slate-400
                 `}
               >
                 {userIcon}
@@ -372,7 +370,7 @@ function Layout(props) {
                     text-xs
                     rounded-full
                     bg-slate-200
-                    dark:bg-slate-600
+                    dark:bg-slate-400
                   `}
                 >
                   {plusIcon} 
@@ -388,7 +386,7 @@ function Layout(props) {
               text-xs
               rounded-full
               bg-slate-200
-              dark:bg-slate-600
+              dark:bg-slate-400
             `}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
