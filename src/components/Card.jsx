@@ -1,6 +1,7 @@
 import { deleteAd } from '../api/ads'
 import styleOf from './Card.module.scss'
 import { useState, useEffect } from 'react'
+//import { addToFavorites } from '../api/user'
 import { useNavigate } from 'react-router-dom'
 import {
   binIcon,
@@ -34,7 +35,7 @@ function Card(props) {
           //props.allCardsChecked && (isSubscribed || props.allCardsChecked)
         },
 
-        displayStars = (starsNb) => {
+        displayStars = starsNb => {
           let stringOfStars = ''
           while(starsNb) {
             stringOfStars += starIcon
@@ -45,7 +46,26 @@ function Card(props) {
 
         handleAddToFavorites = e => {
           e.stopPropagation()
-          console.log('ajouter aux favoris')
+          if(!weAreOnUserPage && (props.dataUser._id !== props.ad.userId)) {
+
+            props.checkIfAddToFavorites(props.ad._id)
+
+            /* console.log('props.dataUser._id', props.dataUser._id)
+            console.log('props.ad.userId', props.ad.userId)
+            if(props.dataUser._id !== props.ad.userId) {
+              const ad = {
+                adId: props.ad._id,
+                userId: props.dataUser._id,
+              }
+              addToFavorites(ad)
+              .then(res => {
+                console.log('res', res)
+              })
+              .catch(err => console.log(err))
+            } */
+          } else {
+            console.log("c'est ma propre annonce")
+          }
         },
 
         handleViewReviews = e => {
@@ -413,32 +433,34 @@ function Card(props) {
               {props.ad.reviewsNb}
             </div>
           </button>
-          <button
-            className={`
-              px-2
-              py-2
-              flex
-              text-xl
-              items-center
-              rounded-full
-              bg-gray-100
-              dark:bg-slate-600
-            `}
-            onClick={e => showStatistics(e)}
-          >
-            <div>{eyeIcon}</div>
-            <div
+          {weAreOnUserPage &&
+            <button
               className={`
-                ml-1
-                text-green-500 
-                ${props.layoutOneColumn && !props.horizontalCard ?
-                  'text-xl' : 'text-base'
-                }
+                px-2
+                py-2
+                flex
+                text-xl
+                items-center
+                rounded-full
+                bg-gray-100
+                dark:bg-slate-600
               `}
+              onClick={e => showStatistics(e)}
             >
-              {props.ad.views}
-            </div>
-          </button>
+              <div>{eyeIcon}</div>
+              <div
+                className={`
+                  ml-1
+                  text-green-500 
+                  ${props.layoutOneColumn && !props.horizontalCard ?
+                    'text-xl' : 'text-base'
+                  }
+                `}
+              >
+                {props.ad.views}
+              </div>
+            </button>
+          }
           <button
             className={`
               px-2

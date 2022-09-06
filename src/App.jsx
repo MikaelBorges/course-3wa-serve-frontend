@@ -180,6 +180,7 @@ function App() {
           element={
             <HomePage
               darkMode={darkMode}
+              dataUser={dataUser}
               updateUser={updateUser}
               horizontalCard={horizontalCard}
               layoutOneColumn={layoutOneColumn}

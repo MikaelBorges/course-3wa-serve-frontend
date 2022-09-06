@@ -3,23 +3,21 @@ import { config } from '../config'
 
 //on charge toutes les annonces
 export function loadAds() {
-    return axios.get(config.api_url)
-    .then(res => {
-        return res.data
-    })
-    .catch((err) => {
-        return err
-    })
+  return axios.get(config.api_url)
+  .then(res => {
+      return res.data
+  })
+  .catch(err => {
+      return err
+  })
 }
 
 export function deleteAd(adToDelete) {
   return axios.post(`${config.api_url}/deleteAd`, adToDelete)
   .then(res => {
-    //console.log('res (newAd.js)', res)
     return res
   })
   .catch(err => {
-    //console.log('err', err)
     return err
   })
 }

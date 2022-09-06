@@ -1,23 +1,25 @@
 import { loadAds } from './api/ads'
-import { useState, useEffect } from 'react'
-import {
-  lightIcon,
-  darkIcon,
-  systemIcon,
-  leftHandIcon,
-  rightHandIcon
-} from './icons/Icons'
-import styleOf from './HomePage.module.scss'
 import Card from './components/Card'
+import { addToFavorites } from './api/user'
+import { useState, useEffect } from 'react'
+import styleOf from './HomePage.module.scss'
+
+let newAds = {}
 
 function HomePage(props) {
   const [ads, setAds] = useState([]),
-        [users, setUsers] = useState([]),
-        [oddAds, setoddAds] = useState([]),
-        [evenAds, setevenAds] = useState([]),
+        [favs, setFavs] = useState(false),
+        [oddAds, setOddAds] = useState([]),
+        [evenAds, setEvenAds] = useState([]),
+        [adsLoaded, setAdsLoaded] = useState(false),
         [areAdsArranged, setAreAdsArranged] = useState(false),
 
         arrangeAds = () => {
+          oddAds.length = 0
+          evenAds.length = 0
+          /* setOddAds([])
+          setEvenAds([]) */
+          console.log('début du classement')
           ads.forEach((ad, index) => {
             const isAdEven = (index % 2 === 0) ? true : false
             if (isAdEven) {
@@ -28,35 +30,54 @@ function HomePage(props) {
             }
           })
           if(evenAds.length > 0 || oddAds.length > 0) setAreAdsArranged(true)
+          console.log('fin du classement')
+        },
+
+        checkIfAddToFavorites = adId => {
+          const ad = {
+            adId: adId,
+            userId: props.dataUser._id,
+          }
+          addToFavorites(ad)
+          .then(res => {
+            console.log('res.data.message', res.data.message)
+
+            if(res.status === 200) {
+              console.log('200')
+              loadAds()
+              .then(res => {
+                console.log('RES :', res)
+                setAds(res.ads)
+                setAreAdsArranged(false)
+                setFavs(true)
+              })
+              .catch(err => console.log(err))
+            }
+
+          })
+          .catch(err => console.log(err))
         }
 
-        /* useEffect(() => {
-          async function fetchData() {
-            // You can await here
-            const response = await MyAPI.getData(someId);
-            // ...
-          }
-          fetchData();
-        }, [someId]); // Or [] if effect doesn't need props or state */
-
-  // useEffect( async () => {
   useEffect(() => {
-    /* const horizontalCardInLS = window.localStorage.getItem('horizontalCard'),
-          layoutOneColumnInLS = window.localStorage.getItem('layoutOneColumn')
+    console.log('useEffect favs')
+    console.log('favs', favs)
+    if(favs) arrangeAds()
+    //setAreAdsArranged(false)
+  }, [favs]);
 
-    if(layoutOneColumnInLS === 'true') props.toggleLayout(true)
-    if(horizontalCardInLS === 'true') props.toggleDirectionCard(true) */
-
+  useEffect(() => {
+    console.log('useEffect')
     // await loadAds()
     loadAds()
     .then(res => {
       setAds(res.ads)
-      setUsers(res.users)
     })
     .catch(err => console.log(err))
   }, []);
 
   useEffect(() => {
+    console.log('useEffect ads')
+    console.log('ads', ads)
     if(!areAdsArranged) arrangeAds()
   }, [ads]);
 
@@ -204,8 +225,10 @@ function HomePage(props) {
                   <Card
                     ad={ad}
                     key={ad._id}
+                    dataUser={props.dataUser}
                     horizontalCard={props.horizontalCard}
                     layoutOneColumn={props.layoutOneColumn}
+                    checkIfAddToFavorites={checkIfAddToFavorites}
                   />
                 )
               })}
@@ -346,8 +369,10 @@ function HomePage(props) {
                     <Card
                       ad={ad}
                       key={ad._id}
+                      dataUser={props.dataUser}
                       horizontalCard={props.horizontalCard}
                       layoutOneColumn={props.layoutOneColumn}
+                      checkIfAddToFavorites={checkIfAddToFavorites}
                     />
                   )
                 })}
@@ -358,8 +383,10 @@ function HomePage(props) {
                     <Card
                       ad={ad}
                       key={ad._id}
+                      dataUser={props.dataUser}
                       horizontalCard={props.horizontalCard}
                       layoutOneColumn={props.layoutOneColumn}
+                      checkIfAddToFavorites={checkIfAddToFavorites}
                     />
                   )
                 })}
@@ -369,8 +396,16 @@ function HomePage(props) {
         </article>
       </section>
     )
+  } else {
+    return (
+      <section className='min-h-screen flex justify-center items-center'>
+        <img
+          className='max-w-xs'
+          src="https://i.stack.imgur.com/y3Hm3.gif"
+        />
+      </section>
+    )
   }
-
 }
 
 export default HomePage;
