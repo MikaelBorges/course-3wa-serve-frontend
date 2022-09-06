@@ -252,13 +252,13 @@ function Layout(props) {
             p-4
             flex
             fixed
-            bottom-2
+            bottom-4
             space-x-2
             bg-white
             shadow-2xl
             rounded-full
             dark:bg-black
-            ${props.rightHand ? 'justify-end right-2' : 'left-2'}
+            ${props.rightHand ? 'justify-end right-4' : 'left-4'}
           `}
         >
           {isMenuOpen &&
