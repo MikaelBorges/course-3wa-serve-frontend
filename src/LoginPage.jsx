@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 function LoginPage(props) {
+
     const navigate = useNavigate(),
           [email, setEmail] = useState(''),
           [error, setError] = useState(null),
@@ -61,16 +62,18 @@ function LoginPage(props) {
       }
     }, [email, password]);
 
-    useEffect(() => {
-      // console.log("window.localStorage.getItem('user')", window.localStorage.getItem('user'))
-      if(window.localStorage.getItem('user') !== null) {
+    /* useEffect(() => {
+      console.log('login useEffect [props.dataUser]')
+      console.log('props.dataUser', props.dataUser)
+      if(Object.keys(props.dataUser).length !== 0 || props.dataUser.constructor !== Object) {
+        console.log('REDIRECTION')
         navigate('/')
       }
-    }, []);
+    }, [props.dataUser]); */
 
-    /* if(redirect) {
-        return <Navigate to="/" replace={true} />
-    } */
+    useEffect(() => {
+      console.log('composant login chargé')
+    }, []);
 
   return (
     <section className='min-h-screen pt-32 pb-8 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>

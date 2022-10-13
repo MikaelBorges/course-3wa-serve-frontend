@@ -12,7 +12,7 @@ import {
   crownIcon,
   pencilIcon,
   paperPencilIcon
-} from '../icons/Icons'
+} from '../constants/icons'
 
 function Card(props) {
   const navigate = useNavigate(),
@@ -42,30 +42,6 @@ function Card(props) {
             --starsNb
           }
           return stringOfStars
-        },
-
-        handleAddToFavorites = e => {
-          e.stopPropagation()
-          if(!weAreOnUserPage && (props.dataUser._id !== props.ad.userId)) {
-
-            props.checkIfAddToFavorites(props.ad._id)
-
-            /* console.log('props.dataUser._id', props.dataUser._id)
-            console.log('props.ad.userId', props.ad.userId)
-            if(props.dataUser._id !== props.ad.userId) {
-              const ad = {
-                adId: props.ad._id,
-                userId: props.dataUser._id,
-              }
-              addToFavorites(ad)
-              .then(res => {
-                console.log('res', res)
-              })
-              .catch(err => console.log(err))
-            } */
-          } else {
-            console.log("c'est ma propre annonce")
-          }
         },
 
         handleViewReviews = e => {
@@ -433,7 +409,7 @@ function Card(props) {
               {props.ad.reviewsNb}
             </div>
           </button>
-          {weAreOnUserPage &&
+          {weAreOnUserPage && !props.isVisitor &&
             <button
               className={`
                 px-2
@@ -472,7 +448,7 @@ function Card(props) {
               bg-gray-100
               dark:bg-slate-600
             `}
-            onClick={e => handleAddToFavorites(e)}
+            onClick={e => props.handleAddToFavorites(e, props.ad)}
           >
             <div>{heartIcon}</div>
             <div
@@ -488,7 +464,7 @@ function Card(props) {
             </div>
           </button>
         </div>
-        {weAreOnUserPage &&
+        {weAreOnUserPage && !props.isVisitor &&
           <div className='flex justify-between'>
             <button
               className={`

@@ -36,8 +36,8 @@ export function newAd(data) {
 }
 
 //on charge toutes les annonces de l'user
-export function loadUserAds(id) {
-  return axios.get(`${config.api_url}/user/${id}`)
+export function loadUserAds(id, withLiteInfosOfUser) {
+  return axios.get(`${config.api_url}/user/${id}`, { params: { withLiteInfosOfUser: withLiteInfosOfUser } })
   .then(res => {
       return res.data
   })

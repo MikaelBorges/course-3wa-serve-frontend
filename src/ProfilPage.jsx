@@ -1,24 +1,29 @@
 import Card from './components/Card'
 import { loadUserAds } from './api/ads'
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { userIsLogged } from './functions/user'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
-import { lightIcon, goodEveningIcon, binIcon, validIcon } from './icons/Icons'
+import { lightIcon, goodEveningIcon, binIcon, validIcon } from './constants/icons'
 
 function ProfilPage(props) {
-  const hour = new Date().getHours(),
+
+  const { userIdPage } = useParams(),
+        hour = new Date().getHours(),
         [ads, setAds] = useState([]),
         [imgUrl, setImgUrl] = useState(''),
+        
         [showDraft, setShowDraft] = useState(false),
         [isPopupOpen, setIsPopupOpen] = useState(false),
-        user = JSON.parse(window.localStorage.getItem('user')),
+        [liteInfosOfUser, setLiteInfosOfUser]= useState({}),
         [allCardsChecked, setAllCardsChecked] = useState(false),
         [responseMessageFromCard, setResponseMessageFromCard] = useState(''),
 
         wayToGreet = () => {
           return hour > 6 && hour < 20 ?
-            `Bonjour ${user.firstname} ${lightIcon}`
+            `Bonjour ${props.dataUser.firstname} ${lightIcon}`
             :
-            `Bonsoir ${user.firstname} ${goodEveningIcon}`
+            `Bonsoir ${props.dataUser.firstname} ${goodEveningIcon}`
         },
 
         handleDeleteAd = e => {
@@ -43,7 +48,7 @@ function ProfilPage(props) {
         },
 
         uncheckAllCheckboxes = () => {
-          console.log('first')
+          console.log('uncheckAllCheckboxes')
           setAllCardsChecked(false)
         },
 
@@ -53,24 +58,70 @@ function ProfilPage(props) {
           window.location.reload(false)
         }
 
+  const [isVisitor, setIsVisitor] = useState(false)
+
   useEffect(() => {
-    setImgUrl(user.imageUser)
-    loadUserAds(props.dataUser._id)
+    console.log('props.dataUser', props.dataUser)
+    if(userIsLogged(props.dataUser) && (props.dataUser._id === userIdPage)) {
+      console.log('utiliser les props')
+      setIsVisitor(false)
+
+
+      loadUserAds(userIdPage, false)
+      .then(res => {
+        setAds(res.adsOfUser)
+      })
+      .catch(err => console.log('err', err))
+
+
+
+    } else {
+      console.log('utiliser les datas du serveur')
+      setIsVisitor(true)
+
+
+
+      loadUserAds(userIdPage, true)
+      .then(res => {
+        setAds(res.adsOfUser)
+        setLiteInfosOfUser(res.liteInfos)
+      })
+      .catch(err => console.log('err', err))
+
+      
+
+    }
+  }, [userIdPage]);
+
+  useEffect(() => {
+    //console.log('isVisitor', isVisitor)
+
+    /* loadUserAds(userIdPage, isVisitor)
     .then(res => {
-      setAds(res)
+      setAds(res.adsOfUser)
+      if(!liteInfosLoaded) setLiteInfosOfUser(res.liteInfos)
+      setLiteInfosLoaded(true)
     })
-    .catch(err => console.log('err', err))
-  }, []);
+    .catch(err => console.log('err', err)) */
+
+  }, [isVisitor]);
+
+  /* if(isVisitor) {
+    setImgUrl(user.imageUser)
+  } else {
+    setImgUrl(user.imageUser)
+  } */
+
+  /* <CloudinaryContext className='rounded-full overflow-hidden' cloudName='mika4ever'>
+    <Image publicId={imgUrl}>
+      <Transformation quality='auto' fetchFormat='auto' />
+    </Image>
+  </CloudinaryContext> */
 
   return (
     <section className='pt-28 px-8 pb-24 dark:bg-slate-900'>
-      {props.dataUser &&
+      {!isVisitor &&
         <>
-          <CloudinaryContext className='rounded-full overflow-hidden' cloudName='mika4ever'>
-            <Image publicId={imgUrl}>
-              <Transformation quality='auto' fetchFormat='auto' />
-            </Image>
-          </CloudinaryContext>
           <h1 className='py-4 text-4xl dark:text-white'>{wayToGreet()}</h1>
           <div className='flex'>
             <button
@@ -111,92 +162,100 @@ function ProfilPage(props) {
               Supprimer mon compte
             </button>
           </div>
-          <div className='py-4 flex justify-between'>
-            <div className='flex flex-col justify-center'>
-              <h2 className='text-3xl dark:text-white'>
-                {ads.length > 0 ? 'Vos annonces' : "Vous n'avez aucune annonce"}
-              </h2>
-            </div>
-              <div className='flex flex-col justify-center'>
-                <div className='flex'>
-                  <button
-                    className={`
-                      mr-2
-                      px-4
-                      py-3
-                      text-2xl
-                      rounded-full
-                      bg-gray-100
-                      dark:bg-gray-800
-                    `}
-                    onClick={e => handleDeleteAd(e)}
-                  >
-                    {binIcon}
-                  </button>
-                  {showDraft &&
-                    <div
-                      className={`
-                        flex
-                        flex-col
-                        justify-center
-                      `}
-                    >
-                      <input
-                        className='w-8 h-8 rounded-full'
-                        type='checkbox'
-                        name='check-all'
-                        value='yes'
-                        onClick={e => handleChange(e)}
-                        onChange={e => handleChange(e)}
-                      />
-                    </div>
-                  }
-                </div>
-              </div>
-          </div>
-          {ads.length > 0 &&
-            <ul>
-              {ads.map(ad => {
-                return (
-                  <Card
-                    ad={ad}
-                    key={ad._id}
-                    openPopup={openPopup}
-                    showDraft={showDraft}
-                    allCardsChecked={allCardsChecked}
-                    horizontalCard={props.horizontalCard}
-                    layoutOneColumn={props.layoutOneColumn}
-                    uncheckAllCheckboxes={uncheckAllCheckboxes}
-                  />
-                )
-              })}
-            </ul>
-          }
-          {isPopupOpen &&
-            <div
-              className={`
-                flex
-                fixed
-                inset-0
-                text-center
-                items-center
-                justify-center
-              `}
-            >
-              <div
-                className={`
-                  p-4
-                  bg-white
-                  rounded-3xl
-                  text-green-500
-                `}
-              >
-                <div className='text-7xl'>{validIcon}</div>
-                <div>{responseMessageFromCard}</div>
-              </div>
-            </div>
-          }
         </>
+      }
+      <div className='py-4 flex justify-between'>
+        <div className='flex flex-col justify-center'>
+          <h2 className='text-3xl dark:text-white'>
+            {isVisitor ?
+              `Annonces de ${liteInfosOfUser.firstname}`
+              :
+              `Annonces de ${props.dataUser.firstname}`
+            }
+          </h2>
+        </div>
+        {!isVisitor &&
+          <div className='flex flex-col justify-center'>
+            <div className='flex'>
+              <button
+                className={`
+                  mr-2
+                  px-4
+                  py-3
+                  text-2xl
+                  rounded-full
+                  bg-gray-100
+                  dark:bg-gray-800
+                `}
+                onClick={e => handleDeleteAd(e)}
+              >
+                {binIcon}
+              </button>
+              {showDraft &&
+                <div
+                  className={`
+                    flex
+                    flex-col
+                    justify-center
+                  `}
+                >
+                  <input
+                    className='w-8 h-8 rounded-full'
+                    type='checkbox'
+                    name='check-all'
+                    value='yes'
+                    onClick={e => handleChange(e)}
+                    onChange={e => handleChange(e)}
+                  />
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+      {ads.length > 0 &&
+        <ul>
+          {ads.map(ad => {
+            return (
+              <Card
+                ad={ad}
+                key={ad._id}
+                isVisitor={isVisitor}
+                openPopup={openPopup}
+                showDraft={showDraft}
+                allCardsChecked={allCardsChecked}
+                horizontalCard={props.horizontalCard}
+                layoutOneColumn={props.layoutOneColumn}
+                uncheckAllCheckboxes={uncheckAllCheckboxes}
+                handleAddToFavorites={props.handleAddToFavorites}
+              />
+            )
+          })}
+        </ul>
+      }
+      {isPopupOpen &&
+        <div
+          className={`
+            flex
+            fixed
+            inset-0
+            text-center
+            items-center
+            justify-center
+          `}
+        >
+          <div
+            className={`
+              p-4
+              bg-white
+              rounded-3xl
+              text-green-500
+            `}
+          >
+            <div className='text-7xl'>{validIcon}</div>
+            <div>{responseMessageFromCard}</div>
+          </div>
+        </div>
       }
     </section>
   )

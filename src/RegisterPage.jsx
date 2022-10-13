@@ -1,6 +1,7 @@
 import { registerUser } from './api/user'
 import { useState, useEffect } from 'react'
 import styleOf from './Register.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 import {
   Image,
@@ -10,7 +11,9 @@ import {
 import { changeImg } from './api/coach'
 
 function RegisterPage(props) {
-  const [img, setImg] = useState(null),
+
+  const navigate = useNavigate(),
+        [img, setImg] = useState(null),
         [msg, setMsg] = useState(null),
         [email, setEmail] = useState(''),
         [info, setInfo] = useState(null),
@@ -108,6 +111,12 @@ function RegisterPage(props) {
           widget.open()
         }
 
+  /* useEffect(() => {
+    console.log('register useEffect')
+    console.log('props.dataUser', props.dataUser)
+    if(Object.keys(props.dataUser).length !== 0 || props.dataUser.constructor !== Object) navigate('/')
+  }, [props.dataUser]); */
+
   useEffect(() => {
       if (email !== '' && password !== '' && firstname !== '' && lastname !== '') {
           setDisabled(false);
@@ -116,6 +125,10 @@ function RegisterPage(props) {
           setDisabled(true);
       }
   }, [email, password]);
+
+  useEffect(() => {
+    console.log('composant register chargé')
+  }, []);
 
   return (
     <section className='min-h-screen pt-32 pb-8 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>

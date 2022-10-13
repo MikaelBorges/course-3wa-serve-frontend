@@ -1,14 +1,28 @@
-import styleOf from './Layout.module.scss'
+import {
+  keyIcon,
+  darkIcon,
+  userIcon,
+  cardIcon,
+  plusIcon,
+  wheelIcon,
+  lightIcon,
+  systemIcon,
+  leftHandIcon,
+  rightHandIcon,
+  rowLayoutIcon,
+  disconnectIcon,
+  columnLayoutIcon
+} from './constants/icons'
 import { useState } from 'react'
+import { config } from './config'
+import { logoutUser } from './api/user'
 import { Ul, Li } from './components/Ul'
 import { Lien } from './components/Lien'
+import styleOf from './Layout.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
-import { lightIcon, darkIcon, systemIcon, userIcon, keyIcon, disconnectIcon, plusIcon, wheelIcon, leftHandIcon, rightHandIcon,
-  cardIcon,columnLayoutIcon,rowLayoutIcon
-} from './icons/Icons'
+import { userIsLogout, userIsLogged } from './functions/user'
+import logo3D from './images/logos/gitlab-5562373-4642718.png'
 import logo from './images/logos/gitlab_tile_logo_icon_170092.png'
-import { logoutUser } from './api/user'
-import { config } from './config'
 
 function Layout(props) {
   const navigate = useNavigate(),
@@ -16,6 +30,8 @@ function Layout(props) {
         //[menu, setMenu] = useState(false),
         [isMenuOpen, setIsMenuOpen] = useState(false),
         [dbLocationIsOnline, setDbLocationIsOnline] = useState(false)
+
+        // console.log('props.dataUser', props.dataUser)
 
   /* function handleDbLocationIsOnline() {
     if(goOnline) {
@@ -63,11 +79,9 @@ function Layout(props) {
   }
 
   function handleLogout() {
-    window.localStorage.removeItem('user')
     /* console.log('handleLogout')
     props.dataUser === undefined ? '/user/login' : '/logout'
-    navigate("/", { state: { user: undefined } });
-    props.updateUser(undefined) */
+    navigate("/", { state: { user: undefined } }) */
     let data = { _id : props.dataUser._id }
     logoutUser(data)
     .then(res => {
@@ -83,7 +97,10 @@ function Layout(props) {
         setRedirect(true);
         navigate("/", { state: { user: user } }); */
 
-        props.updateUser(undefined)
+        // props.updateCorrectDataUser({})
+
+        window.localStorage.removeItem('user')
+        props.updateUser({})
         if(window.location.pathname !== '/') navigate('/')
       }
       else {
@@ -99,13 +116,13 @@ function Layout(props) {
     })
   }
 
-  // if (props.dataUser) console.log('in layout',props.dataUser._id)
+  // if(props.dataUser) console.log('in layout',props.dataUser._id)
 
   return (
     <div className='min-h-screen'>
       <header className='fixed p-6 w-full h-28 flex justify-between z-10'>
         <Link to='/'>
-          <img src={logo} alt='logo' className={`${styleOf.logo} max-w-none`} />
+          <img src={logo3D} alt='logo' className={`${styleOf.logo} max-w-none`} />
         </Link>
         <div
           className={`
@@ -315,7 +332,8 @@ function Layout(props) {
               >
                 {systemIcon}
               </button>
-              {props.dataUser === undefined ?
+
+              {userIsLogout(props.dataUser) ?
                 <Link
                   to='user/login'
                   className={`
@@ -346,11 +364,11 @@ function Layout(props) {
                 </button>
               }
               <Link
-                to={props.dataUser === undefined ? '/user/register' : `/user/${props.dataUser._id}`}
+                to={userIsLogout(props.dataUser) ? '/user/register' : `/user/${props.dataUser._id}`}
                 className={`
-                  pr-2.5
                   pl-2
                   pt-2
+                  pr-2.5
                   text-xs
                   rounded-full
                   bg-slate-200
@@ -359,10 +377,10 @@ function Layout(props) {
               >
                 {userIcon}
               </Link>
-              {props.dataUser &&
+              {userIsLogged(props.dataUser) &&
                 <Link
-                  to={props.dataUser === undefined ? '/user/login' : `/user/${props.dataUser._id}/new`}
-                  //to={`user/${props.dataUser._id}/new`}
+                  onClick={() => props.handleAuthorizedToAdd()}
+                  to={`/user/${props.dataUser._id}/new`}
                   className={`
                     h-8
                     pt-2
@@ -373,7 +391,7 @@ function Layout(props) {
                     dark:bg-slate-400
                   `}
                 >
-                  {plusIcon} 
+                  {plusIcon}
                 </Link>
               }
             </>
@@ -430,6 +448,7 @@ function Layout(props) {
           } */}
         </nav>
       </main>
+      <footer className='text-center dark:bg-slate-900 dark:text-white'>© 2022 serve.ac</footer>
 
       {/* <footer className="m-1 6 text-center">
         {footerLists.map((footerList, index) =>

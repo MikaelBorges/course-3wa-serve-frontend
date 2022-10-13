@@ -1,6 +1,16 @@
 import axios from 'axios'
 import { config } from '../config'
 
+/* export function getLiteInfosWithId(id) {
+  return axios.get(`${config.api_url}/user/${id}`)
+  .then(res => {
+      return res.data
+  })
+  .catch(err => {
+      return err
+  })
+} */
+
 export function addToFavorites(ad) {
   return axios.post(`${config.api_url}/addToFavorites`, ad)
   .then(res => {

@@ -1,13 +1,13 @@
 import { loadAds } from './api/ads'
 import Card from './components/Card'
-import { addToFavorites } from './api/user'
+
 import { useState, useEffect } from 'react'
 import styleOf from './HomePage.module.scss'
-
-let newAds = {}
+import { useNavigate } from 'react-router-dom'
 
 function HomePage(props) {
-  const [ads, setAds] = useState([]),
+  const navigate = useNavigate(),
+        [ads, setAds] = useState([]),
         [favs, setFavs] = useState(false),
         [oddAds, setOddAds] = useState([]),
         [evenAds, setEvenAds] = useState([]),
@@ -30,41 +30,54 @@ function HomePage(props) {
           })
           if(evenAds.length > 0 || oddAds.length > 0) setAreAdsArranged(true)
           // console.log('fin du classement')
-        },
-
-        checkIfAddToFavorites = adId => {
-          const ad = {
-            adId: adId,
-            userId: props.dataUser._id,
-          }
-          addToFavorites(ad)
-          .then(res => {
-            // console.log('res.data.message', res.data.message)
-
-            if(res.status === 200) {
-              // console.log('200')
-              loadAds()
-              .then(res => {
-                // console.log('RES :', res)
-                setAds(res.ads)
-                setAreAdsArranged(false)
-                setFavs(true)
-              })
-              .catch(err => console.log(err))
-            }
-
-          })
-          .catch(err => console.log(err))
         }
 
-  useEffect(() => {
-    /* console.log('useEffect favs')
-    console.log('favs', favs) */
+  /* useEffect(() => {
+    // console.log('useEffect favs')
+    // console.log('favs', favs)
     if(favs) arrangeAds()
-  }, [favs]);
+  }, [favs]); */
 
   useEffect(() => {
-    // console.log('useEffect')
+    if(Object.keys(props.clickedAd).length > 0) {
+      // console.log('props.clickedAd', props.clickedAd)
+
+      // Phase de recherche :
+      let item = {},
+          items = [],
+          indexSaved = 0,
+          favoritesToUpdate = 0
+
+      console.log('ads', ads)
+
+      ads.forEach((ad, index, arr) => {
+        console.log('ad._id', ad._id)
+        console.log('props.clickedAd.adId', props.clickedAd.adId)
+        if(ad._id === props.clickedAd.adId) {
+          indexSaved = index
+          console.log('ad trouvé', index)
+          items = [...ads]
+          item = {...items[index]}
+          favoritesToUpdate = props.clickedAd.newFavNumber
+          // console.log('item', item)
+          console.log('favoritesToUpdate', favoritesToUpdate)
+          arr.length = index + 1
+        }
+        else {
+          console.log('pas trouvé')
+        }
+      })
+
+      // Phase de remplacement :
+      item.favoritesNb = favoritesToUpdate
+      items[indexSaved] = item
+      console.log('items', items)
+      setAds(items)
+    }
+  }, [props.clickedAd]);
+
+  useEffect(() => {
+    if(props.refreshUrl) navigate('/')
     // await loadAds()
     loadAds()
     .then(res => {
@@ -74,9 +87,12 @@ function HomePage(props) {
   }, []);
 
   useEffect(() => {
-    /* console.log('useEffect ads')
-    console.log('ads', ads) */
-    if(!areAdsArranged) arrangeAds()
+    console.log('useEffect ads')
+    // console.log('ads', ads)
+    if(!areAdsArranged) {
+      console.log('arrangement')
+      arrangeAds()
+    }
   }, [ads]);
 
   if(areAdsArranged) {
@@ -226,7 +242,8 @@ function HomePage(props) {
                     dataUser={props.dataUser}
                     horizontalCard={props.horizontalCard}
                     layoutOneColumn={props.layoutOneColumn}
-                    checkIfAddToFavorites={checkIfAddToFavorites}
+                    checkIfAddToFavorites={props.checkIfAddToFavorites}
+                    handleAddToFavorites={props.handleAddToFavorites}
                   />
                 )
               })}
@@ -370,7 +387,8 @@ function HomePage(props) {
                       dataUser={props.dataUser}
                       horizontalCard={props.horizontalCard}
                       layoutOneColumn={props.layoutOneColumn}
-                      checkIfAddToFavorites={checkIfAddToFavorites}
+                      checkIfAddToFavorites={props.checkIfAddToFavorites}
+                      handleAddToFavorites={props.handleAddToFavorites}
                     />
                   )
                 })}
@@ -384,7 +402,8 @@ function HomePage(props) {
                       dataUser={props.dataUser}
                       horizontalCard={props.horizontalCard}
                       layoutOneColumn={props.layoutOneColumn}
-                      checkIfAddToFavorites={checkIfAddToFavorites}
+                      checkIfAddToFavorites={props.checkIfAddToFavorites}
+                      handleAddToFavorites={props.handleAddToFavorites}
                     />
                   )
                 })}
@@ -397,10 +416,7 @@ function HomePage(props) {
   } else {
     return (
       <section className='min-h-screen flex justify-center items-center'>
-        <img
-          className='max-w-xs'
-          src="https://i.stack.imgur.com/y3Hm3.gif"
-        />
+        <img className='w-20' src='https://i.stack.imgur.com/y3Hm3.gif' />
       </section>
     )
   }

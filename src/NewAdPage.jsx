@@ -1,54 +1,21 @@
 import { newAd } from './api/ads'
 import { useState, useEffect } from 'react'
 import styleOf from './NewAdPage.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 function NewAdPage(props) {
 
-  const [title, setName] = useState(''),
-        [price, setPrice] = useState(''),
-        [info, setInfo] = useState(null),
-        [error, setError] = useState(null),
-        [location, setLocation] = useState(''),
-        [disabled, setDisabled] = useState(true),
-        [description, setDescription] = useState(''),
+  const [info, setInfo] = useState(null)
+  const [error, setError] = useState(null)
 
-        onSubmitForm = e => {
-          e.preventDefault()
-          const data = {
-            title: e.target.titre.value,
-            description: e.target.description.value,
-            price: e.target.price.value,
-            userId: props.dataUser._id,
-            firstname: props.dataUser.firstname,
-            lastname: props.dataUser.lastname,
-            superUser: props.dataUser.superUser,
-            reviewsNb: props.dataUser.reviewsNb,
-            starsNb: props.dataUser.starsNb,
-            imageUser: props.dataUser.imageUser,
-            imageAd: e.target.imageAd.value,
-            location: e.target.location.value,
-          }
-          newAd(data)
-          .then(res => {
-            // console.log('res Register page', res)
-            if(res.status === 200) {
-              // console.log('res', res)
-              setInfo(res.data.message)
-            }
-            else {
-              console.log('RES :')
-              console.log(res)
-              console.log('RES.RESPONSE.DATA.MESSAGE :')
-              console.log(res.response.data.message)
-              setError(res.response.data.message)
-            }
-          })
-          .catch(err => {
-            console.log('err: rentré dans le catch NewAdPage.jsx')
-            console.log(err)
-            setError(err)
-          })
-        }
+  // console.log('props NewAdPage', props)
+  // const navigate = useNavigate()
+
+  const [title, setName] = useState('')
+  const [price, setPrice] = useState('')
+  const [location, setLocation] = useState('')
+  const [disabled, setDisabled] = useState(true)
+  const [description, setDescription] = useState('')
 
   useEffect(() => {
     if (title !== '' && description !== '' && price !== '' && location !== '') {
@@ -57,6 +24,79 @@ function NewAdPage(props) {
       setDisabled(true)
     }
   }, [title, price, description, location]);
+
+
+
+
+  useEffect(() => {
+
+    /* console.log('props.dataUser', props.dataUser)
+    if(Object.keys(props.dataUser).length === 0 && props.dataUser.constructor === Object) {
+      console.log('REDIRECTION')
+    } else {
+      console.log('NE RIEN FAIRE')
+    } */
+
+    console.log('composant newAd chargé')
+  }, []);
+
+  /* useEffect(() => {
+    console.log('newAd useEffect [dataUserInLocalStorage]')
+    console.log('(newAd) props.dataUser', props.dataUser)
+    console.log('(newAd) props.dataUserInLS', props.dataUserInLS)
+    console.log('Object.keys(props.dataUser).length', Object.keys(props.dataUser).length)
+    console.log('props.dataUser.constructor', props.dataUser.constructor)
+    if(Object.keys(props.dataUser).length === 0 && props.dataUser.constructor === Object) {
+      console.log('REDIRECTION')
+    }
+  }, [props.dataUser]); */
+
+  // [dataUserInLocalStorage, setDataUserInLocalStorage] = useState(false),
+
+
+
+
+
+
+
+
+  const onSubmitForm = e => {
+    e.preventDefault()
+    const data = {
+      title: e.target.titre.value,
+      description: e.target.description.value,
+      price: e.target.price.value,
+      userId: props.dataUser._id,
+      firstname: props.dataUser.firstname,
+      lastname: props.dataUser.lastname,
+      superUser: props.dataUser.superUser,
+      reviewsNb: props.dataUser.reviewsNb,
+      starsNb: props.dataUser.starsNb,
+      imageUser: props.dataUser.imageUser,
+      imageAd: e.target.imageAd.value,
+      location: e.target.location.value,
+    }
+    newAd(data)
+    .then(res => {
+      // console.log('res Register page', res)
+      if(res.status === 200) {
+        // console.log('res', res)
+        setInfo(res.data.message)
+      }
+      else {
+        console.log('RES :')
+        console.log(res)
+        console.log('RES.RESPONSE.DATA.MESSAGE :')
+        console.log(res.response.data.message)
+        setError(res.response.data.message)
+      }
+    })
+    .catch(err => {
+      console.log('err: rentré dans le catch NewAdPage.jsx')
+      console.log(err)
+      setError(err)
+    })
+  }
 
   return (
     <section className='min-h-screen pt-32 pb-8 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>
