@@ -12,7 +12,7 @@ function ProfilPage(props) {
         hour = new Date().getHours(),
         [ads, setAds] = useState([]),
         [imgUrl, setImgUrl] = useState(''),
-        
+        [isVisitor, setIsVisitor] = useState(false),
         [showDraft, setShowDraft] = useState(false),
         [isPopupOpen, setIsPopupOpen] = useState(false),
         [liteInfosOfUser, setLiteInfosOfUser]= useState({}),
@@ -58,53 +58,80 @@ function ProfilPage(props) {
           window.location.reload(false)
         }
 
-  const [isVisitor, setIsVisitor] = useState(false)
-
   useEffect(() => {
-    console.log('props.dataUser', props.dataUser)
+    console.log('(PROFIL) useEffect props.dataUser', props.dataUser)
     if(userIsLogged(props.dataUser) && (props.dataUser._id === userIdPage)) {
-      console.log('utiliser les props')
+      console.log('(PROFIL) utiliser les props ')
       setIsVisitor(false)
-
-
       loadUserAds(userIdPage, false)
       .then(res => {
         setAds(res.adsOfUser)
       })
       .catch(err => console.log('err', err))
-
-
-
     } else {
-      console.log('utiliser les datas du serveur')
+      console.log('(PROFIL) utiliser les datas du serveur')
       setIsVisitor(true)
-
-
-
       loadUserAds(userIdPage, true)
       .then(res => {
         setAds(res.adsOfUser)
         setLiteInfosOfUser(res.liteInfos)
       })
       .catch(err => console.log('err', err))
-
-      
-
     }
-  }, [userIdPage]);
+  }, [props.dataUser]);
 
   useEffect(() => {
-    //console.log('isVisitor', isVisitor)
+    if(Object.keys(props.clickedAd).length > 0) {
+      console.log('mettre à jour le coeur', props.clickedAd)
 
-    /* loadUserAds(userIdPage, isVisitor)
-    .then(res => {
-      setAds(res.adsOfUser)
-      if(!liteInfosLoaded) setLiteInfosOfUser(res.liteInfos)
-      setLiteInfosLoaded(true)
-    })
-    .catch(err => console.log('err', err)) */
+      // Phase de recherche :
+      let item = {},
+          items = [],
+          indexSaved = 0,
+          favoritesToUpdate = 0
 
-  }, [isVisitor]);
+      console.log('ads', ads)
+
+      ads.forEach((ad, index, arr) => {
+        console.log('ad._id', ad._id)
+        console.log('props.clickedAd.adId', props.clickedAd.adId)
+        if(ad._id === props.clickedAd.adId) {
+          indexSaved = index
+          console.log('ad trouvé', index)
+          items = [...ads]
+          item = {...items[index]}
+          favoritesToUpdate = props.clickedAd.newFavNumber
+          // console.log('item', item)
+          console.log('favoritesToUpdate', favoritesToUpdate)
+          arr.length = index + 1 // sortir de la boucle
+        }
+        else {
+          console.log('pas trouvé')
+        }
+      })
+
+      // Phase de remplacement de toutes les annonces :
+      item.favoritesNb = favoritesToUpdate
+      items[indexSaved] = item
+      console.log('item', item)
+      console.log('items', items)
+      setAds(items)
+      props.resetClickedAd()
+    }
+  }, [props.clickedAd]);
+
+  /* useEffect(() => {
+    // console.log('isVisitor', isVisitor)
+
+    // loadUserAds(userIdPage, isVisitor)
+    // .then(res => {
+    //   setAds(res.adsOfUser)
+    //   if(!liteInfosLoaded) setLiteInfosOfUser(res.liteInfos)
+    //   setLiteInfosLoaded(true)
+    // })
+    // .catch(err => console.log('err', err))
+
+  }, [isVisitor]); */
 
   /* if(isVisitor) {
     setImgUrl(user.imageUser)
@@ -167,10 +194,11 @@ function ProfilPage(props) {
       <div className='py-4 flex justify-between'>
         <div className='flex flex-col justify-center'>
           <h2 className='text-3xl dark:text-white'>
-            {isVisitor ?
-              `Annonces de ${liteInfosOfUser.firstname}`
-              :
-              `Annonces de ${props.dataUser.firstname}`
+            {isVisitor && Object.keys(liteInfosOfUser).length > 0 ?
+              `Annonces de ${liteInfosOfUser.firstname}` : ''
+            }
+            {!isVisitor && Object.keys(props.dataUser).length > 0 ?
+              `Annonces de ${props.dataUser.firstname}` : ''
             }
           </h2>
         </div>
@@ -213,7 +241,7 @@ function ProfilPage(props) {
           </div>
         }
       </div>
-      {ads.length > 0 &&
+      {ads.length > 0 ?
         <ul>
           {ads.map(ad => {
             return (
@@ -232,6 +260,8 @@ function ProfilPage(props) {
             )
           })}
         </ul>
+        :
+        <img className='w-20' src='https://i.stack.imgur.com/y3Hm3.gif' />
       }
       {isPopupOpen &&
         <div

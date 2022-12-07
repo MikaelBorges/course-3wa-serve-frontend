@@ -25,6 +25,11 @@ function App() {
         [authorizedToAdd, setAuthorizedToAdd] = useState(false),
         [localStorageChecked, setLocalStorageChecked] = useState(false)
 
+        function resetClickedAd() {
+          console.log('faire le reset')
+          setClickedAd({})
+        }
+
         function toggleDirectionCard(horizontalDirection) {
           window.localStorage.setItem('horizontalCard', !horizontalCard)
           switch(horizontalDirection) {
@@ -144,7 +149,7 @@ function App() {
           // console.log('ad', ad)
           // console.log('dataUser._id', dataUser._id)
 
-          if(dataUser._id !== ad.userId) {
+          if(!userIsLogout(dataUser) && (dataUser._id !== ad.userId)) {
             // console.log('fav éligible !')
             checkIfAddToFavorites(ad._id)
           }/* 
@@ -223,13 +228,15 @@ function App() {
     }
 
     const userDataInLS = window.localStorage.getItem('user')
-    console.log('check si le local storage a des infos')
+    //console.log('(APP) check si le local storage a des infos')
     if (userDataInLS) {
+      //console.log('(APP) JSON.parse(userDataInLS)', JSON.parse(userDataInLS))
       setDataUser(JSON.parse(userDataInLS))
+      console.log('(APP) le local storage a alimenté le state dataUser')
+      console.log('(APP) dataUser', dataUser)
       setUserId(JSON.parse(userDataInLS)._id)
       setUrlUserId(`/user/${JSON.parse(userDataInLS)._id}`)
       setUrlNewAd(`/user/${JSON.parse(userDataInLS)._id}/new`)
-      console.log('le local storage a alimenté le state dataUser')
     } else {
       console.log('pas de user data dans le local storage')
     }
@@ -263,9 +270,9 @@ function App() {
           element={
             <HomePage
               darkMode={darkMode}
-              dataUser={dataUser}
               clickedAd={clickedAd}
               updateUser={updateUser}
+              resetClickedAd={resetClickedAd}
               horizontalCard={horizontalCard}
               layoutOneColumn={layoutOneColumn}
               handleAddToFavorites={handleAddToFavorites}
@@ -284,8 +291,8 @@ function App() {
             :
             <HomePage
               darkMode={darkMode}
-              dataUser={dataUser}
               updateUser={updateUser}
+              resetClickedAd={resetClickedAd}
               horizontalCard={horizontalCard}
               layoutOneColumn={layoutOneColumn}
               refreshUrl
@@ -303,8 +310,8 @@ function App() {
             :
             <HomePage
               darkMode={darkMode}
-              dataUser={dataUser}
               updateUser={updateUser}
+              resetClickedAd={resetClickedAd}
               horizontalCard={horizontalCard}
               layoutOneColumn={layoutOneColumn}
               refreshUrl
@@ -315,20 +322,18 @@ function App() {
         <Route
           exact
           path='/user/:userIdPage'
-          element={localStorageChecked ?
+          element={
             <ProfilPage
               darkMode={darkMode}
               dataUser={dataUser}
+              clickedAd={clickedAd}
               toggleLayout={toggleLayout}
+              resetClickedAd={resetClickedAd}
               horizontalCard={horizontalCard}
               layoutOneColumn={layoutOneColumn}
               toggleDirectionCard={toggleDirectionCard}
               handleAddToFavorites={handleAddToFavorites}
             />
-            :
-            <section className='min-h-screen flex justify-center items-center'>
-              <img className='w-20' src='https://i.stack.imgur.com/y3Hm3.gif' />
-            </section>
           }
         />
         <Route
@@ -342,8 +347,8 @@ function App() {
             :
             <HomePage
               darkMode={darkMode}
-              dataUser={dataUser}
               updateUser={updateUser}
+              resetClickedAd={resetClickedAd}
               horizontalCard={horizontalCard}
               layoutOneColumn={layoutOneColumn}
               refreshUrl
