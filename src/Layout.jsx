@@ -120,22 +120,22 @@ function Layout(props) {
 
   return (
     <div className='min-h-screen'>
-      <header className='fixed p-6 w-full h-28 flex justify-between z-10'>
-        <Link to='/'>
-          <img src={logo3D} alt='logo' className={`${styleOf.logo} max-w-none`} />
+      <header className='fixed p-6 w-full h-28 flex z-10'>
+        <Link to='/' className='contents'>
+          <img src={logo3D} alt='logo' className='max-w-none h-full' />
         </Link>
         <div
           className={`
             p-2
             ml-6
             flex
+            w-full
             flex-wrap
             rounded-2xl
             content-start
             bg-orange-200
             overflow-hidden
             dark:text-white
-            ${styleOf.filters}
             dark:bg-orange-700
           `}
         >
@@ -193,9 +193,24 @@ function Layout(props) {
               `}
               onClick={() => console.log('clic on filters')}
             >
-              Tri : Pertinence
+              Lieu
             </button>
             <button
+              className={`
+                px-2
+                border
+                text-xs
+                rounded-3xl
+                border-solid
+                border-black
+                dark:border-white
+                ${styleOf.filtersButtons}
+              `}
+              onClick={() => console.log('clic on filters')}
+            >
+              Tri : Pertinence
+            </button>
+            {/* <button
               className={`
                 px-2
                 border
@@ -224,22 +239,7 @@ function Layout(props) {
               onClick={() => console.log('clic on filters')}
             >
               Vue : Liste
-            </button>
-            <button
-              className={`
-                px-2
-                border
-                text-xs
-                rounded-3xl
-                border-solid
-                border-black
-                dark:border-white
-                ${styleOf.filtersButtons}
-              `}
-              onClick={() => console.log('clic on filters')}
-            >
-              Lieu
-            </button>
+            </button> */}
         </div>
 
         {/* {config.api_url === 'http://localhost:3306' && (
