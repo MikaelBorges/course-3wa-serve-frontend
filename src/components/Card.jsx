@@ -123,7 +123,6 @@ function Card(props) {
   return (
     <li
       className={`
-        mb-6
         rounded-3xl
         cursor-pointer
         overflow-hidden

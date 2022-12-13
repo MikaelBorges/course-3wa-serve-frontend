@@ -5,7 +5,16 @@ import { useState, useEffect } from 'react'
 import styleOf from './HomePage.module.scss'
 import { useNavigate } from 'react-router-dom'
 
+import Masonry from 'react-masonry-css'
+
 function HomePage(props) {
+  const breakpointColumnsObj = {
+    default: 6,
+    1349: 5,
+    1149: 4,
+    1023: 3,
+    567: 2
+  }
   const navigate = useNavigate(),
         [ads, setAds] = useState([]),
         [favs, setFavs] = useState(false),
@@ -48,7 +57,7 @@ function HomePage(props) {
       console.log('rentre ici car clickedAd.length > 0 ')
       // console.log('props.clickedAd', props.clickedAd)
 
-      // Phase de recherche :
+      // Note : Phase de recherche
       let item = {},
           items = [],
           indexSaved = 0,
@@ -67,14 +76,14 @@ function HomePage(props) {
           favoritesToUpdate = props.clickedAd.newFavNumber
           // console.log('item', item)
           console.log('favoritesToUpdate', favoritesToUpdate)
-          arr.length = index + 1 // sortir de la boucle
+          arr.length = index + 1 // Tip > sortir de la boucle
         }
         else {
           console.log('pas trouvé')
         }
       })
 
-      // Phase de remplacement de toutes les annonces :
+      // Note : Phase de remplacement de toutes les annonces
       item.favoritesNb = favoritesToUpdate
       items[indexSaved] = item
       console.log('items', items)
@@ -126,320 +135,26 @@ function HomePage(props) {
   } */
 
   return (
-    <section className='pt-28 pb-24 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-6'>
-      {areAdsArranged ?
-      <article
-        className={`
-          flex
-          mt-px
-          ${props.layoutOneColumn ? 'flex-col' : 'justify-between'}
-        `}
-      >
-        {props.layoutOneColumn &&
-          <ul>
-            <li
-              className={`
-                ${props.layoutOneColumn ? 'w-auto' : ''}
-                ${styleOf.filters}
-                flex
-                flex-col
-                justify-between
-                bg-slate-200
-                rounded-3xl
-                p-3
-                mb-6
-                dark:bg-slate-700
-                dark:text-white
-              `}
-            >
-              {/* <button
-                className={`
-                  ${styleOf.uiButtons}
-                  border
-                  border-solid
-                  border-black
-                  rounded-3xl
-                  px-2
-                  w-fit
-                  text-sm
-                  dark:border-white
-                `}
-                onClick={() => props.toggleLayout('toggle')}
-              >
-                {props.layoutOneColumn ? 'horizontal mode' : 'vertical mode'}
-              </button>
-              <div>
-                <button
-                  className={`
-                    ${styleOf.uiButtons}
-                    border
-                    border-solid
-                    border-black
-                    rounded-3xl
-                    py-1
-                    px-1
-                    dark:border-white
-                  `}
-                  onClick={e => props.toggleTheme(e.target.innerText)}
-                >
-                  {lightIcon}
-                </button>
-                <button
-                  className={`
-                    ${styleOf.uiButtons}
-                    border
-                    border-solid
-                    border-black
-                    rounded-3xl
-                    px-1
-                    py-1
-                    dark:border-white
-                  `}
-                  onClick={e => props.toggleTheme(e.target.innerText)}
-                >
-                  {darkIcon}
-                </button>
-                <button
-                  className={`
-                    ${styleOf.uiButtons}
-                    border
-                    border-solid
-                    border-black
-                    rounded-3xl
-                    px-1
-                    py-1
-                    dark:border-white
-                  `}
-                  onClick={e => props.toggleTheme(e.target.innerText)}
-                >
-                  {systemIcon}
-                </button>
-              </div>
-              <button
-                className={`
-                  ${styleOf.uiButtons}
-                  border
-                  border-solid
-                  border-black
-                  rounded-3xl
-                  px-2
-                  w-fit
-                  text-sm
-                  ${props.layoutOneColumn ? '' : 'bg-gray-300 text-gray-100 border-gray-300 dark:border-gray-300'}
-                  dark:border-white
-                `}
-                onClick={() => props.toggleDirectionCard('toggle')}
-                disabled={props.layoutOneColumn ? false : true}
-              >
-                {props.horizontalCard ? 'horizontal card' : 'vertical card'}
-              </button>
-              <div>
-                <button
-                  className={`
-                    ${styleOf.uiButtons}
-                    border
-                    border-solid
-                    border-black
-                    rounded-3xl
-                    px-2
-                    dark:border-white
-                  `}
-                  onClick={e => props.toggleHand(e.target.innerText)}
-                >
-                  {leftHandIcon}
-                </button>
-                <button
-                  className={`
-                    ${styleOf.uiButtons}
-                    border
-                    border-solid
-                    border-black
-                    rounded-3xl
-                    px-2
-                    dark:border-white
-                  `}
-                  onClick={e => props.toggleHand(e.target.innerText)}
-                >
-                  {rightHandIcon}
-                </button>
-              </div> */}
-            </li>
-            {ads.map(ad => {
-              return (
-                <Card
-                  ad={ad}
-                  key={ad._id}
-                  horizontalCard={props.horizontalCard}
-                  layoutOneColumn={props.layoutOneColumn}
-                  checkIfAddToFavorites={props.checkIfAddToFavorites}
-                  handleAddToFavorites={props.handleAddToFavorites}
-                />
-              )
-            })}
-          </ul>
-        }
-        {!props.layoutOneColumn &&
-          <>
-            <ul className={styleOf.adsColumnContainer}>
-              <li
-                className={`
-                  ${props.layoutOneColumn ? 'w-auto' : ''}
-                  ${styleOf.filters}
-                  flex
-                  flex-col
-                  justify-between
-                  bg-slate-200
-                  rounded-3xl
-                  p-3
-                  mb-6
-                  dark:bg-slate-700
-                  dark:text-white
-                `}
-              >
-                {/* <button
-                  className={`
-                    ${styleOf.uiButtons}
-                    border
-                    border-solid
-                    border-black
-                    rounded-3xl
-                    px-2
-                    w-fit
-                    text-sm
-                    dark:border-white
-                  `}
-                  onClick={() => props.toggleLayout('toggle')}
-                >
-                  {props.layoutOneColumn ? 'horizontal mode' : 'vertical mode'}
-                </button>
-                <div>
-                  <button
-                    className={`
-                      ${styleOf.uiButtons}
-                      border
-                      border-solid
-                      border-black
-                      rounded-3xl
-                      py-1
-                      px-1
-                      dark:border-white
-                    `}
-                    onClick={e => props.toggleTheme(e.target.innerText)}
-                  >
-                    {lightIcon}
-                  </button>
-                  <button
-                    className={`
-                      ${styleOf.uiButtons}
-                      border
-                      border-solid
-                      border-black
-                      rounded-3xl
-                      px-1
-                      py-1
-                      dark:border-white
-                    `}
-                    onClick={e => props.toggleTheme(e.target.innerText)}
-                  >
-                    {darkIcon}
-                  </button>
-                  <button
-                    className={`
-                      ${styleOf.uiButtons}
-                      border
-                      border-solid
-                      border-black
-                      rounded-3xl
-                      px-1
-                      py-1
-                      dark:border-white
-                    `}
-                    onClick={e => props.toggleTheme(e.target.innerText)}
-                  >
-                    {systemIcon}
-                  </button>
-                </div>
-                <button
-                  className={`
-                    ${styleOf.uiButtons}
-                    border
-                    border-solid
-                    border-black
-                    rounded-3xl
-                    px-2
-                    w-fit
-                    text-sm
-                    ${props.layoutOneColumn ? '' : 'bg-gray-300 text-gray-100 border-gray-300 dark:border-gray-300'}
-                    dark:border-white
-                  `}
-                  onClick={() => props.toggleDirectionCard('toggle')}
-                  disabled={props.layoutOneColumn ? false : true}
-                >
-                  {props.horizontalCard ? 'horizontal card' : 'vertical card'}
-                </button>
-                <div>
-                  <button
-                    className={`
-                      ${styleOf.uiButtons}
-                      border
-                      border-solid
-                      border-black
-                      rounded-3xl
-                      px-2
-                      dark:border-white
-                    `}
-                    onClick={e => props.toggleHand(e.target.innerText)}
-                  >
-                    {leftHandIcon}
-                  </button>
-                  <button
-                    className={`
-                      ${styleOf.uiButtons}
-                      border
-                      border-solid
-                      border-black
-                      rounded-3xl
-                      px-2
-                      dark:border-white
-                    `}
-                    onClick={e => props.toggleHand(e.target.innerText)}
-                  >
-                    {rightHandIcon}
-                  </button>
-                </div> */}
-              </li>
-              {oddAds.map(ad => {
-                return (
-                  <Card
-                    ad={ad}
-                    key={ad._id}
-                    horizontalCard={props.horizontalCard}
-                    layoutOneColumn={props.layoutOneColumn}
-                    checkIfAddToFavorites={props.checkIfAddToFavorites}
-                    handleAddToFavorites={props.handleAddToFavorites}
-                  />
-                )
-              })}
-            </ul>
-            <ul className={styleOf.adsColumnContainer}>
-              {evenAds.map(ad => {
-                return (
-                  <Card
-                    ad={ad}
-                    key={ad._id}
-                    horizontalCard={props.horizontalCard}
-                    layoutOneColumn={props.layoutOneColumn}
-                    checkIfAddToFavorites={props.checkIfAddToFavorites}
-                    handleAddToFavorites={props.handleAddToFavorites}
-                  />
-                )
-              })}
-            </ul>
-          </>
-        }
-      </article>
-      :
-      <img className='w-20' src='https://i.stack.imgur.com/y3Hm3.gif' />
+    <section className='pt-28 pb-24 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-3'>
+      {Object.keys(ads).length > 0 ?
+        <ul className='mt-px'>
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className={styleOf.myMasonryGrid}
+            columnClassName={styleOf.myMasonryGridColumn}
+          >
+            {ads.map(ad => <Card
+                              ad={ad}
+                              key={ad._id}
+                              horizontalCard={props.horizontalCard}
+                              layoutOneColumn={props.layoutOneColumn}
+                              handleAddToFavorites={props.handleAddToFavorites}
+                            />
+            )}
+          </Masonry>
+        </ul>
+        :
+        <img className='w-20' src='https://i.stack.imgur.com/y3Hm3.gif' />
       }
     </section>
   )
