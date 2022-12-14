@@ -8,19 +8,13 @@ import { useNavigate } from 'react-router-dom'
 import Masonry from 'react-masonry-css'
 
 function HomePage(props) {
-  const breakpointColumnsObj = {
-    default: 6,
-    1349: 5,
-    1149: 4,
-    1023: 3,
-    567: 2
-  }
   const navigate = useNavigate(),
         [ads, setAds] = useState([]),
         [favs, setFavs] = useState(false),
         [oddAds, setOddAds] = useState([]),
         [evenAds, setEvenAds] = useState([]),
         [areAdsArranged, setAreAdsArranged] = useState(false),
+        [breakpointsColumnsMasonry, setBreakpointsColumnsMasonry] = useState({}),
 
         arrangeAds = () => {
           oddAds.length = 0
@@ -43,6 +37,26 @@ function HomePage(props) {
             setAreAdsArranged(true)
           }
           console.log('(HOME) ads rangé')
+        },
+
+        generateMasonryBreakpointsUntilThisMaxValue = (maxBreakpointValue) => {
+          let columns = 7,
+          breakpointsObject = {
+            374: 1,
+            567: 2,
+            767: 3,
+            1023: 4,
+            1179: 5,
+            1365: 6
+          }
+
+          for (let bp = 1565; bp < maxBreakpointValue; bp += 200) {
+            breakpointsObject[bp] = columns // TIP > obligé d'utiliser la notation crochets pour définir des clés d'objet par le contenu de variable 
+            ++columns
+          }
+          breakpointsObject.default = columns
+
+          setBreakpointsColumnsMasonry(breakpointsObject)
         }
 
   /* useEffect(() => {
@@ -94,6 +108,8 @@ function HomePage(props) {
   }, [props.clickedAd]);
 
   useEffect(() => {
+    generateMasonryBreakpointsUntilThisMaxValue(3000)
+
     if(props.refreshUrl) navigate('/')
     // await loadAds()
     loadAds()
@@ -135,11 +151,11 @@ function HomePage(props) {
   } */
 
   return (
-    <section className='pt-28 pb-24 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-3'>
+    <section className='flex flex-col space-y-12 px-3'>
       {Object.keys(ads).length > 0 ?
         <ul className='mt-px'>
           <Masonry
-            breakpointCols={breakpointColumnsObj}
+            breakpointCols={breakpointsColumnsMasonry}
             className={styleOf.myMasonryGrid}
             columnClassName={styleOf.myMasonryGridColumn}
           >

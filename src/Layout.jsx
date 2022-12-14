@@ -119,8 +119,8 @@ function Layout(props) {
   // if(props.dataUser) console.log('in layout',props.dataUser._id)
 
   return (
-    <div className='min-h-screen'>
-      <header className='fixed p-6 w-full h-28 flex z-10'>
+    <div className='min-h-screen dark:bg-slate-900'>
+      <header className={`sticky p-6 w-full h-28 flex z-10 ${styleOf.header}`}>
         <Link to='/' className='contents'>
           <img src={logo3D} alt='logo' className='max-w-none h-full' />
         </Link>
@@ -262,7 +262,7 @@ function Layout(props) {
         )} */}
 
       </header>
-      <main className='min-h-screen dark:bg-slate-800'>
+      <main className='min-h-screen'>
         {props.children}
         <nav
           className={`
