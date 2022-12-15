@@ -14,6 +14,15 @@ import {
   paperPencilIcon
 } from '../constants/icons'
 
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+import "./swiper-custom.scss";
+import { Pagination, Navigation } from "swiper";
+
 function Card(props) {
   const navigate = useNavigate(),
         urlOnBrowser = window.location.pathname,
@@ -132,43 +141,21 @@ function Card(props) {
           styleOf.horizontalCard : ''
         }
       `}
-      onClick={() => handleShowAd()}
     >
-      <div
-        className={`
-          flex
-          relative
-          items-center
-          justify-center
-          ${props.layoutOneColumn && props.horizontalCard ?
-            styleOf.imagePartHorizontalAd : ''
-          }
-        `}
+      <Swiper
+        pagination={{type: "progressbar"}}
+        navigation={true}
+        modules={[Pagination, Navigation]}
+        className={`${styleOf.mySwiper} dark:bg-slate-700 bg-slate-200 aspect-square`}
       >
-        <img
-          alt='images du service'
-          src={props.ad.imageWork}
-          className={`${props.layoutOneColumn ? 'max-w-none h-full' : ''}`}
-        />
-        {/* <div
-          className={`
-            px-2
-            py-1
-            border
-            absolute
-            text-2xl
-            leading-3
-            rounded-full
-            text-white
-            border-solid
-            border-white
-            ${styleOf.bulletPoints}
-          `}
-        >
-          • • • •
-        </div> */}
-      </div>
+        {props.ad.imagesWork.map((imageWork, index) =>
+          <SwiperSlide className={styleOf.swiperSlide} key={`${props.ad._id}-${index}`}>
+            <img alt='image du service' src={imageWork} />
+          </SwiperSlide>
+        )}
+      </Swiper>
       <div
+        onClick={() => handleShowAd()}
         className={`
           p-3
           flex

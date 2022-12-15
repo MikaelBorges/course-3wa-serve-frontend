@@ -159,13 +159,14 @@ function HomePage(props) {
             className={styleOf.myMasonryGrid}
             columnClassName={styleOf.myMasonryGridColumn}
           >
-            {ads.map(ad => <Card
-                              ad={ad}
-                              key={ad._id}
-                              horizontalCard={props.horizontalCard}
-                              layoutOneColumn={props.layoutOneColumn}
-                              handleAddToFavorites={props.handleAddToFavorites}
-                            />
+            {ads.map(ad =>
+              <Card
+                ad={ad}
+                key={ad._id}
+                horizontalCard={props.horizontalCard}
+                layoutOneColumn={props.layoutOneColumn}
+                handleAddToFavorites={props.handleAddToFavorites}
+              />
             )}
           </Masonry>
         </ul>

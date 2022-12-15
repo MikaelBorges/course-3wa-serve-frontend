@@ -128,7 +128,7 @@ function Layout(props) {
           className={`
             p-2
             ml-6
-            flex
+            hidden
             w-full
             flex-wrap
             rounded-2xl
@@ -267,6 +267,7 @@ function Layout(props) {
         <nav
           className={`
             p-4
+            z-10
             flex
             fixed
             bottom-4
@@ -448,7 +449,7 @@ function Layout(props) {
           } */}
         </nav>
       </main>
-      <footer className='text-center dark:bg-slate-900 dark:text-white'>© 2022 serve.ac</footer>
+      <footer className='p-6 text-center dark:bg-slate-900 dark:text-white'>© 2022 serve.ac</footer>
 
       {/* <footer className="m-1 6 text-center">
         {footerLists.map((footerList, index) =>
