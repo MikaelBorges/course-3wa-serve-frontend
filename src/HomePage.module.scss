@@ -47,6 +47,7 @@
 
 .myMasonryGrid {
   display: flex;
+  justify-content: center;
 }
 
 .myMasonryGridColumn {
@@ -56,9 +57,9 @@
     margin-bottom: 1.5rem;
   }
 
-  &:nth-child(2n) {
+  /* &:nth-child(2n) {
     padding-top: 40px;
-  }
+  } */
 }
 
 /* .my-masonry-grid_column > li:not(:last-child) {

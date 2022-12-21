@@ -6,6 +6,9 @@ import { userIsLogged } from './functions/user'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { lightIcon, goodEveningIcon, binIcon, validIcon } from './constants/icons'
 
+import styleOf from './ProfilPage.module.scss'
+import Masonry from 'react-masonry-css'
+
 function ProfilPage(props) {
 
   const { userIdPage } = useParams(),
@@ -18,6 +21,7 @@ function ProfilPage(props) {
         [liteInfosOfUser, setLiteInfosOfUser]= useState({}),
         [allCardsChecked, setAllCardsChecked] = useState(false),
         [responseMessageFromCard, setResponseMessageFromCard] = useState(''),
+        [breakpointsColumnsMasonry, setBreakpointsColumnsMasonry] = useState({}),
 
         wayToGreet = () => {
           return hour > 6 && hour < 20 ?
@@ -56,6 +60,26 @@ function ProfilPage(props) {
           setIsPopupOpen(true)
           setResponseMessageFromCard(message)
           window.location.reload(false)
+        },
+
+        generateMasonryBreakpointsUntilThisMaxValue = (maxBreakpointValue) => {
+          let columns = 7,
+          breakpointsObject = {
+            374: 1,
+            567: 2,
+            767: 3,
+            1023: 4,
+            1179: 5,
+            1365: 6
+          }
+
+          for (let bp = 1565; bp < maxBreakpointValue; bp += 200) {
+            breakpointsObject[bp] = columns // TIP > obligé d'utiliser la notation crochets pour définir des clés d'objet par le contenu de variable 
+            ++columns
+          }
+          breakpointsObject.default = columns
+
+          setBreakpointsColumnsMasonry(breakpointsObject)
         }
 
   useEffect(() => {
@@ -120,6 +144,10 @@ function ProfilPage(props) {
     }
   }, [props.clickedAd]);
 
+  useEffect(() => {
+    generateMasonryBreakpointsUntilThisMaxValue(3000)
+  }, [])
+
   /* useEffect(() => {
     // console.log('isVisitor', isVisitor)
 
@@ -146,105 +174,116 @@ function ProfilPage(props) {
   </CloudinaryContext> */
 
   return (
-    <section className='pt-28 px-8 pb-24 dark:bg-slate-900'>
-      {!isVisitor &&
-        <>
-          <h1 className='py-4 text-4xl dark:text-white'>{wayToGreet()}</h1>
-          <div className='flex'>
-            <button
-              className={`
-                p-2
-                rounded-3xl
-                text-white
-                bg-gray-300
-                dark:text-white
-              `}
-              onClick={() => console.log('Changer mon mot de passe')}
-            >
-              Changer mon mot de passe
-            </button>
-            <button
-              className={`
-                p-3
-                mx-3
-                rounded-3xl
-                text-white
-                bg-gray-300
-                dark:text-white
-              `}
-              onClick={() => console.log('Changer mon e-mail')}
-            >
-              Changer mon e-mail
-            </button>
-            <button
-              className={`
-                p-2
-                rounded-3xl
-                text-white
-                bg-gray-300
-                dark:text-white
-              `}
-              onClick={() => console.log('Supprimer mon compte')}
-            >
-              Supprimer mon compte
-            </button>
-          </div>
-        </>
-      }
-      <div className='py-4 flex justify-between'>
-        <div className='flex flex-col justify-center'>
-          <h2 className='text-3xl dark:text-white'>
-            {isVisitor && Object.keys(liteInfosOfUser).length > 0 ?
-              `Annonces de ${liteInfosOfUser.firstname}` : ''
-            }
-            {!isVisitor && Object.keys(props.dataUser).length > 0 ?
-              `Annonces de ${props.dataUser.firstname}` : ''
-            }
-          </h2>
-        </div>
+    <section className='dark:bg-slate-900'>
+
+      <div className='px-6'>
+
         {!isVisitor &&
-          <div className='flex flex-col justify-center'>
-            <div className='flex'>
+          <>
+            <h1 className='pb-4 text-4xl dark:text-white'>{wayToGreet()}</h1>
+            <div className='pb-4 flex text-sm'>
               <button
                 className={`
-                  mr-2
-                  px-4
-                  py-3
-                  text-2xl
-                  rounded-full
-                  bg-gray-100
-                  dark:bg-gray-800
+                  p-2
+                  rounded-3xl
+                  text-white
+                  bg-gray-300
+                  dark:text-white
                 `}
-                onClick={e => handleDeleteAd(e)}
+                onClick={() => console.log('Changer mon mot de passe')}
               >
-                {binIcon}
+                Changer mon mot de passe
               </button>
-              {showDraft &&
-                <div
-                  className={`
-                    flex
-                    flex-col
-                    justify-center
-                  `}
-                >
-                  <input
-                    className='w-8 h-8 rounded-full'
-                    type='checkbox'
-                    name='check-all'
-                    value='yes'
-                    onClick={e => handleChange(e)}
-                    onChange={e => handleChange(e)}
-                  />
-                </div>
-              }
+              <button
+                className={`
+                  p-3
+                  mx-3
+                  rounded-3xl
+                  text-white
+                  bg-gray-300
+                  dark:text-white
+                `}
+                onClick={() => console.log('Changer mon e-mail')}
+              >
+                Changer mon e-mail
+              </button>
+              <button
+                className={`
+                  p-2
+                  rounded-3xl
+                  text-white
+                  bg-gray-300
+                  dark:text-white
+                `}
+                onClick={() => console.log('Supprimer mon compte')}
+              >
+                Supprimer mon compte
+              </button>
             </div>
-          </div>
+          </>
         }
+        <div className='pb-4 flex justify-between'>
+          <div className='flex flex-col justify-center'>
+            <h2 className='text-3xl dark:text-white'>
+              {isVisitor && Object.keys(liteInfosOfUser).length > 0 ?
+                `Annonces de ${liteInfosOfUser.firstname}` : ''
+              }
+              {!isVisitor && Object.keys(props.dataUser).length > 0 ?
+                `Voici vos annonces ${props.dataUser.firstname}` : ''
+              }
+            </h2>
+          </div>
+          {!isVisitor &&
+            <div className='hidden flex-col justify-center'>
+              <div className='flex'>
+                <button
+                  className={`
+                    mr-2
+                    px-4
+                    py-3
+                    text-2xl
+                    rounded-full
+                    bg-gray-100
+                    dark:bg-gray-800
+                  `}
+                  onClick={e => handleDeleteAd(e)}
+                >
+                  {binIcon}
+                </button>
+                {showDraft &&
+                  <div
+                    className={`
+                      flex
+                      flex-col
+                      justify-center
+                    `}
+                  >
+                    <input
+                      className='w-8 h-8 rounded-full'
+                      type='checkbox'
+                      name='check-all'
+                      value='yes'
+                      onClick={e => handleChange(e)}
+                      onChange={e => handleChange(e)}
+                    />
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
       </div>
+
+
       {ads.length > 0 ?
-        <ul>
-          {ads.map(ad => {
-            return (
+        <ul className='px-3'>
+          <Masonry
+            breakpointCols={breakpointsColumnsMasonry}
+            className={styleOf.myMasonryGrid}
+            columnClassName={styleOf.myMasonryGridColumn}
+          >
+            {ads.map(ad =>
               <Card
                 ad={ad}
                 key={ad._id}
@@ -257,8 +296,8 @@ function ProfilPage(props) {
                 uncheckAllCheckboxes={uncheckAllCheckboxes}
                 handleAddToFavorites={props.handleAddToFavorites}
               />
-            )
-          })}
+            )}
+          </Masonry>
         </ul>
         :
         <img className='w-20' src='https://i.stack.imgur.com/y3Hm3.gif' />

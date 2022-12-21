@@ -301,9 +301,10 @@ function Layout(props) {
                   text-xs
                   rounded-full
                   bg-slate-200
-                  dark:bg-slate-400
+                  dark:bg-black
                 `}
                 onClick={() => props.toggleLayout('toggle')}
+                disabled={true}
               >
                 {props.layoutOneColumn ? rowLayoutIcon : columnLayoutIcon}
               </button>
@@ -327,9 +328,10 @@ function Layout(props) {
                   text-xs
                   rounded-full
                   bg-slate-200
-                  dark:bg-slate-400
+                  dark:bg-black
                 `}
                 onClick={e => props.toggleTheme(e.target.innerText)}
+                disabled={true}
               >
                 {systemIcon}
               </button>
