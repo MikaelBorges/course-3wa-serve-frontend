@@ -144,3 +144,8 @@ dist
 
 # zsh
 ~/
+
+# my dev rules
+/public/favicon.ico
+/public/_logo192.png
+/public/_logo512.png
