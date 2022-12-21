@@ -180,7 +180,7 @@ function ProfilPage(props) {
 
         {!isVisitor &&
           <>
-            <h1 className='pb-4 text-4xl dark:text-white'>{wayToGreet()}</h1>
+            <h1 className='pb-4 text-3xl dark:text-white'>{wayToGreet()}</h1>
             <div className='pb-4 flex text-sm'>
               <button
                 className={`

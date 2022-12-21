@@ -395,34 +395,6 @@ function Card(props) {
               {props.ad.reviewsNb}
             </div>
           </button>
-          {weAreOnUserPage && !props.isVisitor &&
-            <button
-              className={`
-                px-2
-                py-2
-                flex
-                text-xl
-                items-center
-                rounded-full
-                bg-gray-100
-                dark:bg-slate-600
-              `}
-              onClick={e => showStatistics(e)}
-            >
-              <div>{eyeIcon}</div>
-              <div
-                className={`
-                  ml-1
-                  text-green-500 
-                  ${props.layoutOneColumn && !props.horizontalCard ?
-                    'text-xl' : 'text-base'
-                  }
-                `}
-              >
-                {props.ad.views}
-              </div>
-            </button>
-          }
           <button
             className={`
               px-2
@@ -451,7 +423,7 @@ function Card(props) {
           </button>
         </div>
         {weAreOnUserPage && !props.isVisitor &&
-          <div className='flex justify-between'>
+          <div className='flex pt-3'>
             <button
               className={`
                 px-2
@@ -466,6 +438,33 @@ function Card(props) {
               onClick={e => handleDeleteAd(e, props.ad._id)}
             >
               {binIcon}
+            </button>
+            <button
+              className={`
+                mx-1
+                px-2
+                py-2
+                flex
+                text-xl
+                items-center
+                rounded-full
+                bg-gray-100
+                dark:bg-slate-600
+              `}
+              onClick={e => showStatistics(e)}
+            >
+              <div>{eyeIcon}</div>
+              <div
+                className={`
+                  ml-1
+                  text-green-500 
+                  ${props.layoutOneColumn && !props.horizontalCard ?
+                    'text-xl' : 'text-base'
+                  }
+                `}
+              >
+                {props.ad.views}
+              </div>
             </button>
             {props.showDraft &&
               <input
