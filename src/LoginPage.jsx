@@ -76,7 +76,7 @@ function LoginPage(props) {
     }, []);
 
   return (
-    <section className='min-h-screen pt-32 pb-8 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>
+    <section className='min-h-screen dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>
       <form
         action='/user/login'
         method='post'

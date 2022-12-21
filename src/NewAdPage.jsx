@@ -62,6 +62,17 @@ function NewAdPage(props) {
 
   const onSubmitForm = e => {
     e.preventDefault()
+    const arrayOfUrlImages = [
+            e.target.imageAd.value,
+            e.target.imageAd2.value,
+            e.target.imageAd3.value
+          ],
+          elementDifferentOfEmptyString = url => url !== '',
+          isAtMinimumOneImage = arrayOfUrlImages.some(elementDifferentOfEmptyString)
+
+    let filteredArrayOfUrlImages = ['https://travauxcasa.com/public/artiza/images/default.png']
+    if (isAtMinimumOneImage) filteredArrayOfUrlImages = arrayOfUrlImages.filter(img => img !== '')
+
     const data = {
       title: e.target.titre.value,
       description: e.target.description.value,
@@ -75,6 +86,7 @@ function NewAdPage(props) {
       imageUser: props.dataUser.imageUser,
       imageAd: e.target.imageAd.value,
       location: e.target.location.value,
+      imagesAd: filteredArrayOfUrlImages
     }
     newAd(data)
     .then(res => {
@@ -99,7 +111,7 @@ function NewAdPage(props) {
   }
 
   return (
-    <section className='min-h-screen pt-32 pb-8 dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>
+    <section className='min-h-screen dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>
       <form
         method='post'
         onSubmit={e => onSubmitForm(e)}
@@ -110,6 +122,18 @@ function NewAdPage(props) {
           name='imageAd'
           className={`pl-1 ${styleOf.imageUrl} w-full border dark:bg-slate-800 dark:text-white`}
           placeholder='url de la photo de votre annonce si vous la connaissez (facultatif)'
+        />
+        <input
+          type='text'
+          name='imageAd2'
+          className={`pl-1 ${styleOf.imageUrl} w-full border dark:bg-slate-800 dark:text-white`}
+          placeholder='url de la photo 2 de votre annonce si vous la connaissez (facultatif)'
+        />
+        <input
+          type='text'
+          name='imageAd3'
+          className={`pl-1 ${styleOf.imageUrl} w-full border dark:bg-slate-800 dark:text-white`}
+          placeholder='url de la photo 3 de votre annonce si vous la connaissez (facultatif)'
         />
         <input
           required
