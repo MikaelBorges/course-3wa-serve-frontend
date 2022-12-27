@@ -83,6 +83,7 @@ function Card(props) {
         },
 
         handleShowUserProfile = e => {
+          console.log('handleShowUserProfile')
           e.stopPropagation()
           if (!weAreOnUserPage) {
             if (urlOnBrowser !== userPage) {

@@ -287,7 +287,6 @@ function Layout(props) {
                   px-2
                   text-xs
                   rounded-full
-                  ${props.layoutOneColumn ? 'bg-slate-200 dark:bg-slate-400' : ' dark:bg-black'}
                 `}
                 onClick={() => props.toggleDirectionCard('toggle')}
                 disabled={props.layoutOneColumn ? false : true}
@@ -300,8 +299,6 @@ function Layout(props) {
                   px-2
                   text-xs
                   rounded-full
-                  bg-slate-200
-                  dark:bg-black
                 `}
                 onClick={() => props.toggleLayout('toggle')}
                 disabled={true}
@@ -327,8 +324,6 @@ function Layout(props) {
                   px-2
                   text-xs
                   rounded-full
-                  bg-slate-200
-                  dark:bg-black
                 `}
                 onClick={e => props.toggleTheme(e.target.innerText)}
                 disabled={true}

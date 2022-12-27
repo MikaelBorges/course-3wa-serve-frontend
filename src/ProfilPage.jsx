@@ -145,8 +145,13 @@ function ProfilPage(props) {
   }, [props.clickedAd]);
 
   useEffect(() => {
+    console.log('(PROFIL) useEffect[]', userIdPage)
     generateMasonryBreakpointsUntilThisMaxValue(3000)
   }, [])
+
+  /* useEffect(() => {
+    console.log('(PROFIL) useEffect[userIdPage]', userIdPage)
+  }, [userIdPage]) */
 
   /* useEffect(() => {
     // console.log('isVisitor', isVisitor)
