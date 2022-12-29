@@ -157,10 +157,10 @@ function HomePage(props) {
     <section className='flex flex-col space-y-12 px-3'>
       {Object.keys(ads).length ?
         <>
-          {props.store.ads.fetchedAds.length ?
+          {props.allAds.length ?
             <ul>
-              {props.store.ads.fetchedAds.map(post =>
-                <li style={{border: '1px solid black', color: 'black', marginTop: '10px', padding: '10px', borderRadius: '20px'}} key={post._id}>
+              {props.allAds.map(post =>
+                <li style={{border: '1px solid white', color: 'white', marginTop: '10px', padding: '10px', borderRadius: '20px'}} key={post._id}>
                   <h2 style={{fontWeight: 'bold', fontSize: '20px'}}>{post.title}</h2>
                   <p>{post.description}</p>
                 </li>
@@ -194,16 +194,31 @@ function HomePage(props) {
   )
 }
 
-const mapStateToProps = (state, ownProps) => {
+/* const mapStateToProps = (state, ownProps) => {
   console.log('(HOME) state', state)
   return {
     store: state
   }
+} */
+
+const mapStateToProps = (store, ownProps) => {
+  console.log('(HOME) store', store)
+  return {
+    allAds: store.ads.fetchedAds
+  }
 }
+
+/* const mapStateToProps = (store, ownProps) => ({
+  allAds: store.ads
+}) */
+
+/* const mapStateToProps = {
+  store: adsSelectors(state)
+} */
 
 /* const mapDispatchToProps = dispatch => {
   return {
-    fetchAds: fetchedAds => dispatch({type: 'UPDATE', payload: fetchedAds})
+    fetchAds: ads => dispatch({type: 'UPDATE', payload: ads})
   }
 } */
 

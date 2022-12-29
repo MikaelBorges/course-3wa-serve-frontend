@@ -17,7 +17,7 @@ root.render(
 
   <Provider store={store}>
     <Router basename="/projects/serve">
-        <App />
+      <App />
     </Router>
   </Provider>
 

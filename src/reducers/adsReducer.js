@@ -1,26 +1,10 @@
 import { UPDATE } from '../actions/ads/actions-types'
 
-/* const initState = [
-  {
-    _id: '1',
-    title: 'titre',
-    description: 'description'
-  }
-] */
-
 const initState = {
-  fetchedAds : [
-    {
-      _id: '1',
-      title: 'titre',
-      description: 'description'
-    }
-  ]
+  fetchedAds : []
 }
 
 const AdsReducer = (state = initState, action) => {
-  console.log('(ADS REDUCER) action', action)
-  console.log('(ADS REDUCER) state', state)
   switch (action.type) {
     case UPDATE:
       return {

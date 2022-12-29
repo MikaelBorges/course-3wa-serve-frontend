@@ -1,0 +1,1 @@
+export const RECOVER_DATA_USER = 'RECOVER_DATA_USER'

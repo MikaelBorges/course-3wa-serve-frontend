@@ -11,6 +11,8 @@ import { Route, Routes } from 'react-router-dom'
 import { userIsLogout, userIsLogged } from './functions/user'
 import { lightIcon, darkIcon, systemIcon } from './constants/icons'
 
+import { connect } from 'react-redux'
+
 function App() {
   const [userId, setUserId] = useState(''),
         [theme, setTheme] = useState('light'),
@@ -359,4 +361,12 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (store) => {
+  console.log('(APP) store', store)
+  return {
+    userInfo: store.user
+  }
+}
+
+export default connect(mapStateToProps)(App)
+// export default App
