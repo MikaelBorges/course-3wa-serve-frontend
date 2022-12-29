@@ -9,6 +9,8 @@ import { lightIcon, goodEveningIcon, binIcon, validIcon } from './constants/icon
 import styleOf from './ProfilPage.module.scss'
 import Masonry from 'react-masonry-css'
 
+import { connect } from 'react-redux'
+
 function ProfilPage(props) {
 
   const { userIdPage } = useParams(),
@@ -335,4 +337,10 @@ function ProfilPage(props) {
   )
 }
 
-export default ProfilPage;
+const mapStateToProps = (store) => {
+  return {
+    userInfo: store.user
+  }
+}
+
+export default connect(mapStateToProps)(ProfilPage)

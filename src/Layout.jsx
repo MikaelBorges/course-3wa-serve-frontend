@@ -24,6 +24,8 @@ import { userIsLogout, userIsLogged } from './functions/user'
 import logo3D from './images/logos/gitlab-5562373-4642718.png'
 import logo from './images/logos/gitlab_tile_logo_icon_170092.png'
 
+import { connect } from 'react-redux'
+
 function Layout(props) {
   const navigate = useNavigate(),
         [error, setError] = useState(null),
@@ -458,4 +460,11 @@ function Layout(props) {
   );
 }
 
-export default Layout;
+const mapStateToProps = (store) => {
+  return {
+    userInfo: store.user
+  }
+}
+
+export default connect(mapStateToProps)(Layout)
+
