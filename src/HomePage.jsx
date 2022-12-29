@@ -1,11 +1,12 @@
 import { loadAds } from './api/ads'
 import Card from './components/Card'
-
 import { useState, useEffect } from 'react'
 import styleOf from './HomePage.module.scss'
 import { useNavigate } from 'react-router-dom'
-
 import Masonry from 'react-masonry-css'
+
+import { connect } from 'react-redux'
+import { fetchAds } from './actions/ads/adsActions'
 
 function HomePage(props) {
   const navigate = useNavigate(),
@@ -112,9 +113,11 @@ function HomePage(props) {
 
     if(props.refreshUrl) navigate('/')
     // await loadAds()
+
     loadAds()
     .then(res => {
       setAds(res.ads)
+      props.fetchAds(res.ads)
     })
     .catch(err => console.log(err))
   }, []);
@@ -152,24 +155,38 @@ function HomePage(props) {
 
   return (
     <section className='flex flex-col space-y-12 px-3'>
-      {Object.keys(ads).length > 0 ?
-        <ul className='mt-px'>
-          <Masonry
-            breakpointCols={breakpointsColumnsMasonry}
-            className={styleOf.myMasonryGrid}
-            columnClassName={styleOf.myMasonryGridColumn}
-          >
-            {ads.map(ad =>
-              <Card
-                ad={ad}
-                key={ad._id}
-                horizontalCard={props.horizontalCard}
-                layoutOneColumn={props.layoutOneColumn}
-                handleAddToFavorites={props.handleAddToFavorites}
-              />
-            )}
-          </Masonry>
-        </ul>
+      {Object.keys(ads).length ?
+        <>
+          {props.store.ads.fetchedAds.length ?
+            <ul>
+              {props.store.ads.fetchedAds.map(post =>
+                <li style={{border: '1px solid black', color: 'black', marginTop: '10px', padding: '10px', borderRadius: '20px'}} key={post._id}>
+                  <h2 style={{fontWeight: 'bold', fontSize: '20px'}}>{post.title}</h2>
+                  <p>{post.description}</p>
+                </li>
+              )}
+            </ul>
+            :
+            <p style={{color: 'white'}}>aucun article</p>
+            }
+          <ul className='mt-px'>
+            <Masonry
+              breakpointCols={breakpointsColumnsMasonry}
+              className={styleOf.myMasonryGrid}
+              columnClassName={styleOf.myMasonryGridColumn}
+            >
+              {ads.map(ad =>
+                <Card
+                  ad={ad}
+                  key={ad._id}
+                  horizontalCard={props.horizontalCard}
+                  layoutOneColumn={props.layoutOneColumn}
+                  handleAddToFavorites={props.handleAddToFavorites}
+                />
+              )}
+            </Masonry>
+          </ul>
+        </>
         :
         <img className='w-20' src='https://i.stack.imgur.com/y3Hm3.gif' />
       }
@@ -177,4 +194,22 @@ function HomePage(props) {
   )
 }
 
-export default HomePage;
+const mapStateToProps = (state, ownProps) => {
+  console.log('(HOME) state', state)
+  return {
+    store: state
+  }
+}
+
+/* const mapDispatchToProps = dispatch => {
+  return {
+    fetchAds: fetchedAds => dispatch({type: 'UPDATE', payload: fetchedAds})
+  }
+} */
+
+const mapDispatchToProps = {
+  fetchAds
+}
+
+// export default connect(mapStateToProps)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

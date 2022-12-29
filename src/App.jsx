@@ -318,7 +318,6 @@ function App() {
             />
           }
         />
-
         <Route
           exact
           path='/user/:userIdPage'
