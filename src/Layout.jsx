@@ -448,7 +448,7 @@ function Layout(props) {
           } */}
         </nav>
       </main>
-      <footer className='p-6 text-center dark:bg-slate-900 dark:text-white'>© 2022 serve.ac</footer>
+      <footer className='p-6 text-center dark:bg-slate-900 dark:text-white'>© 2023 serve.ac</footer>
 
       {/* <footer className="m-1 6 text-center">
         {footerLists.map((footerList, index) =>

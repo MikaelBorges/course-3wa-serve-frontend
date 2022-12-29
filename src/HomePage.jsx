@@ -156,37 +156,23 @@ function HomePage(props) {
   return (
     <section className='flex flex-col space-y-12 px-3'>
       {Object.keys(ads).length ?
-        <>
-          {props.allAds.length ?
-            <ul>
-              {props.allAds.map(post =>
-                <li style={{border: '1px solid white', color: 'white', marginTop: '10px', padding: '10px', borderRadius: '20px'}} key={post._id}>
-                  <h2 style={{fontWeight: 'bold', fontSize: '20px'}}>{post.title}</h2>
-                  <p>{post.description}</p>
-                </li>
-              )}
-            </ul>
-            :
-            <p style={{color: 'white'}}>aucun article</p>
-            }
-          <ul className='mt-px'>
-            <Masonry
-              breakpointCols={breakpointsColumnsMasonry}
-              className={styleOf.myMasonryGrid}
-              columnClassName={styleOf.myMasonryGridColumn}
-            >
-              {ads.map(ad =>
-                <Card
-                  ad={ad}
-                  key={ad._id}
-                  horizontalCard={props.horizontalCard}
-                  layoutOneColumn={props.layoutOneColumn}
-                  handleAddToFavorites={props.handleAddToFavorites}
-                />
-              )}
-            </Masonry>
-          </ul>
-        </>
+        <ul className='mt-px'>
+          <Masonry
+            breakpointCols={breakpointsColumnsMasonry}
+            className={styleOf.myMasonryGrid}
+            columnClassName={styleOf.myMasonryGridColumn}
+          >
+            {ads.map(ad =>
+              <Card
+                ad={ad}
+                key={ad._id}
+                horizontalCard={props.horizontalCard}
+                layoutOneColumn={props.layoutOneColumn}
+                handleAddToFavorites={props.handleAddToFavorites}
+              />
+            )}
+          </Masonry>
+        </ul>
         :
         <img className='w-20' src='https://i.stack.imgur.com/y3Hm3.gif' />
       }
