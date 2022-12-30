@@ -285,7 +285,6 @@ function Layout(props) {
               <>  
                 <li
                   className={`
-                    mb-1
                     flex
                     block
                     rounded-full
@@ -303,7 +302,7 @@ function Layout(props) {
                 </li>
                 <li
                   className={`
-                    mb-1
+                    my-2
                     flex
                     block
                     rounded-full
@@ -321,7 +320,7 @@ function Layout(props) {
                 </li>
                 <li
                   className={`
-                    mb-1
+                    my-2
                     flex
                     block
                     bg-slate-200
@@ -338,7 +337,7 @@ function Layout(props) {
                 </li>
                 <li
                   className={`
-                    mb-1
+                    my-2
                     flex
                     block
                     bg-slate-200
@@ -355,7 +354,7 @@ function Layout(props) {
                 </li>
                 <li
                   className={`
-                    mb-1
+                    my-2
                     flex
                     block
                     bg-slate-200
@@ -372,7 +371,7 @@ function Layout(props) {
                 </li>
                 <li
                   className={`
-                    mb-1
+                    my-2
                     flex
                     block
                     bg-slate-200
@@ -389,7 +388,7 @@ function Layout(props) {
                 </li>
                 <li
                   className={`
-                    mb-1
+                    my-2
                     flex
                     block
                     bg-slate-200
@@ -410,7 +409,7 @@ function Layout(props) {
                 </li>
                 <li
                   className={`
-                    mb-1
+                    my-2
                     flex
                     block
                     bg-slate-200
@@ -434,7 +433,7 @@ function Layout(props) {
                 {userIsLogged(props.dataUser) &&
                   <li
                     className={`
-                      mb-1
+                      my-2
                       flex
                       block
                       bg-slate-200
@@ -457,7 +456,6 @@ function Layout(props) {
             }
             <li
               className={`
-                
                 flex
                 block
                 bg-slate-200

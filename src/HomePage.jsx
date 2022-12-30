@@ -158,6 +158,7 @@ function HomePage(props) {
       {Object.keys(ads).length ?
         <ul className='mt-px'>
           <Masonry
+            role='list'
             breakpointCols={breakpointsColumnsMasonry}
             className={styleOf.myMasonryGrid}
             columnClassName={styleOf.myMasonryGridColumn}
@@ -166,6 +167,7 @@ function HomePage(props) {
               <Card
                 ad={ad}
                 key={ad._id}
+                role='listitem'
                 horizontalCard={props.horizontalCard}
                 layoutOneColumn={props.layoutOneColumn}
                 handleAddToFavorites={props.handleAddToFavorites}

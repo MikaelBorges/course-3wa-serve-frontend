@@ -134,7 +134,6 @@ function Card(props) {
     <li
       className={`
         rounded-3xl
-        cursor-pointer
         overflow-hidden
         ${props.layoutOneColumn ? 'flex' : ''}
         ${props.horizontalCard ? '' : 'flex-col'}
@@ -163,6 +162,7 @@ function Card(props) {
           flex-col
           relative
           bg-slate-200
+          cursor-pointer
           justify-between
           dark:text-white
           dark:bg-slate-700
@@ -212,7 +212,7 @@ function Card(props) {
               min-w-0
             `}
           >
-            <button
+            <a
               className={`
                 flex
                 py-0.5
@@ -271,7 +271,7 @@ function Card(props) {
                 </div>
               </h4>
 
-            </button>
+            </a>
           </div>
           <span className='text-sm'>{displayStars(props.ad.starsNb)}</span>
           <button

@@ -15,11 +15,12 @@ import { connect } from 'react-redux'
 
 function App() {
   const [userId, setUserId] = useState(''),
-        [theme, setTheme] = useState('light'),
-        [dataUser, setDataUser] = useState({}),
         [urlNewAd, setUrlNewAd] = useState(''),
         [clickedAd, setClickedAd] = useState({}),
         [urlUserId, setUrlUserId] = useState(''),
+
+        [theme, setTheme] = useState('light'),
+        [dataUser, setDataUser] = useState({}),
         [darkMode, setDarkMode] = useState(false),
         [rightHand, setRightHand] = useState(true),
         [horizontalCard, setHorizontalCard] = useState(false),
