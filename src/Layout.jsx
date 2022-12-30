@@ -268,148 +268,211 @@ function Layout(props) {
         {props.children}
         <nav
           className={`
-            p-4
+            p-2
+            w-12
             z-10
-            flex
             fixed
-            bottom-4
-            space-x-2
             bg-white
+            bottom-4
             shadow-2xl
             rounded-full
             dark:bg-black
             ${props.rightHand ? 'justify-end right-4' : 'left-4'}
           `}
         >
-          {isMenuOpen &&
-            <>
-              <button
-                className={`
-                  h-8
-                  px-2
-                  text-xs
-                  rounded-full
-                `}
-                onClick={() => props.toggleDirectionCard('toggle')}
-                disabled={props.layoutOneColumn ? false : true}
-              >
-                {cardIcon}
-              </button>
-              <button
-                className={`
-                  h-8
-                  px-2
-                  text-xs
-                  rounded-full
-                `}
-                onClick={() => props.toggleLayout('toggle')}
-                disabled={true}
-              >
-                {props.layoutOneColumn ? rowLayoutIcon : columnLayoutIcon}
-              </button>
-              <button
-                className={`
-                  h-8
-                  px-2
-                  text-xs
-                  rounded-full
-                  bg-slate-200
-                  dark:bg-slate-400
-                `}
-                onClick={() => props.toggleHand()}
-              >
-                {props.rightHand ? leftHandIcon : rightHandIcon}
-              </button>
-              <button
-                className={`
-                  h-8
-                  px-2
-                  text-xs
-                  rounded-full
-                `}
-                onClick={e => props.toggleTheme(e.target.innerText)}
-                disabled={true}
-              >
-                {systemIcon}
-              </button>
-
-              {userIsLogout(props.dataUser) ?
-                <Link
-                  to='user/login'
+          <ul>
+            {isMenuOpen &&
+              <>  
+                <li
                   className={`
-                    h-8
-                    pt-2
-                    px-2
-                    text-xs
+                    mb-1
+                    flex
+                    block
                     rounded-full
+                    items-center
+                    aspect-square
+                    justify-center
+                  `}
+                >
+                  <button
+                    disabled={props.layoutOneColumn ? false : true}
+                    onClick={() => props.toggleDirectionCard('toggle')}
+                  >
+                    {cardIcon}
+                  </button>
+                </li>
+                <li
+                  className={`
+                    mb-1
+                    flex
+                    block
+                    rounded-full
+                    items-center
+                    aspect-square
+                    justify-center
+                  `}
+                >
+                  <button
+                    disabled={true}
+                    onClick={() => props.toggleLayout('toggle')}
+                  >
+                    {props.layoutOneColumn ? rowLayoutIcon : columnLayoutIcon}
+                  </button>
+                </li>
+                <li
+                  className={`
+                    mb-1
+                    flex
+                    block
                     bg-slate-200
+                    rounded-full
+                    items-center
+                    aspect-square
+                    justify-center
                     dark:bg-slate-400
                   `}
                 >
-                  {keyIcon} 
-                </Link>
-                :
-                <button
+                  <button onClick={() => props.toggleHand()}>
+                    {props.rightHand ? leftHandIcon : rightHandIcon}
+                  </button>
+                </li>
+                <li
                   className={`
-                    h-8
-                    px-2
-                    text-xs
-                    rounded-full
+                    mb-1
+                    flex
+                    block
                     bg-slate-200
-                    dark:bg-slate-400
-                  `}
-                  onClick={() => handleLogout()}
-                >
-                  {disconnectIcon}
-                </button>
-              }
-              <Link
-                to={userIsLogout(props.dataUser) ? '/user/register' : `/user/${props.dataUser._id}`}
-                className={`
-                  pl-2
-                  pt-2
-                  pr-2.5
-                  text-xs
-                  rounded-full
-                  bg-slate-200
-                  dark:bg-slate-400
-                `}
-              >
-                {userIcon}
-              </Link>
-              {userIsLogged(props.dataUser) &&
-                <Link
-                  onClick={() => props.handleAuthorizedToAdd()}
-                  to={`/user/${props.dataUser._id}/new`}
-                  className={`
-                    h-8
-                    pt-2
-                    px-2
-                    text-xs
                     rounded-full
-                    bg-slate-200
+                    items-center
+                    aspect-square
+                    justify-center
                     dark:bg-slate-400
                   `}
                 >
-                  {plusIcon}
-                </Link>
-              }
-            </>
-          }
-          <button
-            className={`
-              h-8
-              pl-2
-              pr-3
-              text-xs
-              rounded-full
-              bg-slate-200
-              dark:bg-slate-400
-            `}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {wheelIcon}
-          </button>
+                  <button onClick={e => props.toggleTheme(e.target.innerText)}>
+                    {lightIcon}
+                  </button>
+                </li>
+                <li
+                  className={`
+                    mb-1
+                    flex
+                    block
+                    bg-slate-200
+                    rounded-full
+                    items-center
+                    aspect-square
+                    justify-center
+                    dark:bg-slate-400
+                  `}
+                >
+                  <button onClick={e => props.toggleTheme(e.target.innerText)}>
+                    {darkIcon}
+                  </button>
+                </li>
+                <li
+                  className={`
+                    mb-1
+                    flex
+                    block
+                    bg-slate-200
+                    rounded-full
+                    items-center
+                    aspect-square
+                    justify-center
+                    dark:bg-slate-400
+                  `}
+                >
+                  <button onClick={e => props.toggleTheme(e.target.innerText)}>
+                    {systemIcon}
+                  </button>
+                </li>
+                <li
+                  className={`
+                    mb-1
+                    flex
+                    block
+                    bg-slate-200
+                    rounded-full
+                    items-center
+                    aspect-square
+                    justify-center
+                    dark:bg-slate-400
+                  `}
+                >
+                  {userIsLogout(props.dataUser) ?
+                    <Link to='user/login'>{keyIcon}</Link>
+                    :
+                    <button onClick={() => handleLogout()}>
+                      {disconnectIcon}
+                    </button>
+                  }
+                </li>
+                <li
+                  className={`
+                    mb-1
+                    flex
+                    block
+                    bg-slate-200
+                    rounded-full
+                    items-center
+                    aspect-square
+                    justify-center
+                    dark:bg-slate-400
+                  `}
+                >
+                  <Link
+                    to={userIsLogout(props.dataUser) ?
+                      '/user/register'
+                      :
+                      `/user/${props.dataUser._id}`
+                    }
+                  >
+                    {userIcon}
+                  </Link>
+                </li>
+                {userIsLogged(props.dataUser) &&
+                  <li
+                    className={`
+                      mb-1
+                      flex
+                      block
+                      bg-slate-200
+                      rounded-full
+                      items-center
+                      aspect-square
+                      justify-center
+                      dark:bg-slate-400
+                    `}
+                  >
+                    <Link
+                      to={`/user/${props.dataUser._id}/new`}
+                      onClick={() => props.handleAuthorizedToAdd()}
+                    >
+                      {plusIcon}
+                    </Link>
+                  </li>
+                }
+              </>
+            }
+            <li
+              className={`
+                
+                flex
+                block
+                bg-slate-200
+                rounded-full
+                items-center
+                aspect-square
+                justify-center
+                dark:bg-slate-400
+              `}
+            >
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                {wheelIcon}
+              </button>
+            </li>
+          </ul>
           {/* {menu &&
             <Ul className='dark:text-white text-black'>
               <Li>
