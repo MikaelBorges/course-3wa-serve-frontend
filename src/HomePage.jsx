@@ -70,9 +70,9 @@ function HomePage(props) {
     console.log('(HOME) useEffect props.clickedAd', props.clickedAd)
     if(Object.keys(props.clickedAd).length > 0) {
       console.log('rentre ici car clickedAd.length > 0 ')
-      // console.log('props.clickedAd', props.clickedAd)
+      console.log('mettre à jour le coeur', props.clickedAd)
 
-      // Note : Phase de recherche
+      // Note : Phase de recherche de l'annonce à mettre à jour (ses nb favoris)
       let item = {},
           items = [],
           indexSaved = 0,
@@ -88,6 +88,8 @@ function HomePage(props) {
           console.log('ad trouvé', index)
           items = [...ads]
           item = {...items[index]}
+          // console.log('index', index)
+          // console.log('item', item)
           favoritesToUpdate = props.clickedAd.newFavNumber
           // console.log('item', item)
           console.log('favoritesToUpdate', favoritesToUpdate)
@@ -99,8 +101,10 @@ function HomePage(props) {
       })
 
       // Note : Phase de remplacement de toutes les annonces
+      // Note : dont celle qui contient son nb favoris mis à jour
       item.favoritesNb = favoritesToUpdate
       items[indexSaved] = item
+      console.log('item', item)
       console.log('items', items)
       setAreAdsArranged(false)
       setAds(items)
@@ -159,8 +163,8 @@ function HomePage(props) {
         <ul className='mt-px'>
           <Masonry
             role='list'
-            breakpointCols={breakpointsColumnsMasonry}
             className={styleOf.myMasonryGrid}
+            breakpointCols={breakpointsColumnsMasonry}
             columnClassName={styleOf.myMasonryGridColumn}
           >
             {ads.map(ad =>

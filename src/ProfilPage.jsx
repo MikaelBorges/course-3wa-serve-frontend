@@ -104,10 +104,12 @@ function ProfilPage(props) {
       })
       .catch(err => console.log('err', err))
     }
-  }, [props.dataUser]);
+  }, [props.dataUser, userIdPage]);
 
   useEffect(() => {
+    console.log('(PROFIL) useEffect props.clickedAd', props.clickedAd)
     if(Object.keys(props.clickedAd).length > 0) {
+      console.log('rentre ici car clickedAd.length > 0 ')
       console.log('mettre à jour le coeur', props.clickedAd)
 
       // Phase de recherche :
@@ -126,30 +128,37 @@ function ProfilPage(props) {
           console.log('ad trouvé', index)
           items = [...ads]
           item = {...items[index]}
+          // console.log('index', index)
+          // console.log('item', item)
           favoritesToUpdate = props.clickedAd.newFavNumber
           // console.log('item', item)
           console.log('favoritesToUpdate', favoritesToUpdate)
-          arr.length = index + 1 // sortir de la boucle
+          arr.length = index + 1 // Tip > sortir de la boucle
         }
         else {
           console.log('pas trouvé')
         }
       })
 
-      // Phase de remplacement de toutes les annonces :
+      // Note : Phase de remplacement de toutes les annonces
+      // Note : dont celle qui contient son nb favoris mis à jour
       item.favoritesNb = favoritesToUpdate
       items[indexSaved] = item
       console.log('item', item)
       console.log('items', items)
+      // setAreAdsArranged(false)
       setAds(items)
       props.resetClickedAd()
     }
   }, [props.clickedAd]);
 
   useEffect(() => {
-    console.log('(PROFIL) useEffect[]', userIdPage)
     generateMasonryBreakpointsUntilThisMaxValue(3000)
   }, [])
+
+  /* useEffect(() => {
+    console.log('(PROFIL) useEffect[userIdPage]', userIdPage)
+  }, [userIdPage]) */
 
   /* useEffect(() => {
     console.log('(PROFIL) useEffect[userIdPage]', userIdPage)
@@ -266,12 +275,12 @@ function ProfilPage(props) {
                     `}
                   >
                     <input
-                      className='w-8 h-8 rounded-full'
+                      value='yes'
                       type='checkbox'
                       name='check-all'
-                      value='yes'
                       onClick={e => handleChange(e)}
                       onChange={e => handleChange(e)}
+                      className='w-8 h-8 rounded-full'
                     />
                   </div>
                 }
@@ -286,14 +295,16 @@ function ProfilPage(props) {
       {ads.length > 0 ?
         <ul className='px-3'>
           <Masonry
-            breakpointCols={breakpointsColumnsMasonry}
+            role='list'
             className={styleOf.myMasonryGrid}
+            breakpointCols={breakpointsColumnsMasonry}
             columnClassName={styleOf.myMasonryGridColumn}
           >
             {ads.map(ad =>
               <Card
                 ad={ad}
                 key={ad._id}
+                role='listitem'
                 isVisitor={isVisitor}
                 openPopup={openPopup}
                 showDraft={showDraft}

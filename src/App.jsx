@@ -7,8 +7,8 @@ import ProfilPage from './ProfilPage'
 import RegisterPage from './RegisterPage'
 import { addToFavorites } from './api/user'
 import { useState, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
-import { userIsLogout, userIsLogged } from './functions/user'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import { userIsLogout } from './functions/user'
 import { lightIcon, darkIcon, systemIcon } from './constants/icons'
 
 import { connect } from 'react-redux'
@@ -19,6 +19,8 @@ function App() {
         [clickedAd, setClickedAd] = useState({}),
         [urlUserId, setUrlUserId] = useState(''),
 
+        { pathname } = useLocation(),
+        [path, setPath] = useState(''),
         [theme, setTheme] = useState('light'),
         [dataUser, setDataUser] = useState({}),
         [darkMode, setDarkMode] = useState(false),
@@ -246,10 +248,6 @@ function App() {
     setLocalStorageChecked(true)
   }, []);
 
-  useEffect(() => {
-    if((window.location.pathname.indexOf('new') !== -1) && (window.location.pathname.indexOf(dataUser._id) !== -1)) setAuthorizedToAdd(true)
-  }, [dataUser]);
-
   return (
     <Layout
       theme={theme}
@@ -285,7 +283,7 @@ function App() {
         <Route
           exact
           path='/user/login'
-          element={localStorageChecked && userIsLogout(dataUser) ?
+          element={userIsLogout(dataUser) ?
             <LoginPage
               darkMode={darkMode}
               dataUser={dataUser}
@@ -293,31 +291,35 @@ function App() {
             />
             :
             <HomePage
+              refreshUrl
               darkMode={darkMode}
+              clickedAd={clickedAd}
               updateUser={updateUser}
               resetClickedAd={resetClickedAd}
               horizontalCard={horizontalCard}
               layoutOneColumn={layoutOneColumn}
-              refreshUrl
+              handleAddToFavorites={handleAddToFavorites}
             />
           }
         />
         <Route
           exact
           path='/user/register'
-          element={localStorageChecked && userIsLogout(dataUser) ?
+          element={userIsLogout(dataUser) ?
             <RegisterPage
               dataUser={dataUser}
               darkMode={darkMode}
             />
             :
             <HomePage
+              refreshUrl
               darkMode={darkMode}
+              clickedAd={clickedAd}
               updateUser={updateUser}
               resetClickedAd={resetClickedAd}
               horizontalCard={horizontalCard}
               layoutOneColumn={layoutOneColumn}
-              refreshUrl
+              handleAddToFavorites={handleAddToFavorites}
             />
           }
         />
@@ -341,19 +343,25 @@ function App() {
         <Route
           exact
           path='/user/:id/new'
-          element={localStorageChecked && authorizedToAdd ?
+          element={
+            pathname === `/user/${JSON.parse(window.localStorage.getItem('user'))?._id}/new`
+            ||
+            pathname === `/user/${JSON.parse(window.localStorage.getItem('user'))?._id}/new/`
+            ?
             <NewAdPage
               darkMode={darkMode}
               dataUser={dataUser}
             />
             :
             <HomePage
+              refreshUrl
               darkMode={darkMode}
+              clickedAd={clickedAd}
               updateUser={updateUser}
               resetClickedAd={resetClickedAd}
               horizontalCard={horizontalCard}
               layoutOneColumn={layoutOneColumn}
-              refreshUrl
+              handleAddToFavorites={handleAddToFavorites}
             />
           }
         />
