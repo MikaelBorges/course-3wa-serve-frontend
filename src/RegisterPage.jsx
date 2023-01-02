@@ -16,6 +16,7 @@ function RegisterPage(props) {
         [img, setImg] = useState(null),
         [msg, setMsg] = useState(null),
         [email, setEmail] = useState(''),
+        [phone, setPhone] = useState(''),
         [info, setInfo] = useState(null),
         [error, setError] = useState(null),
         [lastname, setLastname] = useState(''),
@@ -26,11 +27,12 @@ function RegisterPage(props) {
         onSubmitForm = e => {
           e.preventDefault()
           let data = {
-              image: e.target.image.value,
-              email: e.target.email.value,
-              password: e.target.password.value,
-              firstname: e.target.firstname.value,
-              lastname: e.target.lastname.value,
+            phone: e.target.phone.value,
+            image: e.target.image.value,
+            email: e.target.email.value,
+            lastname: e.target.lastname.value,
+            password: e.target.password.value,
+            firstname: e.target.firstname.value
           }
           registerUser(data)
           .then((res) => {
@@ -118,7 +120,7 @@ function RegisterPage(props) {
   }, [props.dataUser]); */
 
   useEffect(() => {
-      if (email !== '' && password !== '' && firstname !== '' && lastname !== '') {
+      if (email !== '' && password !== '' && firstname !== '' && lastname !== '' && phone !== '') {
           setDisabled(false);
       }
       else {
@@ -193,6 +195,15 @@ function RegisterPage(props) {
           type='password'
           name='password'
           placeholder='votre mot de passe'
+          className='w-full border dark:bg-slate-800 dark:text-white'
+        />
+        <input
+          onChange={(e) => {
+            setPhone(e.currentTarget.value);
+          }}
+          type='tel'
+          name='phone'
+          placeholder='votre numero de téléphone'
           className='w-full border dark:bg-slate-800 dark:text-white'
         />
         <button

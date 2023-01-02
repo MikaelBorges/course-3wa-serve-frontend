@@ -110,7 +110,7 @@ function Card(props) {
               //window.location.reload(false)
             }
             else {
-              console.log('res.response.data.message', res.response.data.message)
+              console.log('res.data.message', res.data.message)
             }
           })
           .catch(err => {

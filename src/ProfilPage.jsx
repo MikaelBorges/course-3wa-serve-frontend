@@ -17,6 +17,7 @@ function ProfilPage(props) {
         hour = new Date().getHours(),
         [ads, setAds] = useState([]),
         [imgUrl, setImgUrl] = useState(''),
+        [noAds, setNoAds] = useState(false),
         [isVisitor, setIsVisitor] = useState(false),
         [showDraft, setShowDraft] = useState(false),
         [isPopupOpen, setIsPopupOpen] = useState(false),
@@ -92,6 +93,7 @@ function ProfilPage(props) {
       loadUserAds(userIdPage, false)
       .then(res => {
         setAds(res.adsOfUser)
+        setNoAds(res.noAds)
       })
       .catch(err => console.log('err', err))
     } else {
@@ -100,6 +102,7 @@ function ProfilPage(props) {
       loadUserAds(userIdPage, true)
       .then(res => {
         setAds(res.adsOfUser)
+        setNoAds(res.noAds)
         setLiteInfosOfUser(res.liteInfos)
       })
       .catch(err => console.log('err', err))
@@ -241,11 +244,17 @@ function ProfilPage(props) {
         <div className='pb-4 flex justify-between'>
           <div className='flex flex-col justify-center'>
             <h2 className='text-3xl dark:text-white'>
-              {isVisitor && Object.keys(liteInfosOfUser).length > 0 ?
-                `Annonces de ${liteInfosOfUser.firstname}` : ''
+              {isVisitor && !noAds && Object.keys(liteInfosOfUser).length > 0 ?
+                `Annonce(s) de ${liteInfosOfUser.firstname}` : ''
               }
-              {!isVisitor && Object.keys(props.dataUser).length > 0 ?
-                `Voici vos annonces ${props.dataUser.firstname}` : ''
+              {!isVisitor && !noAds && Object.keys(props.dataUser).length > 0 ?
+                `Voici vos annonce(s) ${props.dataUser.firstname}` : ''
+              }
+              {noAds && isVisitor ?
+                `${liteInfosOfUser.firstname} n'a pas d'annonce(s)` : ''
+              }
+              {noAds && !isVisitor ?
+                `Vous n'avez pas d'annonce(s) ${props.dataUser.firstname}` : ''
               }
             </h2>
           </div>
@@ -258,8 +267,8 @@ function ProfilPage(props) {
                     px-4
                     py-3
                     text-2xl
-                    rounded-full
                     bg-gray-100
+                    rounded-full
                     dark:bg-gray-800
                   `}
                   onClick={e => handleDeleteAd(e)}
@@ -291,8 +300,7 @@ function ProfilPage(props) {
 
       </div>
 
-
-      {ads.length > 0 ?
+      {ads.length > 0 && !noAds &&
         <ul className='px-3'>
           <Masonry
             role='list'
@@ -317,8 +325,15 @@ function ProfilPage(props) {
             )}
           </Masonry>
         </ul>
-        :
+      }
+      {ads.length === 0 && !noAds &&
         <img className='w-20' src='https://i.stack.imgur.com/y3Hm3.gif' />
+      }
+      {noAds && !isVisitor &&
+        <img
+          alt="l'utilisateur n'a pas d'annonces"
+          src='https://res.cloudinary.com/mika4ever/image/upload/v1672669742/samples/assets/no-ads.svg'
+        />
       }
       {isPopupOpen &&
         <div
