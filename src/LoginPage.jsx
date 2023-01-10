@@ -34,6 +34,8 @@ function LoginPage(props) {
                 console.log('RES.DATA.SESSION.USER (LOGIN PAGE)')
                 console.log(res.data.session.user) */
 
+                console.warn('RES >', res)
+
                 window.localStorage.setItem('user', JSON.stringify(res.data.session.user))
                 props.updateUser(res.data.session.user)
                 navigate('/')
@@ -76,10 +78,20 @@ function LoginPage(props) {
     }, []);
 
   return (
-    <section className='min-h-screen dark:bg-slate-900 bg-white flex flex-col space-y-12 px-8'>
+    <section
+      className={`
+        px-8
+        flex
+        flex-col
+        bg-white
+        space-y-12
+        min-h-screen
+        dark:bg-slate-900
+      `}
+    >
       <form
-        action='/user/login'
         method='post'
+        action='/user/login'
         onSubmit={e => onSubmitForm(e)}
       >
         <input
@@ -87,20 +99,35 @@ function LoginPage(props) {
           type='text'
           name='email'
           placeholder='votre email'
-          className='w-full border dark:bg-slate-800 dark:text-white'
+          className={`
+            w-full
+            border
+            dark:bg-slate-800
+            dark:text-white
+          `}
         />
         <input
           onChange={e => setPassword(e.currentTarget.value)}
           type='password'
           name='password'
           placeholder='votre mot de passe'
-          className='w-full border dark:bg-slate-800 dark:text-white'
+          className={`
+            w-full
+            border
+            dark:bg-slate-800
+            dark:text-white
+          `}
         />
         <button
-          disabled={disabled}
           type='submit'
+          disabled={disabled}
           name='Se connecter'
-          className='border bg-slate-200 dark:bg-slate-800 dark:text-yellow-100'
+          className={`
+            border
+            bg-slate-200
+            dark:bg-slate-800
+            dark:text-yellow-100
+          `}
         >
           Se connecter
         </button>

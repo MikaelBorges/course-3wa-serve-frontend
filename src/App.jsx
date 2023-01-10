@@ -22,9 +22,12 @@ function App() {
         { pathname } = useLocation(),
         [path, setPath] = useState(''),
         [theme, setTheme] = useState('light'),
+        [minPrice, setMinPrice] = useState(''),
+        [maxPrice, setMaxPrice] = useState(''),
         [dataUser, setDataUser] = useState({}),
         [darkMode, setDarkMode] = useState(false),
         [rightHand, setRightHand] = useState(true),
+        [locationTyped, setLocationTyped] = useState(''),
         [horizontalCard, setHorizontalCard] = useState(false),
         [layoutOneColumn, setLayoutOneColumn] = useState(false),
         [authorizedToAdd, setAuthorizedToAdd] = useState(false),
@@ -185,6 +188,18 @@ function App() {
           // }
         }
 
+        function changeMinPrice(minPrice) {
+          setMinPrice(minPrice)
+        }
+
+        function changeMaxPrice(maxPrice) {
+          setMaxPrice(maxPrice)
+        }
+
+        function changeLocationTyped(locationTyped) {
+          setLocationTyped(locationTyped)
+        }
+
   useEffect(() => {
     const horizontalCardInLS = window.localStorage.getItem('horizontalCard'),
           layoutOneColumnInLS = window.localStorage.getItem('layoutOneColumn')
@@ -259,20 +274,26 @@ function App() {
       displayUser={displayUser}
       toggleTheme={toggleTheme}
       toggleLayout={toggleLayout}
+      changeMinPrice={changeMinPrice}
+      changeMaxPrice={changeMaxPrice}
       horizontalCard={horizontalCard}
       layoutOneColumn={layoutOneColumn}
+      changeLocationTyped={changeLocationTyped}
       toggleDirectionCard={toggleDirectionCard}
       handleAuthorizedToAdd={handleAuthorizedToAdd}
     >
       <Routes>
         <Route
           exact
-          path='/'
+          path='/*'
           element={
             <HomePage
+              minPrice={minPrice}
+              maxPrice={maxPrice}
               darkMode={darkMode}
               clickedAd={clickedAd}
               updateUser={updateUser}
+              locationTyped={locationTyped}
               resetClickedAd={resetClickedAd}
               horizontalCard={horizontalCard}
               layoutOneColumn={layoutOneColumn}

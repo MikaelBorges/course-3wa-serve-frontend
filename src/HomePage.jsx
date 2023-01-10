@@ -2,18 +2,22 @@ import { loadAds } from './api/ads'
 import Card from './components/Card'
 import { useState, useEffect } from 'react'
 import styleOf from './HomePage.module.scss'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Masonry from 'react-masonry-css'
 
 import { connect } from 'react-redux'
 import { fetchAds } from './actions/ads/adsActions'
 
 function HomePage(props) {
+  const [search, setSearch] = useSearchParams()
+  //console.warn('search base', search.get('location'))
+
   const navigate = useNavigate(),
         [ads, setAds] = useState([]),
         [favs, setFavs] = useState(false),
         [oddAds, setOddAds] = useState([]),
         [evenAds, setEvenAds] = useState([]),
+        [filteredAds, setFilteredAds] = useState([]),
         [areAdsArranged, setAreAdsArranged] = useState(false),
         [breakpointsColumnsMasonry, setBreakpointsColumnsMasonry] = useState({}),
 
@@ -59,6 +63,57 @@ function HomePage(props) {
 
           setBreakpointsColumnsMasonry(breakpointsObject)
         }
+
+  useEffect(() => {
+    const location = search.get('location'),
+          minPrice = search.get('minPrice'),
+          maxPrice = search.get('maxPrice')
+
+    console.log('minPrice', minPrice)
+    console.log('maxPrice', maxPrice)
+    console.log('location', location)
+
+    const filterAds = ads
+    .filter(ad => ad.location === location)
+    .filter(ad => +ad.price >= +minPrice)
+    .filter(ad => +ad.price <= +maxPrice)
+
+    setFilteredAds(filterAds)
+
+    /* if(location || minPrice || maxPrice) {
+      if(location) {
+        const filteredLocationAds = ads.filter(ad => ad.location === location)
+        if(filteredLocationAds.length) setFilteredAds(filteredLocationAds)
+      } else {
+        //console.log('location', location)
+        //const filteredLocationAds = filteredAds.filter(ad => ad.location !== location)
+        //console.log('filteredLocationAds', filteredLocationAds)
+        //if(filteredLocationAds.length) setFilteredAds(filteredLocationAds)
+        //setFilteredAds(ads)
+      }
+      if(minPrice) {
+        const filteredMinPriceAds = ads.filter(ad => +ad.price >= +minPrice)
+        console.log('filteredMinPriceAds', filteredMinPriceAds)
+        setFilteredAds(filteredMinPriceAds)
+      } else {
+
+      }
+      if(maxPrice) {
+        const filteredMaxPriceAds = ads.filter(ad => +ad.price <= +maxPrice)
+        setFilteredAds(filteredMaxPriceAds)
+      } else {
+        
+      }
+    } */
+
+  }, [search])
+
+  /* useEffect(() => {
+    console.warn('params! changed', params)
+    //const [searchParams, setSearchParams] = useSearchParams()
+    //const location = searchParams.get('location')
+    //console.warn(location)
+  }, [params]) */
 
   /* useEffect(() => {
     // console.log('useEffect favs')
@@ -108,11 +163,16 @@ function HomePage(props) {
       console.log('items', items)
       setAreAdsArranged(false)
       setAds(items)
+      setFilteredAds(items)
       props.resetClickedAd()
     }
   }, [props.clickedAd]);
 
   useEffect(() => {
+    //console.warn('params changed', params)
+
+    //console.warn('search changed', search)
+
     generateMasonryBreakpointsUntilThisMaxValue(3000)
 
     if(props.refreshUrl) navigate('/')
@@ -121,15 +181,38 @@ function HomePage(props) {
     loadAds()
     .then(res => {
       setAds(res.ads)
+      setFilteredAds(res.ads)
       props.fetchAds(res.ads)
     })
     .catch(err => console.log(err))
   }, []);
 
+  /* useEffect(() => {
+    let priceFilteredAds,
+        minPrice = props.minPrice,
+        maxPrice = props.maxPrice
+    if(props.minPrice) minPrice = +props.minPrice
+    if(props.maxPrice) maxPrice = +props.maxPrice
+
+    if(minPrice && !maxPrice) priceFilteredAds = filteredAds.filter(ad => +ad.price >= minPrice)
+    else if(!minPrice && maxPrice) priceFilteredAds = filteredAds.filter(ad => +ad.price <= maxPrice)
+    else if(minPrice && maxPrice) priceFilteredAds = filteredAds.filter(ad => +ad.price >= minPrice && +ad.price <= maxPrice)
+    else if(!minPrice && !maxPrice) priceFilteredAds = filteredAds
+    setFilteredAds(priceFilteredAds)
+  }, [props.minPrice, props.maxPrice]); */
+
+  /* useEffect(() => {
+    console.log('props.locationTyped', props.locationTyped)
+    console.log('filteredAds', filteredAds)
+    const locationFilteredAds = filteredAds.filter(ad => ad.location === props.locationTyped)
+    console.log('locationFilteredAds', locationFilteredAds)
+    if(locationFilteredAds.length) setFilteredAds(locationFilteredAds)
+  }, [props.locationTyped]); */
+
   useEffect(() => {
     console.log('(HOME) useEffect ads', ads)
     //console.log('(HOME) areAdsArranged', areAdsArranged)
-    if(!areAdsArranged && Object.keys(ads).length > 0) {
+    if(!areAdsArranged && ads.length > 0) {
       //console.log('(HOME) arrangement ads')
       arrangeAds()
     }
@@ -157,9 +240,11 @@ function HomePage(props) {
     )
   } */
 
+  //useSearchParams
+
   return (
     <section className='flex flex-col space-y-12 px-3'>
-      {Object.keys(ads).length ?
+      {Boolean(filteredAds.length) &&
         <ul className='mt-px'>
           <Masonry
             role='list'
@@ -167,11 +252,12 @@ function HomePage(props) {
             breakpointCols={breakpointsColumnsMasonry}
             columnClassName={styleOf.myMasonryGridColumn}
           >
-            {ads.map(ad =>
+            {filteredAds.map(ad =>
               <Card
                 ad={ad}
                 key={ad._id}
                 role='listitem'
+                darkMode={props.darkMode}
                 horizontalCard={props.horizontalCard}
                 layoutOneColumn={props.layoutOneColumn}
                 handleAddToFavorites={props.handleAddToFavorites}
@@ -179,8 +265,12 @@ function HomePage(props) {
             )}
           </Masonry>
         </ul>
-        :
-        <img className='w-20' src='https://i.stack.imgur.com/y3Hm3.gif' />
+      }
+      {!Boolean(filteredAds.length) && Boolean(ads.length) &&
+        <h1 className='text-3xl dark:text-white'>Pas de résultats</h1>
+      }
+      {!Boolean(ads.length) &&
+        <img className='w-20' src='https://i.stack.imgur.com/y3Hm3.gif' alt='chargement' />
       }
     </section>
   )

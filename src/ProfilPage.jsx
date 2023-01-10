@@ -1,7 +1,7 @@
 import Card from './components/Card'
 import { loadUserAds } from './api/ads'
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Navigate } from 'react-router-dom'
 import { userIsLogged } from './functions/user'
 import { Image, Transformation, CloudinaryContext } from 'cloudinary-react'
 import { lightIcon, goodEveningIcon, binIcon, validIcon } from './constants/icons'
@@ -19,10 +19,10 @@ function ProfilPage(props) {
         [imgUrl, setImgUrl] = useState(''),
         [noAds, setNoAds] = useState(false),
         [isVisitor, setIsVisitor] = useState(false),
-        [showDraft, setShowDraft] = useState(false),
         [isPopupOpen, setIsPopupOpen] = useState(false),
         [liteInfosOfUser, setLiteInfosOfUser]= useState({}),
         [allCardsChecked, setAllCardsChecked] = useState(false),
+        [showCheckboxsDraft, setshowCheckboxsDraft] = useState(false),
         [responseMessageFromCard, setResponseMessageFromCard] = useState(''),
         [breakpointsColumnsMasonry, setBreakpointsColumnsMasonry] = useState({}),
 
@@ -49,14 +49,19 @@ function ProfilPage(props) {
           console.log('modifier')
         },
 
-        handleChange = e => {
+        handleChangeMainCheckbox = e => {
           e.stopPropagation()
-          setAllCardsChecked(e.target.checked)
+          //setAllCardsChecked(e.target.checked)
+        },
+
+        checkAllCheckboxes = () => {
+          console.log('checkAllCheckboxes')
+          //setAllCardsChecked(true)
         },
 
         uncheckAllCheckboxes = () => {
           console.log('uncheckAllCheckboxes')
-          setAllCardsChecked(false)
+          //setAllCardsChecked(false)
         },
 
         openPopup = message => {
@@ -192,6 +197,9 @@ function ProfilPage(props) {
     </Image>
   </CloudinaryContext> */
 
+
+  /* if(dataUser.id !== userIdPage) return <Navigate to='/' /> */
+
   return (
     <section className='dark:bg-slate-900'>
 
@@ -258,8 +266,8 @@ function ProfilPage(props) {
               }
             </h2>
           </div>
-          {!isVisitor &&
-            <div className='hidden flex-col justify-center'>
+          {!isVisitor && showCheckboxsDraft &&
+            <div className='flex flex-col justify-center'>
               <div className='flex'>
                 <button
                   className={`
@@ -275,24 +283,23 @@ function ProfilPage(props) {
                 >
                   {binIcon}
                 </button>
-                {showDraft &&
-                  <div
-                    className={`
-                      flex
-                      flex-col
-                      justify-center
-                    `}
-                  >
-                    <input
-                      value='yes'
-                      type='checkbox'
-                      name='check-all'
-                      onClick={e => handleChange(e)}
-                      onChange={e => handleChange(e)}
-                      className='w-8 h-8 rounded-full'
-                    />
-                  </div>
-                }
+                <div
+                  className={`
+                    flex
+                    flex-col
+                    justify-center
+                  `}
+                >
+                  <input
+                    value='yes'
+                    type='checkbox'
+                    name='check-all'
+                    onClick={e => handleChangeMainCheckbox(e)}
+                    onChange={e => handleChangeMainCheckbox(e)}
+                    //className='w-8 h-8 rounded-full'
+                    //className={"before:block before:w-6 before:h-6 dark:before:bg-slate-600 before:bg-slate-200 before:rounded-full"}
+                  />
+                </div>
               </div>
             </div>
           }
@@ -315,11 +322,11 @@ function ProfilPage(props) {
                 role='listitem'
                 isVisitor={isVisitor}
                 openPopup={openPopup}
-                showDraft={showDraft}
+                darkMode={props.darkMode}
                 allCardsChecked={allCardsChecked}
                 horizontalCard={props.horizontalCard}
                 layoutOneColumn={props.layoutOneColumn}
-                uncheckAllCheckboxes={uncheckAllCheckboxes}
+                showCheckboxsDraft={showCheckboxsDraft}
                 handleAddToFavorites={props.handleAddToFavorites}
               />
             )}
